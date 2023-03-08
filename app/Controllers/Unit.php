@@ -8,6 +8,9 @@ class Unit extends BaseController
 {
     public function index()
     {
-        //
+        $data = [
+            'page' => 'view_units'
+        ];
+        return view('view_template', $data);
     }
 }
