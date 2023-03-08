@@ -103,25 +103,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="<?= base_url('product') ?>" class="nav-link active">
+                <a href="<?= base_url('product') ?>" class="nav-link <?= ($active=='product') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Products</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('category') ?>" class="nav-link">
+                <a href="<?= base_url('category') ?>" class="nav-link <?= ($active=='category') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Categories</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('unit') ?>" class="nav-link">
+                <a href="<?= base_url('unit') ?>" class="nav-link <?= ($active=='unit') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Units</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('user') ?>" class="nav-link">
+                <a href="<?= base_url('user') ?>" class="nav-link <?= ($active=='user') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Users</p>
                 </a>

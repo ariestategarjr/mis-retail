@@ -9,7 +9,8 @@ class User extends BaseController
     public function index()
     {
         $data = [
-            'page' => 'view_users'
+            'page' => 'view_users',
+            'active' => 'user'
         ];
         return view('view_template', $data);
     }
