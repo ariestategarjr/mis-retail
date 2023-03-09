@@ -12,6 +12,7 @@ class CreateUsersTable extends Migration
             'id_user' => [
                 'type' => 'VARCHAR',
                 'constraint' => 10,
+                'unique' => true
             ],
             'nama_user' => [
                 'type' => 'VARCHAR',
@@ -29,8 +30,11 @@ class CreateUsersTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 10
             ],
-            'create_at' => [
+            'created_at' => [
                 'type' => 'DATETIME DEFAULT CURRENT_TIMESTAMP'
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME ON UPDATE CURRENT_TIMESTAMP'
             ]
         ]);
 
