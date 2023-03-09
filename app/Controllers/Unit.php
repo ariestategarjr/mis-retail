@@ -10,7 +10,10 @@ class Unit extends BaseController
     {
         $data = [
             'page' => 'view_units',
-            'active' => 'unit'
+            'title' => 'Master',
+            'subtitle' => 'Units',
+            'menu' => 'master',
+            'submenu' => 'units'
         ];
         return view('view_template', $data);
     }

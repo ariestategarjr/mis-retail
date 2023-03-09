@@ -77,8 +77,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <!-- <i class="nav-icon fas fa-th"></i> -->
+            <a href="<?= base_url('admin') ?>" class="nav-link <?= ($menu == 'dashboard') ? 'active' : '' ?>">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -86,15 +85,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="<?= base_url('admin/sale') ?>" class="nav-link <?= ($menu == 'sale') ? 'active' : '' ?>">
               <i class="nav-icon fas fa-cash-register"></i>
               <p>
                 Sale
               </p>
             </a>
           </li>
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item <?= ($menu == 'master') ? 'menu-open' : '' ?>">
+            <a href="#" class="nav-link <?= ($menu == 'master') ? 'active' : '' ?>">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Master
@@ -103,25 +102,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="<?= base_url('product') ?>" class="nav-link <?= ($active=='product') ? 'active' : '' ?>">
+                <a href="<?= base_url('product') ?>" class="nav-link <?= ($submenu == 'products') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Products</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('category') ?>" class="nav-link <?= ($active=='category') ? 'active' : '' ?>">
+                <a href="<?= base_url('category') ?>" class="nav-link <?= ($submenu == 'categories') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Categories</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('unit') ?>" class="nav-link <?= ($active=='unit') ? 'active' : '' ?>">
+                <a href="<?= base_url('unit') ?>" class="nav-link <?= ($submenu == 'units') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Units</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('user') ?>" class="nav-link <?= ($active=='user') ? 'active' : '' ?>">
+                <a href="<?= base_url('user') ?>" class="nav-link <?= ($submenu == 'users') ? 'active' : '' ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Users</p>
                 </a>
@@ -129,7 +128,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="<?= base_url('admin/setting') ?>" class="nav-link <?= ($menu == 'settings') ? 'active' : '' ?>">
               <i class="nav-icon fas fa-cogs"></i>
               <p>
                 Settings
@@ -150,12 +149,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Starter Page</h1>
+            <h1 class="m-0"><?= "$title $subtitle"?></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Starter Page</li>
+              <li class="breadcrumb-item"><a href="#"><?= $title ?></a></li>
+              <li class="breadcrumb-item active"><?= $subtitle ?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->

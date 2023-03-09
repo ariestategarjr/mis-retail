@@ -10,7 +10,10 @@ class User extends BaseController
     {
         $data = [
             'page' => 'view_users',
-            'active' => 'user'
+            'title' => 'Master',
+            'subtitle' => 'Users',
+            'menu' => 'master',
+            'submenu' => 'users'
         ];
         return view('view_template', $data);
     }

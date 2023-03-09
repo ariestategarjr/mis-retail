@@ -10,7 +10,10 @@ class Category extends BaseController
     {
         $data = [
             'page' => 'view_categories',
-            'active' => 'category'
+            'title' => 'Master',
+            'subtitle' => 'Categories',
+            'menu' => 'master',
+            'submenu' => 'categories'
         ];
         return view('view_template', $data);
     }

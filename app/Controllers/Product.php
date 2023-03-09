@@ -10,7 +10,10 @@ class Product extends BaseController
     {
         $data = [
             'page' => 'view_products',
-            'active' => 'product'
+            'title' => 'Master',
+            'subtitle' => 'Products',
+            'menu' => 'master',
+            'submenu' => 'products'
         ];
         return view('view_template', $data);
     }
