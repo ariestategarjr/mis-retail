@@ -8,29 +8,19 @@ class ModelUnits extends Model
 {
     protected $table = 'tb_satuan';
 
-    public function rules() 
-    {
-        return [
-            [
-                'field' => 'id_satuan',
-                'label' => 'id satuan',
-                'rules' => 'trim|required'
-            ],
-            [
-                'field' => 'nama_satuan',
-                'label' => 'nama satuan',
-                'rules' => 'trim|required'
-            ]
-        ];
-    }
-
     public function getAll() {
         $builder = $this->db->table($this->table);
-        $query = $builder->get();
+        $query = $builder->select('id_satuan', 'nama_satuan');
 
-        return $query->getResultObject();
+        return $query;
     }
 
+    public function insertData($data) {
+        $builder = $this->db->table($this->table);
+        $query = $builder->insert($data);
+
+        return $query;
+    }
     // protected $DBGroup          = 'default';
     // protected $table            = 'modelunits';
     // protected $primaryKey       = 'id';

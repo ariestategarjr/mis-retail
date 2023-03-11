@@ -13,7 +13,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table class="table table-bordered">
+                <table class="table table-bordered" id="table">
                   <thead>
                     <tr>
                       <th>No</th>
@@ -23,18 +23,18 @@
                     </tr>
                   </thead>
                   <tbody>
+                    
                     <?php $no = 1 ?>
-                    <?php foreach($satuan as $key => $value) { ?>
+                    <?php foreach($satuan as $row) : ?>
                     <tr>
                       <td><?= $no++ ?></td>
-                      <td><?= $value->id_satuan ?></td>
-                      <td><?= $value->nama_satuan ?></td>
+                      <td><?= $row->nama_satuan ?></td>
                       <td>
                         <button class="btn btn-warning btn-sm btn-flat"><i class="fas fa-pencil-alt"></i></button>
                         <button class="btn btn-danger btn-sm btn-flat"><i class="fas fa-trash"></i></button>
                       </td>
                     </tr>
-                    <?php } ?>
+                    <?php endforeach; ?>
                   </tbody>
                 </table>
               </div>
@@ -53,20 +53,43 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <?= form_open('satuan/insert') ?>
+            <?php
+            $action = 'unit/add';
+            $attributes = array('id' => 'FormAddUnits', 'method' => 'post', 'autocomplete' => 'off', 'required' => true);
+            
+            echo form_open($action, $attributes)
+            ?>
             <div class="modal-body">
-              <p>One fine body&hellip;</p>
+              <div class="form-group">
+                <label for="idAdd">Id Satuan</label>
+                <input type="text" class="form-control" id="idAdd" name="id_satuan">
+              </div>
+              <div class="form-group">
+                <label for="nameAdd">Nama Satuan</label>
+                <input type="text" class="form-control" id="nameAdd" name="nama_satuan">            
+              </div>
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="submit" class="btn btn-primary">Save</button>
             </div>
-            <?= form_close() ?>
+            <?php echo form_close() ?>
           </div>
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
+
+      <script>
+      $(document).ready(function() {
+        $('#table').DataTable({
+          processing: true,
+          serverSide: true,
+          // ajax: 'https://codeigniter4-datatables.hermawan.dev/ajax-datatable/basic'
+          ajax: 'https://codeigniter4-datatables.hermawan.dev/ajax-datatable/basic'
+        });
+      });
+      </script>
 
     
