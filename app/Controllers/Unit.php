@@ -16,14 +16,13 @@ class Unit extends BaseController
 
     public function index()
     {
-        $data_table = DataTable::of($this->ModelUnits->getAll())->toJson();
         $data = [
             'page' => 'view_units',
             'title' => 'Master',
             'subtitle' => 'Units',
             'menu' => 'master',
             'submenu' => 'units',
-            'satuan' => $data_table
+            'satuan' => $this->ModelUnits->getAll()
         ];
         return view('view_template', $data);
     }

@@ -8,11 +8,18 @@ class ModelUnits extends Model
 {
     protected $table = 'tb_satuan';
 
+    // public function getAll() {
+    //     $builder = $this->db->table($this->table);
+    //     $query = $builder->select('id_satuan', 'nama_satuan');
+
+    //     return $query;
+    // }
+
     public function getAll() {
         $builder = $this->db->table($this->table);
-        $query = $builder->select('id_satuan', 'nama_satuan');
+        $query = $builder->get();
 
-        return $query;
+        return $query->getResultObject();
     }
 
     public function insertData($data) {

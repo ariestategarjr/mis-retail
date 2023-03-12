@@ -28,6 +28,7 @@
                     <?php foreach($satuan as $row) : ?>
                     <tr>
                       <td><?= $no++ ?></td>
+                      <td><?= $row->id_satuan ?></td>
                       <td><?= $row->nama_satuan ?></td>
                       <td>
                         <button class="btn btn-warning btn-sm btn-flat"><i class="fas fa-pencil-alt"></i></button>
@@ -81,15 +82,6 @@
       </div>
       <!-- /.modal -->
 
-      <script>
-      $(document).ready(function() {
-        $('#table').DataTable({
-          processing: true,
-          serverSide: true,
-          // ajax: 'https://codeigniter4-datatables.hermawan.dev/ajax-datatable/basic'
-          ajax: 'https://codeigniter4-datatables.hermawan.dev/ajax-datatable/basic'
-        });
-      });
-      </script>
+
 
     
