@@ -56,10 +56,10 @@ class CreateProductsTable extends Migration
             ]
 		]);
 
-		$this->forge->addKey('id_produk', true);
+		$this->forge->addKey('id_produk', TRUE);
 		$this->forge->addForeignKey('id_satuan_produk', 'tb_satuan', 'id_satuan', 'cascade');
 		$this->forge->addForeignKey('id_kategori_produk', 'tb_kategori', 'id_kategori', 'cascade');
-		$this->forge->createTable('tb_produk');
+		$this->forge->createTable('tb_produk', TRUE);
     }
 
     public function down()
