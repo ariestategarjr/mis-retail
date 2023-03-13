@@ -11,15 +11,15 @@ class Categories extends Seeder
         $categories_data = [
             [
                 'id_kategori' => 'KAT1',
-                'nama_kategori' => 'Makanan'
+                'nama_kategori' => 'makanan'
             ],
             [
                 'id_kategori' => 'KAT2',
-                'nama_kategori' => 'Minuman'
+                'nama_kategori' => 'minuman'
             ],
             [
                 'id_kategori' => 'KAT3',
-                'nama_kategori' => 'Jajanan'
+                'nama_kategori' => 'makanan khas'
             ]
         ];
 
