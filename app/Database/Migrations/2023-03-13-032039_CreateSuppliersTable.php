@@ -31,7 +31,7 @@ class CreateSuppliersTable extends Migration
             ],
             'updated_at' => [
                 'type' => 'DATETIME ON UPDATE CURRENT_TIMESTAMP',
-            ]
+			]
 		]);
 
 		$this->forge->addKey('id_pemasok', TRUE);

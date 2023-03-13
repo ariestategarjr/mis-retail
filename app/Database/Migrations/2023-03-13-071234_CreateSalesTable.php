@@ -51,12 +51,18 @@ class CreateSalesTable extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 11,
                 'unique' => true,
+			],
+			'created_at' => [
+                'type' => 'DATETIME DEFAULT CURRENT_TIMESTAMP',
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME ON UPDATE CURRENT_TIMESTAMP',
             ]
 		]);
 
-		$this->forge->addPrimaryKey('id_jual');
+		$this->forge->addPrimaryKey('id_jual', TRUE);
 		$this->forge->addForeignKey('id_pelanggan_jual', 'tb_pelanggan', 'id_pelanggan', 'cascade');
-		$this->forge->createTable('tb_penjualan');
+		$this->forge->createTable('tb_penjualan', TRUE);
     }
 
     public function down()

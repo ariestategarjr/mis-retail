@@ -8,7 +8,7 @@ class Sales extends Seeder
 {
     public function run()
     {
-        $customers_data = [
+        $sales_data = [
             [
                 'id_jual' => 'PNJ1',
                 'faktur_jual' => '101',
@@ -44,7 +44,7 @@ class Sales extends Seeder
             ]
         ];
 
-        foreach($customers_data as $data) {
+        foreach($sales_data as $data) {
             $this->db->table('tb_penjualan')->insert($data);
         }
     }
