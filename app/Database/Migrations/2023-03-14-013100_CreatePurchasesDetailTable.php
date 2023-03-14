@@ -43,11 +43,17 @@ class CreatePurchasesDetailTable extends Migration
 				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
-			]
+			],
+			'created_at' => [
+                'type' => 'DATETIME DEFAULT CURRENT_TIMESTAMP',
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME ON UPDATE CURRENT_TIMESTAMP',
+            ]
 		]);
 
 		$this->forge->addKey('id_dbeli', TRUE);
-		$this->forge->addForeignKey('faktur_dbeli', 'tb_pembelian', 'faktur_beli', 'cascade');
+		$this->forge->addForeignKey('id_dbeli', 'tb_pembelian', 'id_beli', 'cascade');
 		$this->forge->addForeignKey('kode_barcode_dbeli', 'tb_produk', 'kode_barcode', 'cascade');
 		$this->forge->createTable('tb_pembelian_detail', TRUE);
     }

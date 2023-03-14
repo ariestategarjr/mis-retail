@@ -43,11 +43,17 @@ class CreateSalesDetailTable extends Migration
 				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
-			]
+			],
+			'created_at' => [
+                'type' => 'DATETIME DEFAULT CURRENT_TIMESTAMP',
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME ON UPDATE CURRENT_TIMESTAMP',
+            ]
 		]);
 
 		$this->forge->addKey('id_djual', TRUE);
-		$this->forge->addForeignKey('faktur_djual', 'tb_penjualan', 'faktur_jual', 'cascade');
+		$this->forge->addForeignKey('id_djual', 'tb_penjualan', 'id_jual', 'cascade');
 		$this->forge->addForeignKey('kode_barcode_djual', 'tb_produk', 'kode_barcode', 'cascade');
 		$this->forge->createTable('tb_penjualan_detail', TRUE);
     }

@@ -43,7 +43,13 @@ class CreateSalesTempTable extends Migration
 				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
-			]
+			],
+			'created_at' => [
+                'type' => 'DATETIME DEFAULT CURRENT_TIMESTAMP',
+            ],
+            'updated_at' => [
+                'type' => 'DATETIME ON UPDATE CURRENT_TIMESTAMP',
+            ]
 		]);
 
 		$this->forge->addKey('id_djual', TRUE);
