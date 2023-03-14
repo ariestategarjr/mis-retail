@@ -12,7 +12,7 @@ class CreateSuppliersTable extends Migration
 			'id_pemasok' => [
 				'type' => 'VARCHAR',
 				'constraint' => 11,
-				'unique' => true,
+				'unique' => true
 			],
 			'nama_pemasok' => [
 				'type' => 'VARCHAR',

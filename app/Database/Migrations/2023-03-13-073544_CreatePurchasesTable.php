@@ -35,7 +35,7 @@ class CreatePurchasesTable extends Migration
 			'id_pemasok_beli' => [
 				'type' => 'VARCHAR',
 				'constraint' => 11,
-				'unique' => true,
+				'unique' => true
 			],
 			'diskon_persen_beli' => [
 				'type' => 'DOUBLE',
@@ -64,8 +64,8 @@ class CreatePurchasesTable extends Migration
                 'type' => 'DATETIME ON UPDATE CURRENT_TIMESTAMP',
             ]
 		]);
-
-		$this->forge->addPrimaryKey('id_beli', TRUE);
+ 
+		$this->forge->addKey('id_beli', TRUE);
 		$this->forge->addForeignKey('id_pemasok_beli', 'tb_pemasok', 'id_pemasok', 'cascade');
 		$this->forge->createTable('tb_pembelian', TRUE);
     }

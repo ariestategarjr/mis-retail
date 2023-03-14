@@ -12,7 +12,7 @@ class CreateCustomersTable extends Migration
 			'id_pelanggan' => [
 				'type' => 'VARCHAR',
 				'constraint' => 11,
-				'unique' => true,
+				'unique' => true
 			],
 			'nama_pelanggan' => [
 				'type' => 'VARCHAR',

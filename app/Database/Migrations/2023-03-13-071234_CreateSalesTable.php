@@ -30,7 +30,7 @@ class CreateSalesTable extends Migration
 			'id_pelanggan_jual' => [
 				'type' => 'VARCHAR',
 				'constraint' => 11,
-				'unique' => true,
+				'unique' => true
 			],
 			'total_jual' => [
 				'type' => 'DOUBLE',
@@ -59,8 +59,8 @@ class CreateSalesTable extends Migration
                 'type' => 'DATETIME ON UPDATE CURRENT_TIMESTAMP',
             ]
 		]);
-
-		$this->forge->addPrimaryKey('id_jual', TRUE);
+ 
+		$this->forge->addKey('id_jual', TRUE);
 		$this->forge->addForeignKey('id_pelanggan_jual', 'tb_pelanggan', 'id_pelanggan', 'cascade');
 		$this->forge->createTable('tb_penjualan', TRUE);
     }
