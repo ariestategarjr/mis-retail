@@ -8,10 +8,10 @@
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
-    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets') ?>/plugins/fontawesome-free/css/all.min.css">
 
-    <link rel="stylesheet" href="../../dist/css/adminlte.min.css?v=3.2.0">
-    <script nonce="00936e0e-c885-433a-ac45-43611b9a0814">
+    <link rel="stylesheet" href="<?= base_url('assets') ?>/dist/css/adminlte.min.css?v=3.2.0">
+    <script nonce="a594a33f-973c-4eda-b688-b3b8d14a06c0">
         (function(w, d) {
             ! function(bv, bw, bx, by) {
                 bv[bx] = bv[bx] || {};
@@ -87,7 +87,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="../../index3.html" class="nav-link">Home</a>
+                    <a href="<?= base_url('assets') ?>/index3.html" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="#" class="nav-link">Contact</a>
@@ -126,7 +126,7 @@
                         <a href="#" class="dropdown-item">
 
                             <div class="media">
-                                <img src="../../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                <img src="<?= base_url('assets') ?>/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         Brad Diesel
@@ -142,7 +142,7 @@
                         <a href="#" class="dropdown-item">
 
                             <div class="media">
-                                <img src="../../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <img src="<?= base_url('assets') ?>/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         John Pierce
@@ -158,7 +158,7 @@
                         <a href="#" class="dropdown-item">
 
                             <div class="media">
-                                <img src="../../dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <img src="<?= base_url('assets') ?>/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         Nora Silvester
@@ -217,8 +217,8 @@
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-            <a href="../../index3.html" class="brand-link">
-                <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <a href="<?= base_url('assets') ?>/index3.html" class="brand-link">
+                <img src="<?= base_url('assets') ?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">AdminLTE 3</span>
             </a>
 
@@ -226,7 +226,7 @@
 
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        <img src="<?= base_url('assets') ?>/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">Alexander Pierce</a>
@@ -257,19 +257,19 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="../../index.html" class="nav-link">
+                                    <a href="<?= base_url('assets') ?>/index.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Dashboard v1</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../../index2.html" class="nav-link">
+                                    <a href="<?= base_url('assets') ?>/index2.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Dashboard v2</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../../index3.html" class="nav-link">
+                                    <a href="<?= base_url('assets') ?>/index3.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Dashboard v3</p>
                                     </a>
@@ -751,7 +751,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../../starter.html" class="nav-link">
+                                    <a href="<?= base_url('assets') ?>/starter.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Starter Page</p>
                                     </a>
@@ -783,7 +783,7 @@
                         </li>
                         <li class="nav-header">MISCELLANEOUS</li>
                         <li class="nav-item">
-                            <a href="../../iframe.html" class="nav-link">
+                            <a href="<?= base_url('assets') ?>/iframe.html" class="nav-link">
                                 <i class="nav-icon fas fa-ellipsis-h"></i>
                                 <p>Tabbed IFrame Plugin</p>
                             </a>
@@ -945,13 +945,13 @@
     </div>
 
 
-    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/jquery/jquery.min.js"></script>
 
-    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <script src="../../dist/js/adminlte.min.js?v=3.2.0"></script>
+    <script src="<?= base_url('assets') ?>/dist/js/adminlte.min.js?v=3.2.0"></script>
 
-    <script src="../../dist/js/demo.js"></script>
+    <script src="<?= base_url('assets') ?>/dist/js/demo.js"></script>
 </body>
 
 </html>
