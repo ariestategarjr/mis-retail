@@ -1,5 +1,9 @@
 <?= $this->extend('layout/template') ?>
 
 <?= $this->section('content') ?>
-<h1>Ini adalah halaman Home</h1>
+<div class="alert alert-info alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h5><i class="icon fas fa-info"></i> Selamat Datang!</h5>
+    Ini adalah Aplikasi Point Of Sales.
+</div>
 <?= $this->endSection() ?>
