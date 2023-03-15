@@ -16,18 +16,12 @@ class CreateCategoriesTable extends Migration
             ],
             'nama_kategori' => [
                 'type' => 'VARCHAR',
-                'constraint' => 100 
-            ],
-            'created_at' => [
-                'type' => 'DATETIME DEFAULT CURRENT_TIMESTAMP'
-            ],
-            'updated_at' => [
-                'type' => 'DATETIME ON UPDATE CURRENT_TIMESTAMP'
+                'constraint' => 100
             ]
         ]);
 
-		$this->forge->addKey('id_kategori', TRUE);
-		$this->forge->createTable('tb_kategori', TRUE);
+        $this->forge->addKey('id_kategori', TRUE);
+        $this->forge->createTable('tb_kategori', TRUE);
     }
 
     public function down()
