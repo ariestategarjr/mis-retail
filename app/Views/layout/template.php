@@ -6,10 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AdminLTE 3 | Blank Page</title>
 
+    <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="<?= base_url('assets') ?>/plugins/fontawesome-free/css/all.min.css">
 
+    <!-- DataTables -->
+    <link rel="stylesheet" href="<?= base_url('assets') ?>/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets') ?>/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url('assets') ?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+    <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url('assets') ?>/dist/css/adminlte.min.css?v=3.2.0">
     <script nonce="a594a33f-973c-4eda-b688-b3b8d14a06c0">
         (function(w, d) {
@@ -80,9 +88,57 @@
 
     <div class="wrapper">
 
-        <?= $this->include('layout/navbar') ?>
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
 
-        <?= $this->include('layout/sidebar') ?>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+
+            <a href="<?= site_url('/') ?>" class="brand-link">
+                <img src="<?= base_url('assets') ?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">POS</span>
+            </a>
+
+            <div class="sidebar">
+
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="<?= base_url('assets') ?>/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="<?= site_url('/') ?>" class="d-block">Alexander Pierce</a>
+                    </div>
+                </div>
+
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                        <?= $this->renderSection('menu') ?>
+
+                    </ul>
+                </nav>
+
+            </div>
+
+        </aside>
 
         <div class="content-wrapper">
             <section class="content-header">
@@ -105,18 +161,47 @@
             </section>
         </div>
 
-        <?= $this->include('layout/footer') ?>
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; 2023 <a href="https://adminlte.io">Point Of Sales</a>.</strong> All rights reserved.
+        </footer>
 
     </div>
 
-
+    <!-- jQuery -->
     <script src="<?= base_url('assets') ?>/plugins/jquery/jquery.min.js"></script>
 
+    <!-- Bootstrap 4 -->
     <script src="<?= base_url('assets') ?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+    <!-- DataTables  & Plugins -->
+    <script src="<?= base_url('assets') ?>/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/jszip/jszip.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="<?= base_url('assets') ?>/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- AdminLTE App -->
     <script src="<?= base_url('assets') ?>/dist/js/adminlte.min.js?v=3.2.0"></script>
 
+    <!-- AdminLTE for demo purposes -->
     <script src="<?= base_url('assets') ?>/dist/js/demo.js"></script>
+
+    <!-- Page specific script -->
+    <script>
+        $(document).ready(function() {
+            $('#table').DataTable();
+        });
+    </script>
 </body>
 
 </html>

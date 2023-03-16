@@ -1,4 +1,4 @@
-<?= $this->extend('layout/template') ?>
+<?= $this->extend('layout/menu') ?>
 
 <?= $this->section('content') ?>
 <div class="alert alert-info alert-dismissible">

@@ -1,3 +1,6 @@
+<?= $this->extend('layout/template') ?>
+
+<?= $this->section('menu') ?>
 <li class="nav-item">
     <a href="<?= site_url('/') ?>" class="nav-link">
         <i class="nav-icon fa fa-tachometer-alt"></i>
@@ -15,3 +18,4 @@
         </p>
     </a>
 </li>
+<?= $this->endSection() ?>

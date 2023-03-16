@@ -9,13 +9,15 @@ class Category extends BaseController
 {
     public function __construct()
     {
-        $this->categories = new CategoriesModel();
+        $this->categoriesModel = new CategoriesModel();
     }
 
     public function index()
     {
         $data = [
-            'categories' => $this->categories->findAll()
+            // 'categories' => $this->categoriesModel->findAll()
+            'categories' => $this->categoriesModel->paginate(2),
+            'pager' => $this->categoriesModel->pager
         ];
 
         return view('pages/categories', $data);

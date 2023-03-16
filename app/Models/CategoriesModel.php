@@ -8,7 +8,7 @@ class CategoriesModel extends Model
 {
     // protected $DBGroup          = 'default';
     protected $table            = 'tb_kategori';
-    protected $primaryKey       = 'id_kategori';
+    // protected $primaryKey       = 'id_kategori';
     // protected $useAutoIncrement = true;
     // protected $insertID         = 0;
     protected $returnType       = 'object';
@@ -17,11 +17,11 @@ class CategoriesModel extends Model
     protected $allowedFields    = ['id_kategori', 'nama_kategori'];
 
     // Dates
-    protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    // protected $useTimestamps = false;
+    // protected $dateFormat    = 'datetime';
+    // protected $createdField  = 'created_at';
+    // protected $updatedField  = 'updated_at';
+    // protected $deletedField  = 'deleted_at';
 
     // Validation
     // protected $validationRules      = [];

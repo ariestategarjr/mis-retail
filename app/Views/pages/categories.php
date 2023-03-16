@@ -1,4 +1,4 @@
-<?= $this->extend('layout/template') ?>
+<?= $this->extend('layout/menu') ?>
 
 <?= $this->section('content') ?>
 <div class="card">
@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="card-body">
-        <table class="table table-hover text-nowrap">
+        <table class="table">
             <thead>
                 <tr>
                     <th>No</th>
@@ -33,13 +33,14 @@
                         <td><?= $row->id_kategori ?></td>
                         <td><?= $row->nama_kategori ?></td>
                         <td>
-                            <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            <!-- <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button> -->
+                            <!-- <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button> -->
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <?= $pager->links() ?>
     </div>
     <!-- /.card-body -->
 </div>
