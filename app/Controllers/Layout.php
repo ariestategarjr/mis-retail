@@ -8,6 +8,6 @@ class Layout extends BaseController
 {
     public function index()
     {
-        return view('layout/main');
+        return view('layout/home');
     }
 }
