@@ -14,15 +14,15 @@ class Supplier extends Migration
 				'constraint' => 11,
 			],
 			'sup_nama' => [
-				'type' => 'varchar',
-				'constraint' => '100',
-				'null' => false
+				'type' => 'VARCHAR',
+				'constraint' => 100,
 			],
 			'sup_alamat' => [
-				'type' => 'text'
+				'type' => 'TEXT'
 			],
 			'sup_telp' => [
-				'type' => 'char', 'constraint' => '20'
+				'type' => 'CHAR',
+				'constraint' => 20
 			]
 		]);
 

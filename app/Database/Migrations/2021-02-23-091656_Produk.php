@@ -10,33 +10,33 @@ class Produk extends Migration
 	{
 		$this->forge->addField([
 			'kodebarcode'          => [
-				'type'           => 'char',
-				'constraint'     => '50',
+				'type'           => 'CHAR',
+				'constraint'     => 50,
 			],
 			'namaproduk'       => [
 				'type'       => 'VARCHAR',
-				'constraint' => '100',
+				'constraint' => 100,
 			],
 			'produk_satid' => [
-				'type' => 'int',
-				'constraint' => '11'
+				'type' => 'VARCHAR',
+				'constraint' => 11
 			],
 			'produk_katid' => [
-				'type' => 'int',
-				'constraint' => '11'
+				'type' => 'VARCHAR',
+				'constraint' => 11
 			],
 			'stok_tersedia' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'harga_beli' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'harga_jual' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			]

@@ -10,35 +10,33 @@ class Penjualan extends Migration
 	{
 		$this->forge->addField([
 			'jual_faktur' => [
-				'type'		=> 'char',
-				'constraint' => '20',
-				'null'		=> false
+				'type'		=> 'CHAR',
+				'constraint' => 20,
 			],
 			'jual_tgl' => [
-				'type'		=> 'date',
-				'null'		=> false
+				'type'		=> 'DATE',
 			],
 			'jual_pelkode' => [
-				'type' => 'int',
-				'constraint' => '11',
+				'type' => 'VARCHAR',
+				'constraint' => 11,
 			],
 			'jual_dispersen' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'jual_disuang' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'jual_totalkotor' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'jual_totalbersih' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			]

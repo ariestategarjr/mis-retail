@@ -14,15 +14,15 @@ class Pelanggan extends Migration
 				'constraint' => 11,
 			],
 			'pel_nama' => [
-				'type' => 'varchar',
-				'constraint' => '100',
-				'null' => false
+				'type' => 'VARCHAR',
+				'constraint' => 100,
 			],
 			'pel_alamat' => [
-				'type' => 'text'
+				'type' => 'TEXT'
 			],
 			'pel_telp' => [
-				'type' => 'char', 'constraint' => '20'
+				'type' => 'CHAR',
+				'constraint' => 20
 			]
 		]);
 

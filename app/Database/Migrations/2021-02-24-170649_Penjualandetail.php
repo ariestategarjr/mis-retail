@@ -14,30 +14,30 @@ class Penjualandetail extends Migration
 				'constraint' => 11,
 			],
 			'detjual_faktur' => [
-				'type'		=> 'char',
-				'constraint' => '20',
+				'type'		=> 'CHAR',
+				'constraint' => 20,
 			],
 			'detjual_kodebarcode' => [
-				'type'		=> 'char',
-				'constraint' => '50',
+				'type'		=> 'CHAR',
+				'constraint' => 50,
 			],
 			'detjual_hargabeli' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'detjual_hargajual' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'detjual_jml' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'detjual_subtotal' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			]

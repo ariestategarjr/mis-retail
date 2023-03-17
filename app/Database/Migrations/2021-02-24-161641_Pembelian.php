@@ -10,40 +10,38 @@ class Pembelian extends Migration
 	{
 		$this->forge->addField([
 			'beli_faktur' => [
-				'type'		=> 'char',
-				'constraint' => '20',
-				'null'		=> false
+				'type'		=> 'CHAR',
+				'constraint' => 20,
 			],
 			'beli_tgl' => [
-				'type'		=> 'date',
-				'null'		=> false
+				'type'		=> 'DATE',
 			],
 			'beli_jenisbayar' => [
-				'type' => 'enum',
+				'type' => 'ENUM',
 				'constraint' => ['T', 'K'],
 				'default' => 'T'
 			],
 			'beli_supkode' => [
-				'type' => 'int',
-				'constraint' => '11',
+				'type' => 'VARCHAR',
+				'constraint' => 11,
 			],
 			'beli_dispersen' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'beli_disuang' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'beli_totalkotor' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'beli_totalbersih' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],

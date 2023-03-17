@@ -14,30 +14,30 @@ class Pembeliandetail extends Migration
 				'constraint' => 11,
 			],
 			'detbeli_faktur' => [
-				'type'		=> 'char',
-				'constraint' => '20',
+				'type'		=> 'CHAR',
+				'constraint' => 20,
 			],
 			'detbeli_kodebarcode' => [
-				'type'		=> 'char',
-				'constraint' => '50',
+				'type'		=> 'CHAR',
+				'constraint' => 50,
 			],
 			'detbeli_hargabeli' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'detbeli_hargajual' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'detbeli_jml' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
 			'detbeli_subtotal' => [
-				'type' => 'double',
+				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
 			]

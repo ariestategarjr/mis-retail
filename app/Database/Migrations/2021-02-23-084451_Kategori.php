@@ -15,7 +15,7 @@ class Kategori extends Migration
 			],
 			'katnama'       => [
 				'type'       => 'VARCHAR',
-				'constraint' => '100',
+				'constraint' => 100,
 			]
 		]);
 		$this->forge->addKey('katid', true);

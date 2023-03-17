@@ -15,7 +15,7 @@ class Satuan extends Migration
 			],
 			'satnama'       => [
 				'type'       => 'VARCHAR',
-				'constraint' => '100',
+				'constraint' => 100,
 			]
 		]);
 		$this->forge->addKey('satid', true);
