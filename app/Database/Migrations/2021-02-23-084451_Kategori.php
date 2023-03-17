@@ -10,9 +10,8 @@ class Kategori extends Migration
 	{
 		$this->forge->addField([
 			'katid'          => [
-				'type'           => 'INT',
+				'type'           => 'VARCHAR',
 				'constraint'     => 11,
-				'auto_increment' => true,
 			],
 			'katnama'       => [
 				'type'       => 'VARCHAR',

@@ -10,9 +10,8 @@ class Pembeliandetail extends Migration
 	{
 		$this->forge->addField([
 			'detbeli_id' => [
-				'type'		=> 'bigint',
-				'constraint' => '11',
-				'auto_increment' => true,
+				'type'		=> 'VARCHAR',
+				'constraint' => 11,
 			],
 			'detbeli_faktur' => [
 				'type'		=> 'char',

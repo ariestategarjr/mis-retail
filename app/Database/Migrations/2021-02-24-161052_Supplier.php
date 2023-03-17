@@ -10,9 +10,8 @@ class Supplier extends Migration
 	{
 		$this->forge->addField([
 			'sup_kode' => [
-				'type' => 'int',
-				'constraint' => '11',
-				'auto_increment' => true,
+				'type' => 'VARCHAR',
+				'constraint' => 11,
 			],
 			'sup_nama' => [
 				'type' => 'varchar',

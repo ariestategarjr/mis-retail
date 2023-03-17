@@ -10,9 +10,8 @@ class Temppenjualan extends Migration
 	{
 		$this->forge->addField([
 			'detjual_id' => [
-				'type'		=> 'bigint',
-				'constraint' => '11',
-				'auto_increment' => true,
+				'type'		=> 'VARCHAR',
+				'constraint' => 11,
 			],
 			'detjual_faktur' => [
 				'type'		=> 'char',

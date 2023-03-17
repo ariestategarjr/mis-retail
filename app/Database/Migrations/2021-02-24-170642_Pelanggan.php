@@ -10,9 +10,8 @@ class Pelanggan extends Migration
 	{
 		$this->forge->addField([
 			'pel_kode' => [
-				'type' => 'int',
-				'constraint' => '11',
-				'auto_increment' => true,
+				'type' => 'VARCHAR',
+				'constraint' => 11,
 			],
 			'pel_nama' => [
 				'type' => 'varchar',

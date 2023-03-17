@@ -10,9 +10,8 @@ class Satuan extends Migration
 	{
 		$this->forge->addField([
 			'satid'          => [
-				'type'           => 'INT',
+				'type'           => 'VARCHAR',
 				'constraint'     => 11,
-				'auto_increment' => true,
 			],
 			'satnama'       => [
 				'type'       => 'VARCHAR',
