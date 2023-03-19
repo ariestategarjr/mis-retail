@@ -1,3 +1,4 @@
+<?= $this->extend('layout/main'); ?>
 <?= $this->extend('layout/menu'); ?>
 
 <?= $this->section('title'); ?>
@@ -13,7 +14,7 @@
         </button>
     </div>
     <div class="card-body">
-        <table class="table table-sm table-striped">
+        <table class="table table-sm table-striped" id="data-table">
             <thead>
                 <tr>
                     <th>No</th>
@@ -23,11 +24,14 @@
             </thead>
             <tbody>
                 <?php $no = 1; ?>
-                <?php foreach ($categories as $category) : ?>
+                <?php foreach ($categories as $row) : ?>
                     <tr>
                         <td><?= $no++; ?></td>
-                        <td><?= $category['katnama']; ?></td>
-                        <td>#</td>
+                        <td><?= $row['katnama']; ?></td>
+                        <td>
+                            <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
