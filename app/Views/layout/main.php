@@ -16,6 +16,13 @@
     <link rel="stylesheet" href="<?= base_url('assets') ?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url('assets') ?>/dist/css/adminlte.min.css">
+
+    <!-- jQuery -->
+    <script src="<?= base_url('assets') ?>/plugins/jquery/jquery.min.js"></script>
+    <!-- Sweet Alert 2 Script -->
+    <!-- Sweet Alert 2 Style -->
+    <link rel="stylesheet" href="<?= base_url('assets') ?>/plugins/sweetalert2.min.css">
+    <script src="<?= base_url('assets') ?>/plugins/sweetalert2.all.min.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -123,8 +130,6 @@
     </div>
     <!-- ./wrapper -->
 
-    <!-- jQuery -->
-    <script src="<?= base_url('assets') ?>/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="<?= base_url('assets') ?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- DataTables  & Plugins -->
@@ -144,7 +149,7 @@
     <script src="<?= base_url('assets') ?>/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="<?= base_url('assets') ?>/dist/js/demo.js"></script>
-    <!-- Custom Jquery -->
+
     <script>
         $(document).ready(function() {
             $('#data-table').DataTable();
