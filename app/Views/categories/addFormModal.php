@@ -54,10 +54,13 @@
                 if (response.success) {
                     Swal.fire(
                         'Good job!',
-                        sweetalert2.min,
+                        response.success,
                         'success'
-                    )
-                    window.location.reload();
+                    ).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                    });
                 }
             },
             error: function(xhr, thrownError) {

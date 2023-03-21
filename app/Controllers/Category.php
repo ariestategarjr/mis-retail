@@ -36,17 +36,39 @@ class Category extends BaseController
 
     public function addCategory()
     {
-        $id = $this->request->getVar('id-category');
-        $name = $this->request->getVar('name-category');
+        if ($this->request->isAJAX()) {
+            $id = $this->request->getVar('id-category');
+            $name = $this->request->getVar('name-category');
 
-        $this->categories->insert([
-            'katid' => $id,
-            'katnama' => $name
-        ]);
+            $this->categories->insert([
+                'katid' => $id,
+                'katnama' => $name
+            ]);
 
-        $msg = [
-            'success' => 'category success add'
-        ];
-        echo json_encode($msg);
+            $msg = [
+                'success' => 'category success add'
+            ];
+            echo json_encode($msg);
+        } else {
+            exit('Maaf, tambah kategori gagal.');
+        }
+    }
+
+    public function deleteCategory()
+    {
+        if ($this->request->isAJAX()) {
+            $id = $this->request->getVar('id-category');
+
+            $this->categories->delete([
+                'katid' => $id
+            ]);
+
+            $msg = [
+                'success' => 'category success delete'
+            ];
+            echo json_encode($msg);
+        } else {
+            exit('Maaf, hapus kategori gagal.');
+        }
     }
 }

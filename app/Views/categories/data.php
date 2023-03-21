@@ -9,7 +9,7 @@
 <?= $this->section('content'); ?>
 <div class="card">
     <div class="card-header">
-        <button type="button" class="btn btn-primary addButton">
+        <button type="button" class="btn btn-primary" id="addButton">
             <i class="fas fa-plus"></i>Tambah Data
         </button>
     </div>
@@ -31,8 +31,14 @@
                         <td><?= $row['katid']; ?></td>
                         <td><?= $row['katnama']; ?></td>
                         <td>
-                            <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="
+                                deleteData('<?= $row['katid']; ?>', 
+                                           '<?= $row['katnama']; ?>')">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -44,8 +50,40 @@
 <div class="modal-container" style="display: none;"></div>
 
 <script>
+    function deleteData(id, nama) {
+        Swal.fire({
+            title: 'Hapus Kategori',
+            html: `Apakah Anda yakin menghapus <strong>${nama}</strong>?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Tunda'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "post",
+                    url: "<?= site_url('category/deleteCategory') ?>",
+                    data: {
+                        'id-category': id
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.reload();
+                        }
+                    },
+                    error: function(xhr, thrownError) {
+                        alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                    }
+                });
+            }
+        })
+    }
+
     $(document).ready(function() {
-        $('.addButton').click(function(e) {
+        $('#addButton').click(function(e) {
             e.preventDefault();
 
             $.ajax({
