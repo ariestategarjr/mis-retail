@@ -15,7 +15,7 @@ class Category extends BaseController
     public function index()
     {
         $data = [
-            'categories' => $this->categories->findAll()
+            'categories' => $this->categories->orderby('katnama', 'asc')->findAll()
         ];
 
         return view('categories/data', $data);

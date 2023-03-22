@@ -57,7 +57,7 @@
             url: "<?= site_url('category/addFormModal') ?>",
             dataType: "json",
             success: function(response) {
-                const uniqueId = 'KAT' + Math.random().toString(8).slice(16);
+                const uniqueId = 'KAT' + Math.random().toString(8).substring(2, 5);
 
                 if (response.data) {
                     $('.modal-container').html(response.data).show();

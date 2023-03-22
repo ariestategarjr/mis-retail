@@ -18,4 +18,12 @@
         </p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="<?= site_url('unit/index') ?>" class="nav-link">
+        <i class="nav-icon fas fa-list"></i>
+        <p>
+            Satuan
+        </p>
+    </a>
+</li>
 <?= $this->endSection(); ?>

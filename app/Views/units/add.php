@@ -1,26 +1,26 @@
 <!-- Modal -->
-<div class="modal fade" id="addModalCategory" tabindex="-1" aria-labelledby="addModalCategoryLabel" aria-hidden="true">
+<div class="modal fade" id="addModalUnit" tabindex="-1" aria-labelledby="addModalUnitLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addModalCategoryLabel">Modal title</h5>
+                <h5 class="modal-title" id="addModalUnitLabel">Modal title</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <?php
-            $action = 'category/addCategory';
-            $attributes = array('id' => 'addFormCategory', 'autocomplete' => 'on', 'required' => 'required');
+            $action = 'unit/addUnit';
+            $attributes = array('id' => 'addFormUnit', 'autocomplete' => 'on', 'required' => 'required');
             ?>
             <?= form_open($action, $attributes) ?>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="idCategory">Id Kategori</label>
-                    <input type="text" class="form-control form-control-sm" id="idCategory" name="id-category">
+                    <label for="idUnit">Id Unit</label>
+                    <input type="text" class="form-control form-control-sm" id="idUnit" name="idUnit">
                 </div>
                 <div class="form-group">
-                    <label for="nameCategory">Nama Kategori</label>
-                    <input type="text" class="form-control form-control-sm" id="nameCategory" name="name-category">
+                    <label for="nameUnit">Nama Unit</label>
+                    <input type="text" class="form-control form-control-sm" id="nameUnit" name="nameUnit">
                 </div>
             </div>
             <div class="modal-footer">
@@ -33,7 +33,7 @@
 </div>
 
 <script>
-    $('#addFormCategory').submit(function(e) {
+    $('#addFormUnit').submit(function(e) {
         e.preventDefault();
 
         $.ajax({
