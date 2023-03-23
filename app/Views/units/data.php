@@ -32,7 +32,7 @@
                         <td><?= $row['satnama']; ?></td>
                         <td>
                             <button class="btn btn-warning btn-sm" onclick="
-                                editFormModal('<?= $row['satid']; ?>', 
+                                editModalForm('<?= $row['satid']; ?>', 
                                          '<?= $row['satnama']; ?>')">
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -72,6 +72,49 @@
                 alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
             }
         });
+    }
+
+    function editModalForm(id, name) {
+        alert('edit');
+    }
+
+    function deleteAlert(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "post",
+                    url: "<?= site_url('unit/deleteUnit') ?>",
+                    data: {
+                        'idUnit': id
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
+                        }
+                    },
+                    error: function(xhr, thrownError) {
+                        alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                    }
+                });
+            }
+        })
     }
 </script>
 <?= $this->endSection(); ?>

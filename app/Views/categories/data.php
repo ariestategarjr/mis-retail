@@ -84,7 +84,6 @@
             },
             dataType: "json",
             success: function(response) {
-                console.log(response.data);
                 if (response.data) {
                     $('.modal-container').html(response.data).show();
                     $('#editModalCategory').on('shown.bs.modal', function(event) {
@@ -120,7 +119,15 @@
                     dataType: "json",
                     success: function(response) {
                         if (response.success) {
-                            window.location.reload();
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            });
                         }
                     },
                     error: function(xhr, thrownError) {
@@ -130,14 +137,6 @@
             }
         })
     }
-
-    $(document).ready(function() {
-        $('#addButton').click(function(e) {
-            e.preventDefault();
-
-
-        });
-    });
 </script>
 
 <?= $this->endSection(); ?>

@@ -40,10 +40,10 @@ class Unit extends BaseController
             $id = $this->request->getVar('idUnit');
             $name = $this->request->getVar('nameUnit');
 
-            $data = array(
+            $data = [
                 'satid' => $id,
                 'satnama' => $name
-            );
+            ];
 
             $this->units->insert($data);
 
@@ -53,6 +53,26 @@ class Unit extends BaseController
             echo json_encode($msg);
         } else {
             exit('Maaf, tambah unit gagal.');
+        }
+    }
+
+    public function deleteUnit()
+    {
+        if ($this->request->isAJAX()) {
+            $id = $this->request->getVar('idUnit');
+
+            $data = [
+                'satid' => $id
+            ];
+
+            $this->units->delete($data);
+
+            $msg = [
+                'success' => 'satuan berhasil dihapus'
+            ];
+            echo json_encode($msg);
+        } else {
+            exit('Maaf, hapus unit gagal.');
         }
     }
 }
