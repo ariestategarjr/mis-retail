@@ -9,7 +9,7 @@
 <?= $this->section('content'); ?>
 <div class="card">
     <div class="card-header">
-        <button type="button" class="btn btn-primary" onclick="addFormModal()">
+        <button type="button" class="btn btn-primary" onclick="addModalForm()">
             <i class="fas fa-plus"></i>Tambah Data
         </button>
     </div>
@@ -32,7 +32,7 @@
                         <td><?= $row['katnama']; ?></td>
                         <td>
                             <button class="btn btn-warning btn-sm" onclick="
-                                editFormModal('<?= $row['katid']; ?>', 
+                                editModalForm('<?= $row['katid']; ?>', 
                                          '<?= $row['katnama']; ?>')">
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -52,9 +52,9 @@
 <div class="modal-container" style="display: none;"></div>
 
 <script>
-    function addFormModal() {
+    function addModalForm() {
         $.ajax({
-            url: "<?= site_url('category/addFormModal') ?>",
+            url: "<?= site_url('category/addModalCategory') ?>",
             dataType: "json",
             success: function(response) {
                 const uniqueId = 'KAT' + Math.random().toString(8).substring(2, 5);
@@ -74,13 +74,13 @@
         });
     }
 
-    function editFormModal(id, name) {
+    function editModalForm(id, name) {
         $.ajax({
             type: "post",
-            url: "<?= site_url('category/editFormModal') ?>",
+            url: "<?= site_url('category/editModalCategory') ?>",
             data: {
-                'id-category': id,
-                'name-category': name
+                'idCategory': id,
+                'nameCategory': name
             },
             dataType: "json",
             success: function(response) {
@@ -100,8 +100,8 @@
 
     function deleteAlert(id, name) {
         Swal.fire({
-            title: 'Hapus Kategori',
-            html: `Apakah Anda yakin menghapus <strong>${name}</strong>?`,
+            title: 'Apakah Anda yakin ingin',
+            html: `<h4 style="display: inline;">menghapus <strong style="color: #d33;">${name}</strong> ?</h4>`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -114,14 +114,14 @@
                     type: "post",
                     url: "<?= site_url('category/deleteCategory') ?>",
                     data: {
-                        'id-category': id
+                        'idCategory': id
                     },
                     dataType: "json",
                     success: function(response) {
                         if (response.success) {
                             Swal.fire(
-                                'Deleted!',
-                                'Your file has been deleted.',
+                                'Terhapus!',
+                                response.success,
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {

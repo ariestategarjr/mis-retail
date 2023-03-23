@@ -21,32 +21,32 @@ class Category extends BaseController
         return view('categories/data', $data);
     }
 
-    public function addFormModal()
+    public function addModalCategory()
     {
         if ($this->request->isAJAX()) {
             $msg = [
-                'data' => view('categories/addFormModal')
+                'data' => view('categories/add')
             ];
 
             echo json_encode($msg);
         } else {
-            exit('Maaf, halaman tidak bisa ditampilkan.');
+            exit('Maaf, halaman tidak dapat ditampilkan.');
         }
     }
 
-    public function editFormModal()
+    public function editModalCategory()
     {
         if ($this->request->isAJAX()) {
-            $id = $this->request->getVar('id-category');
-            $name = $this->request->getVar('name-category');
+            $id = $this->request->getVar('idCategory');
+            $name = $this->request->getVar('nameCategory');
 
             $data = array(
-                'id_category' => $id,
-                'name_category' => $name
+                'idCategory' => $id,
+                'nameCategory' => $name
             );
 
             $msg = [
-                'data' => view('categories/editFormModal', $data)
+                'data' => view('categories/edit', $data)
             ];
 
             echo json_encode($msg);
@@ -56,8 +56,8 @@ class Category extends BaseController
     public function addCategory()
     {
         if ($this->request->isAJAX()) {
-            $id = $this->request->getVar('id-category');
-            $name = $this->request->getVar('name-category');
+            $id = $this->request->getVar('idCategory');
+            $name = $this->request->getVar('nameCategory');
 
             $data = array(
                 'katid' => $id,
@@ -67,7 +67,7 @@ class Category extends BaseController
             $this->categories->insert($data);
 
             $msg = [
-                'success' => 'category success add'
+                'success' => 'Kategori berhasil ditambahkan.'
             ];
             echo json_encode($msg);
         } else {
@@ -78,8 +78,8 @@ class Category extends BaseController
     public function editCategory()
     {
         if ($this->request->isAJAX()) {
-            $id = $this->request->getVar('id-category');
-            $name = $this->request->getVar('name-category');
+            $id = $this->request->getVar('idCategory');
+            $name = $this->request->getVar('nameCategory');
 
             $data = array(
                 'katnama' => $name
@@ -88,7 +88,7 @@ class Category extends BaseController
             $this->categories->update($id, $data);
 
             $msg = [
-                'success' => 'category success edit'
+                'success' => 'Kategori berhasil diedit.'
             ];
             echo json_encode($msg);
         } else {
@@ -99,14 +99,14 @@ class Category extends BaseController
     public function deleteCategory()
     {
         if ($this->request->isAJAX()) {
-            $id = $this->request->getVar('id-category');
+            $id = $this->request->getVar('idCategory');
 
             $this->categories->delete([
                 'katid' => $id
             ]);
 
             $msg = [
-                'success' => 'category success delete'
+                'success' => 'Kategori berhasil dihapus.'
             ];
             echo json_encode($msg);
         } else {
