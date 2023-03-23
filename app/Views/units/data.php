@@ -75,18 +75,39 @@
     }
 
     function editModalForm(id, name) {
-        alert('edit');
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('unit/editModalUnit') ?>",
+            data: {
+                'idUnit': id,
+                'namaUnit': name
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.data) {
+                    $('.modal-container').html(response.data).show();
+                    $('#editModalUnit').on('shown.bs.modal', function(event) {
+                        $('#nameUnit').focus();
+                    });
+                    $('#editModalUnit').modal('show');
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+            }
+        });
     }
 
-    function deleteAlert(id) {
+    function deleteAlert(id, name) {
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah Anda yakin ingin',
+            html: `<h4 style="display: inline;">menghapus <strong style="color: #d33;">${name}</strong> ?</h4>`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Tunda'
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -99,8 +120,8 @@
                     success: function(response) {
                         if (response.success) {
                             Swal.fire(
-                                'Deleted!',
-                                'Your file has been deleted.',
+                                'Terhapus!',
+                                response.success,
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {

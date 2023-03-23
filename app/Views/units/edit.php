@@ -1,26 +1,26 @@
 <!-- Modal -->
-<div class="modal fade" id="addModalUnit" tabindex="-1" aria-labelledby="addModalUnitLabel" aria-hidden="true">
+<div class="modal fade" id="editModalUnit" tabindex="-1" aria-labelledby="editModalUnitLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addModalUnitLabel">Form Tambah Satuan</h5>
+                <h5 class="modal-title" id="editModalUnitLabel">Form Edit Satuan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <?php
-            $action = 'unit/addUnit';
-            $attributes = array('id' => 'addFormUnit', 'autocomplete' => 'on', 'required' => 'required');
+            $action = 'unit/editUnit';
+            $attributes = array('id' => 'editFormUnit', 'autocomplete' => 'on', 'required' => 'required');
             ?>
             <?= form_open($action, $attributes) ?>
             <div class="modal-body">
                 <div class="form-group">
                     <label for="idUnit">Id Unit</label>
-                    <input type="text" class="form-control form-control-sm" id="idUnit" name="idUnit">
+                    <input type="text" class="form-control form-control-sm" id="idUnit" name="idUnit" value="<?= $idUnit ?>">
                 </div>
                 <div class="form-group">
                     <label for="nameUnit">Nama Unit</label>
-                    <input type="text" class="form-control form-control-sm" id="nameUnit" name="nameUnit">
+                    <input type="text" class="form-control form-control-sm" id="nameUnit" name="nameUnit" value="<?= $nameUnit ?>">
                 </div>
             </div>
             <div class="modal-footer">
@@ -33,7 +33,7 @@
 </div>
 
 <script>
-    $('#addFormUnit').submit(function(e) {
+    $('#editFormUnit').submit(function(e) {
         e.preventDefault();
 
         $.ajax({
