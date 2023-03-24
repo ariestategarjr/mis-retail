@@ -26,4 +26,12 @@
         </p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="<?= site_url('product/index') ?>" class="nav-link">
+        <i class="nav-icon fas fa-box"></i>
+        <p>
+            Produk
+        </p>
+    </a>
+</li>
 <?= $this->endSection(); ?>
