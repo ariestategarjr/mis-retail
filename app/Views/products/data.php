@@ -25,11 +25,26 @@
                     <th>Stok</th>
                     <th>Harga Beli</th>
                     <th>Harga Jual</th>
+                    <th>Gambar</th>
                     <th>#</th>
                 </tr>
             </thead>
             <tbody>
-
+                <?php $no = 1; ?>
+                <?php foreach ($products as $row) : ?>
+                    <tr>
+                        <td><?= $no++; ?></td>
+                        <td><?= $row['kodebarcode']; ?></td>
+                        <td><?= $row['namaproduk']; ?></td>
+                        <td><?= $row['satnama']; ?></td>
+                        <td><?= $row['katnama']; ?></td>
+                        <td><?= $row['stok_tersedia'] ?></td>
+                        <td><?= $row['harga_beli']; ?></td>
+                        <td><?= $row['harga_jual']; ?></td>
+                        <td><?= $row['gambar'] ?></td>
+                        <td>Button</td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>
