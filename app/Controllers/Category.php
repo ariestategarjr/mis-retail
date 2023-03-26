@@ -24,8 +24,11 @@ class Category extends BaseController
     public function addModalCategory()
     {
         if ($this->request->isAJAX()) {
+            $data = [
+                'reload' => $this->request->getPost('reload')
+            ];
             $msg = [
-                'data' => view('categories/add')
+                'data' => view('categories/add', $data)
             ];
 
             echo json_encode($msg);

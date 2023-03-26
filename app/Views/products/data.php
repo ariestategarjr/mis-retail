@@ -9,7 +9,7 @@
 <?= $this->section('content'); ?>
 <div class="card">
     <div class="card-header">
-        <button type="button" class="btn btn-primary" onclick="window.location='<?= site_url('product/addFormPage') ?>'">
+        <button type="button" class="btn btn-primary" onclick="window.location='<?= site_url('product/addFormProduct') ?>'">
             <i class="fas fa-plus"></i>Tambah Data
         </button>
     </div>

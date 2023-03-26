@@ -10,13 +10,13 @@
             </div>
             <?php
             $action = 'unit/addUnit';
-            $attributes = array('id' => 'addFormUnit', 'autocomplete' => 'on', 'required' => 'required');
+            $attributes = ['id' => 'addFormUnit'];
             ?>
             <?= form_open($action, $attributes) ?>
             <div class="modal-body">
                 <div class="form-group">
                     <label for="idUnit">Id Unit</label>
-                    <input type="text" class="form-control form-control-sm" id="idUnit" name="idUnit">
+                    <input type="text" class="form-control form-control-sm" id="idUnit" name="idUnit" required>
                 </div>
                 <div class="form-group">
                     <label for="nameUnit">Nama Unit</label>

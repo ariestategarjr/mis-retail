@@ -54,8 +54,12 @@
 <script>
     function addModalForm() {
         $.ajax({
+            type: "post",
             url: "<?= site_url('category/addModalCategory') ?>",
             dataType: "json",
+            data: {
+                'reload': true
+            },
             success: function(response) {
                 const uniqueId = 'KAT' + Math.random().toString(8).substring(2, 5);
 

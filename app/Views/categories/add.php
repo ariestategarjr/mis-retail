@@ -10,9 +10,10 @@
             </div>
             <?php
             $action = 'category/addCategory';
-            $attributes = array('id' => 'addFormCategory', 'autocomplete' => 'on', 'required' => 'required');
+            $attributes = ['id' => 'addFormCategory'];
             ?>
             <?= form_open($action, $attributes) ?>
+            <input type="text" id="reload" name="reload" value="<?= $reload ?>">
             <div class="modal-body">
                 <div class="form-group">
                     <label for="idCategory">Id Kategori</label>
@@ -46,16 +47,23 @@
                 $('.save-button').html('<i class="fa fa-spin fa-spinner"></i>');
             },
             success: function(response) {
+                let reload = $('#reload').val();
+
                 if (response.success) {
-                    Swal.fire(
-                        'Berhasil!',
-                        response.success,
-                        'success'
-                    ).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.reload();
-                        }
-                    });
+                    if (reload === 'true') {
+                        Swal.fire(
+                            'Berhasil!',
+                            response.success,
+                            'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        $('#addModalCategory').modal('hide');
+                        listCategories();
+                    }
                 }
             },
             error: function(xhr, thrownError) {
