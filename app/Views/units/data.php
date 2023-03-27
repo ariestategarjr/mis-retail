@@ -54,7 +54,11 @@
 <script>
     function addModalForm() {
         $.ajax({
+            type: "post",
             url: "<?= site_url('unit/addModalUnit') ?>",
+            data: {
+                'reload': true
+            },
             dataType: "json",
             success: function(response) {
                 const uniqueId = 'SAT' + Math.random().toString(8).substring(2, 5);

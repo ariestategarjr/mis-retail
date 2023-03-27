@@ -14,6 +14,7 @@
             ?>
             <?= form_open($action, $attributes) ?>
             <div class="modal-body">
+                <input type="text" id="reload" value="<?= $reload ?>">
                 <div class="form-group">
                     <label for="idUnit">Id Unit</label>
                     <input type="text" class="form-control form-control-sm" id="idUnit" name="idUnit" required>
@@ -47,15 +48,22 @@
             },
             success: function(response) {
                 if (response.success) {
-                    Swal.fire(
-                        'Berhasil!',
-                        response.success,
-                        'success'
-                    ).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.reload();
-                        }
-                    });
+                    let reload = $('#reload').val();
+
+                    if (reload === 'true') {
+                        Swal.fire(
+                            'Berhasil!',
+                            response.success,
+                            'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        $('#addModalUnit').modal('hide');
+                        listUnits();
+                    }
                 }
             },
             error: function(xhr, thrownError) {

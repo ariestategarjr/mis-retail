@@ -24,8 +24,12 @@ class Unit extends BaseController
     public function addModalUnit()
     {
         if ($this->request->isAJAX()) {
+            $data = [
+                'reload' => $this->request->getPost('reload')
+            ];
+
             $msg = [
-                'data' => view('units/add')
+                'data' => view('units/add', $data)
             ];
 
             echo json_encode($msg);

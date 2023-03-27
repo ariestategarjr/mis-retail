@@ -129,10 +129,10 @@
             $.ajax({
                 type: "post",
                 url: "<?= site_url('category/addModalCategory'); ?>",
-                dataType: "json",
                 data: {
                     'reload': false
                 },
+                dataType: "json",
                 success: function(response) {
                     const uniqueId = 'KAT' + Math.random().toString(8).substring(2, 5);
 
@@ -143,6 +143,34 @@
                         });
                         $('#addModalCategory').modal('show');
                         $('#idCategory').val(uniqueId);
+                    }
+                },
+                error: function(xhr, thrownError) {
+                    alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                }
+            });
+        });
+
+        $('.add-unit-button').click(function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: "post",
+                url: "<?= site_url('unit/addModalUnit') ?>",
+                data: {
+                    'reload': false
+                },
+                dataType: "json",
+                success: function(response) {
+                    const uniqueId = 'SAT' + Math.random().toString(8).substring(2, 5);
+
+                    if (response.data) {
+                        $('.modal-container').html(response.data).show();
+                        $('#addModalUnit').on('shown.bs.modal', function(event) {
+                            $('#nameUnit').focus();
+                        });
+                        $('#addModalUnit').modal('show');
+                        $('#idUnit').val(uniqueId);
                     }
                 },
                 error: function(xhr, thrownError) {

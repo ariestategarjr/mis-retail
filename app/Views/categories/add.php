@@ -13,8 +13,8 @@
             $attributes = ['id' => 'addFormCategory'];
             ?>
             <?= form_open($action, $attributes) ?>
-            <input type="text" id="reload" name="reload" value="<?= $reload ?>">
             <div class="modal-body">
+                <input type="hidden" id="reload" name="reload" value="<?= $reload ?>">
                 <div class="form-group">
                     <label for="idCategory">Id Kategori</label>
                     <input type="text" class="form-control form-control-sm" id="idCategory" name="idCategory">
