@@ -14,7 +14,7 @@
             ?>
             <?= form_open($action, $attributes) ?>
             <div class="modal-body">
-                <input type="text" id="reload" value="<?= $reload ?>">
+                <input type="hidden" id="reload" value="<?= $reload ?>">
                 <div class="form-group">
                     <label for="idUnit">Id Unit</label>
                     <input type="text" class="form-control form-control-sm" id="idUnit" name="idUnit" required>

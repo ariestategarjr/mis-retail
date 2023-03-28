@@ -7,6 +7,9 @@
 
 
 <?= $this->section('content'); ?>
+<!-- AutoNumeric Plugin -->
+<script src="<?= base_url('assets/plugins/autoNumeric.js') ?>"></script>
+
 <div class="card">
     <div class="card-header">
         <button type="button" class="btn btn-secondary" onclick="window.location='<?= site_url('product/index') ?>'">
@@ -122,6 +125,20 @@
     }
 
     $(document).ready(function() {
+        $('#purchasePrice').autoNumeric('init', {
+            aSep: ',',
+            aDec: '.',
+            nDec: '2',
+            aSign: 'Rp. '
+        });
+
+        $('#sellingPrice').autoNumeric('init', {
+            aSep: ',',
+            aDec: '.',
+            nDec: '0',
+            aSign: 'Rp. '
+        });
+
         listCategories();
         listUnits();
 
