@@ -26,12 +26,18 @@
             <label for="codeBarcode" class="col-sm-2 col-form-label">Kode Barcode</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="codeBarcode" name="codeBarcode" autofocus>
+                <div id="errorCodeBarcode" class="invalid-feedback" style="display: none;">
+                    Please provide a valid city.
+                </div>
             </div>
         </div>
         <div class="form-group row">
             <label for="nameProduct" class="col-sm-2 col-form-label">Nama Produk</label>
             <div class="col-sm-8">
                 <input type="text" class="form-control" id="nameProduct" name="nameProduct">
+                <div id="errorNameProduct" class="invalid-feedback" style="display: none;">
+                    Please provide a valid city.
+                </div>
             </div>
         </div>
         <div class="form-group row">
@@ -83,7 +89,7 @@
         <div class="form-group row">
             <label for="" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-4">
-                <button type="submit" class="btn btn-success">Simpan</button>
+                <button type="submit" class="btn btn-success add-product-button">Simpan</button>
             </div>
         </div>
         <?= form_close(); ?>
@@ -137,6 +143,12 @@
             aDec: '.',
             nDec: '0',
             aSign: 'Rp. '
+        });
+
+        $('#stockProduct').autoNumeric('init', {
+            aSep: ',',
+            aDec: '.',
+            nDec: '0',
         });
 
         listCategories();
@@ -194,6 +206,61 @@
                     alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
                 }
             });
+        });
+
+        $('.add-product-button').click(function(e) {
+            e.preventDefault();
+
+            let form = $('#addFormProduct')[0];
+            let data = new FormData(form);
+
+            $.ajax({
+                type: "post",
+                url: "<?= site_url('product/addProduct') ?>",
+                data: data,
+                dataType: "json",
+                enctype: "multipart/form-data",
+                processData: false,
+                contentType: false,
+                cache: false,
+                beforeSend: function() {
+                    $('.add-product-button').html('<i class="fa fa-spin fa-spinner"></i>');
+                    $('.add-product-button').prop('disabled', true);
+                },
+                complete: function() {
+                    $('.add-product-button').html('Simpan');
+                    $('.add-product-button').prop('disabled', false);
+                },
+                success: function(response) {
+                    if (response.error) {
+                        let dataError = response.error;
+
+                        if (dataError.errorCodeBarcode) {
+                            $('#errorCodeBarcode').html(dataError.errorCodeBarcode).show();
+                            $('#codeBarcode').addClass('is-invalid');
+                        } else {
+                            $('#errorCodeBarcode').fadeOut();
+                            $('#codeBarcode').removeClass('is-invalid');
+                            $('#codeBarcode').addClass('is-valid');
+                        }
+
+                        if (dataError.errorNameProduct) {
+                            $('#errorNameProduct').html(dataError.errorNameProduct).show();
+                            $('#nameProduct').addClass('is-invalid');
+                        } else {
+                            $('#errorNameProduct').fadeOut();
+                            $('#nameProduct').removeClass('is-invalid');
+                            $('#nameProduct').addClass('is-valid');
+                        }
+
+                    }
+                },
+                error: function(xhr, thrownError) {
+                    alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                }
+            });
+
+
         });
     });
 </script>

@@ -69,4 +69,45 @@ class Product extends BaseController
             echo json_encode($msg);
         }
     }
+
+    public function addProduct()
+    {
+        $codeBarcode = $this->request->getVar('codeBarcode');
+        $nameProduct = $this->request->getVar('nameProduct');
+        $stockProduct = $this->request->getVar('stockProduct');
+        $unitProduct = $this->request->getVar('unitProduct');
+        $categoryProduct = $this->request->getVar('categoryProduct');
+        $purchasePrice = $this->request->getVar('purchasePrice');
+        $sellingPrice = $this->request->getVar('sellingPrice');
+
+        $validation = \Config\Services::validation();
+
+        $validate = $this->validate([
+            'codeBarcode' => [
+                'label' => 'Kode Barcode',
+                'rules' => 'required|is_unique[produk.kodebarcode]',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                    'is_unique' => '{field} sudah ada, coba yang lain'
+                ]
+            ],
+            'nameProduct' => [
+                'label' => 'Nama Produk',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong'
+                ]
+            ]
+        ]);
+
+        if (!$validate) {
+            $msg = [
+                'error' => [
+                    'errorCodeBarcode' => $validation->getError('codeBarcode'),
+                    'errorNameProduct' => $validation->getError('nameProduct'),
+                ]
+            ];
+        }
+        echo json_encode($msg);
+    }
 }
