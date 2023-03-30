@@ -51,10 +51,10 @@
 
     <div class="modal-container" style="display: none;"></div>
 
-    <script>
+    <!-- <script>
         function addModalForm() {
             alert('add');
         }
-    </script>
+    </script> -->
 
     <?= $this->endSection(); ?>

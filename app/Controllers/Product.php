@@ -72,42 +72,57 @@ class Product extends BaseController
 
     public function addProduct()
     {
-        $codeBarcode = $this->request->getVar('codeBarcode');
-        $nameProduct = $this->request->getVar('nameProduct');
-        $stockProduct = $this->request->getVar('stockProduct');
-        $unitProduct = $this->request->getVar('unitProduct');
-        $categoryProduct = $this->request->getVar('categoryProduct');
-        $purchasePrice = $this->request->getVar('purchasePrice');
-        $sellingPrice = $this->request->getVar('sellingPrice');
+        if ($this->request->isAJAX()) {
+            $codeBarcode = $this->request->getVar('codeBarcode');
+            $nameProduct = $this->request->getVar('nameProduct');
+            $stockProduct = str_replace(',', '', $this->request->getVar('stockProduct'));
+            $unitProduct = $this->request->getVar('unitProduct');
+            $categoryProduct = $this->request->getVar('categoryProduct');
+            $purchasePrice = str_replace(',', '', $this->request->getVar('purchasePrice'));
+            $sellingPrice = str_replace(',', '', $this->request->getVar('sellingPrice'));
 
-        $validation = \Config\Services::validation();
+            $validation = \Config\Services::validation();
 
-        $validate = $this->validate([
-            'codeBarcode' => [
-                'label' => 'Kode Barcode',
-                'rules' => 'required|is_unique[produk.kodebarcode]',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                    'is_unique' => '{field} sudah ada, coba yang lain'
+            $validate = $this->validate([
+                'codeBarcode' => [
+                    'label' => 'Kode Barcode',
+                    'rules' => 'required|is_unique[produk.kodebarcode]',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                        'is_unique' => '{field} sudah ada, coba yang lain'
+                    ]
+                ],
+                'nameProduct' => [
+                    'label' => 'Nama Produk',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong'
+                    ]
                 ]
-            ],
-            'nameProduct' => [
-                'label' => 'Nama Produk',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong'
-                ]
-            ]
-        ]);
+            ]);
 
-        if (!$validate) {
-            $msg = [
-                'error' => [
-                    'errorCodeBarcode' => $validation->getError('codeBarcode'),
-                    'errorNameProduct' => $validation->getError('nameProduct'),
-                ]
-            ];
+            if (!$validate) {
+                $msg = [
+                    'error' => [
+                        'errorCodeBarcode' => $validation->getError('codeBarcode'),
+                        'errorNameProduct' => $validation->getError('nameProduct'),
+                    ]
+                ];
+            } else {
+                // $data = [
+                //     'kodebarcode' => $codeBarcode,
+                //     'namaproduk' => $nameProduct
+                // ];
+
+                // $this->products->insert($data);
+                $msg = [
+                    'success' => ''
+                ];
+            }
+            echo json_encode($msg);
+            // echo json_encode($msg);
+
+            // dd(json_encode($msg));
         }
-        echo json_encode($msg);
     }
 }

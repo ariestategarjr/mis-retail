@@ -135,14 +135,12 @@
             aSep: ',',
             aDec: '.',
             nDec: '2',
-            aSign: 'Rp. '
         });
 
         $('#sellingPrice').autoNumeric('init', {
             aSep: ',',
             aDec: '.',
             nDec: '0',
-            aSign: 'Rp. '
         });
 
         $('#stockProduct').autoNumeric('init', {
@@ -234,6 +232,7 @@
                 success: function(response) {
                     if (response.error) {
                         let dataError = response.error;
+                        console.log(dataError);
 
                         if (dataError.errorCodeBarcode) {
                             $('#errorCodeBarcode').html(dataError.errorCodeBarcode).show();
@@ -254,6 +253,10 @@
                         }
 
                     }
+
+                    // if (response.success) {
+                    //     alert(`${response.success}`);
+                    // }
                 },
                 error: function(xhr, thrownError) {
                     alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
