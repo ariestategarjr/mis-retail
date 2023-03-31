@@ -98,6 +98,29 @@ class Product extends BaseController
                     'errors' => [
                         'required' => '{field} tidak boleh kosong'
                     ]
+                ],
+                'unitProduct' => [
+                    'label' => 'Satuan',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong'
+                    ]
+                ],
+                'categoryProduct' => [
+                    'label' => 'Kategori',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong'
+                    ]
+                ],
+                'imageUpload' => [
+                    'label' => 'Upload Gambar',
+                    'rules' => 'mime_in[imageUpload,image/png,image/jpg,image/jpeg]|ext_in[imageUpload,png,jpg,jpeg]|is_image[imageUpload]',
+                    'errors' => [
+                        'mime_in' => '{field} hanya berformat png, jpg, jpeg',
+                        'ext_in' => '{field} hanya berformat png, jpg, jpeg',
+                        'is_image' => '{field} hanya berformat png, jpg, jpeg'
+                    ]
                 ]
             ]);
 
@@ -106,17 +129,37 @@ class Product extends BaseController
                     'error' => [
                         'errorCodeBarcode' => $validation->getError('codeBarcode'),
                         'errorNameProduct' => $validation->getError('nameProduct'),
+                        'errorUnitProduct' => $validation->getError('unitProduct'),
+                        'errorCategoryProduct' => $validation->getError('categoryProduct'),
+                        'errorImageUpload' => $validation->getError('imageUpload')
                     ]
                 ];
             } else {
-                // $data = [
-                //     'kodebarcode' => $codeBarcode,
-                //     'namaproduk' => $nameProduct
-                // ];
+                $fileImageUpload = $_FILES['imageUpload']['name'];
 
-                // $this->products->insert($data);
+                if ($fileImageUpload != NULL) {
+                    $nameImageUpload = "$codeBarcode-$nameProduct";
+                    $fileImage = $this->request->getFile('imageUpload');
+                    $fileImage->move('assets/upload' . $nameImageUpload . '.' . $fileImage->getExtension());
+
+                    $pathImage = '.assets/upload/' . $fileImage->getName();
+                } else {
+                    $pathImage = '';
+                }
+
+                $this->products->insert([
+                    'kodebarcode' => $codeBarcode,
+                    'namaproduk' => $nameProduct,
+                    'produk_satid' => $unitProduct,
+                    'produk_katid' => $categoryProduct,
+                    'stok_tersedia' => $stockProduct,
+                    'hargabeli' => $purchasePrice,
+                    'hargajual' => $sellingPrice,
+                    'gambar' => $pathImage
+                ]);
+
                 $msg = [
-                    'success' => ''
+                    'success' => 'Produk berhasil ditambahkan'
                 ];
             }
             echo json_encode($msg);

@@ -49,9 +49,12 @@
         <div class="form-group row">
             <label for="unitProduct" class="col-sm-2 col-form-label">Satuan</label>
             <div class="col-sm-4">
-                <select class="form-control" id="unitProduct">
+                <select class="form-control" id="unitProduct" name="unitProduct">
                     <!-- <option>Default select</option> -->
                 </select>
+                <div id="errorUnitProduct" class="invalid-feedback" style="display: none;">
+                    <!-- Please provide a valid city. -->
+                </div>
             </div>
             <div class="col-sm-4">
                 <button type="button" class="btn btn-primary add-unit-button"><i class="fas fa-plus-circle"></i></button>
@@ -60,9 +63,12 @@
         <div class="form-group row">
             <label for="categoryProduct" class="col-sm-2 col-form-label">Kategori</label>
             <div class="col-sm-4">
-                <select class="form-control" id="categoryProduct">
+                <select class="form-control" id="categoryProduct" name="categoryProduct">
                     <!-- <option>Default select</option> -->
                 </select>
+                <div id="errorCategoryProduct" class="invalid-feedback" style="display: none;">
+                    <!-- Please provide a valid city. -->
+                </div>
             </div>
             <div class="col-sm-4">
                 <button type="button" class="btn btn-primary add-category-button"><i class="fas fa-plus-circle"></i></button>
@@ -84,6 +90,9 @@
             <label for="imageUpload" class="col-sm-2 col-form-label">Gambar (<i>Jika ada</i>)</label>
             <div class="col-sm-4">
                 <input type="file" class="form-control" id="imageUpload" name="imageUpload">
+                <div id="errorImageUpload" class="invalid-feedback" style="display: none;">
+                    <!-- Please provide a valid city. -->
+                </div>
             </div>
         </div>
         <div class="form-group row">
@@ -232,7 +241,7 @@
                 success: function(response) {
                     if (response.error) {
                         let dataError = response.error;
-                        console.log(dataError);
+                        // console.log(dataError);
 
                         if (dataError.errorCodeBarcode) {
                             $('#errorCodeBarcode').html(dataError.errorCodeBarcode).show();
@@ -252,11 +261,44 @@
                             $('#nameProduct').addClass('is-valid');
                         }
 
-                    }
+                        if (dataError.errorUnitProduct) {
+                            $('#errorUnitProduct').html(dataError.errorUnitProduct).show();
+                            $('#unitProduct').addClass('is-invalid');
+                        } else {
+                            $('#errorUnitProduct').fadeOut();
+                            $('#unitProduct').removeClass('is-invalid');
+                            $('#unitProduct').addClass('is-valid');
+                        }
 
-                    // if (response.success) {
-                    //     alert(`${response.success}`);
-                    // }
+                        if (dataError.errorCategoryProduct) {
+                            $('#errorCategoryProduct').html(dataError.errorCategoryProduct).show();
+                            $('#categoryProduct').addClass('is-invalid');
+                        } else {
+                            $('#errorCategoryProduct').fadeOut();
+                            $('#categoryProduct').removeClass('is-invalid');
+                            $('#categoryProduct').addClass('is-valid');
+                        }
+
+                        if (dataError.errorImageUpload) {
+                            $('#errorImageUpload').html(dataError.errorImageUpload).show();
+                            $('#imageUpload').addClass('is-invalid');
+                        } else {
+                            $('#errorImageUpload').fadeOut();
+                            $('#imageUpload').removeClass('is-invalid');
+                            $('#imageUpload').addClass('is-valid');
+                        }
+
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            html: response.success
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        })
+                    }
                 },
                 error: function(xhr, thrownError) {
                     alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
