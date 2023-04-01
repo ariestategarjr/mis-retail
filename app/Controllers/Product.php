@@ -81,6 +81,13 @@ class Product extends BaseController
             $purchasePrice = str_replace(',', '', $this->request->getVar('purchasePrice'));
             $sellingPrice = str_replace(',', '', $this->request->getVar('sellingPrice'));
 
+            // print("stok: " . gettype($stockProduct));
+            // print("stok: " . $stockProduct);
+            // print("harga beli: " . gettype($purchasePrice));
+            // print("harga beli: " . $purchasePrice);
+            // print("harga jual: " . gettype($sellingPrice));
+            // print("harga jual: " . $sellingPrice);
+
             $validation = \Config\Services::validation();
 
             $validate = $this->validate([
@@ -153,8 +160,8 @@ class Product extends BaseController
                     'produk_satid' => $unitProduct,
                     'produk_katid' => $categoryProduct,
                     'stok_tersedia' => $stockProduct,
-                    'hargabeli' => $purchasePrice,
-                    'hargajual' => $sellingPrice,
+                    'harga_beli' => $purchasePrice,
+                    'harga_jual' => $sellingPrice,
                     'gambar' => $pathImage
                 ]);
 
@@ -166,6 +173,24 @@ class Product extends BaseController
             // echo json_encode($msg);
 
             // dd(json_encode($msg));
+        }
+    }
+
+    public function deleteProduct()
+    {
+        if ($this->request->isAJAX()) {
+            $id = $this->request->getVar('idProduct');
+
+            $this->products->delete([
+                'kodebarcode' => $id
+            ]);
+
+            $msg = [
+                'success' => 'Produk dihapus.'
+            ];
+            echo json_encode($msg);
+        } else {
+            exit('Maaf, hapus produk gagal.');
         }
     }
 }

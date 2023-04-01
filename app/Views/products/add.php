@@ -25,25 +25,25 @@
         <div class="form-group row">
             <label for="codeBarcode" class="col-sm-2 col-form-label">Kode Barcode</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="codeBarcode" name="codeBarcode" autofocus>
+                <input type="text" class="form-control" id="codeBarcode" name="codeBarcode">
                 <div id="errorCodeBarcode" class="invalid-feedback" style="display: none;">
-                    Please provide a valid city.
+                    <!-- Please provide a valid city. -->
                 </div>
             </div>
         </div>
         <div class="form-group row">
             <label for="nameProduct" class="col-sm-2 col-form-label">Nama Produk</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="nameProduct" name="nameProduct">
+                <input type="text" class="form-control" id="nameProduct" name="nameProduct" autofocus>
                 <div id="errorNameProduct" class="invalid-feedback" style="display: none;">
-                    Please provide a valid city.
+                    <!-- Please provide a valid city. -->
                 </div>
             </div>
         </div>
         <div class="form-group row">
             <label for="stockProduct" class="col-sm-2 col-form-label">Stok</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="stockProduct" name="stockProduct" value="0">
+                <input type="text" class="form-control" id="stockProduct" name="stockProduct">
             </div>
         </div>
         <div class="form-group row">
@@ -157,6 +157,8 @@
             aDec: '.',
             nDec: '0',
         });
+
+        $('#codeBarcode').val(Math.random().toString(8).substring(2, 10));
 
         listCategories();
         listUnits();
@@ -295,7 +297,7 @@
                             html: response.success
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.reload();
+                                window.location = '<?= site_url('product/index') ?>';
                             }
                         })
                     }

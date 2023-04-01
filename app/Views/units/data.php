@@ -33,12 +33,12 @@
                         <td>
                             <button class="btn btn-warning btn-sm" onclick="
                                 editModalForm('<?= $row['satid']; ?>', 
-                                         '<?= $row['satnama']; ?>')">
+                                              '<?= $row['satnama']; ?>')">
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button class="btn btn-danger btn-sm" onclick="
                                 deleteAlert('<?= $row['satid']; ?>', 
-                                           '<?= $row['satnama']; ?>')">
+                                            '<?= $row['satnama']; ?>')">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
