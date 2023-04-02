@@ -9,7 +9,7 @@
 <?= $this->section('content'); ?>
 <div class="card">
     <div class="card-header">
-        <button type="button" class="btn btn-primary" onclick="window.location='<?= site_url('product/addFormProduct') ?>'">
+        <button type="button" class="btn btn-primary" onclick="window.location='<?= site_url('product/add') ?>'">
             <i class="fas fa-plus"></i>Tambah Data
         </button>
     </div>
@@ -41,7 +41,7 @@
                         <td style="text-align: right;"><?= number_format($row['harga_beli'], '2', ',', '.'); ?></td>
                         <td style="text-align: right;"><?= number_format($row['harga_jual'], '2', ',', '.'); ?></td>
                         <td>
-                            <button type="button" class="btn btn-warning btn-sm">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="window.location = '/product/edit/<?= $row['kodebarcode'] ?>'">
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
                             <button type="button" class="btn btn-danger btn-sm" onclick="
@@ -60,7 +60,7 @@
 <div class="modal-container" style="display: none;"></div>
 
 <script>
-    function deleteAlert(id, name) {
+    function deleteAlert(code, name) {
         Swal.fire({
             title: 'Apakah Anda yakin ingin',
             html: `<h4 style="display: inline;">menghapus <strong style="color: #d33;">${name}</strong> ?</h4>`,
@@ -76,7 +76,7 @@
                     type: "post",
                     url: "<?= site_url('product/deleteProduct') ?>",
                     data: {
-                        'idProduct': id
+                        'codeProduct': code
                     },
                     dataType: "json",
                     success: function(response) {

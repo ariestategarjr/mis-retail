@@ -29,9 +29,34 @@ class Product extends BaseController
         return view('products/data', $data);
     }
 
-    public function addFormProduct()
+    public function add()
     {
         return view('products/add');
+    }
+
+    public function edit($code)
+    {
+        $row = $this->products->find($code);
+
+        if ($row) {
+            $data = [
+                'codeBarcode' => $row['kodebarcode'],
+                'nameProduct' => $row['namaproduk'],
+                'stockProduct' => $row['stok_tersedia'],
+                'unitProduct' => $row['produk_satid'],
+                'unitData' => $this->units->findAll(),
+                'categoryProduct' => $row['produk_katid'],
+                'categoryData' => $this->categories->findAll(),
+                'purchasePrice' => $row['harga_beli'],
+                'sellingPrice' => $row['harga_jual'],
+                'imageUpload' => $row['gambar']
+            ];
+            return view('products/edit', $data);
+        } else {
+            exit('Data tidak ditemukan.');
+        }
+
+        return view('products/edit');
     }
 
     public function getAllCategories()
@@ -80,13 +105,6 @@ class Product extends BaseController
             $categoryProduct = $this->request->getVar('categoryProduct');
             $purchasePrice = str_replace(',', '', $this->request->getVar('purchasePrice'));
             $sellingPrice = str_replace(',', '', $this->request->getVar('sellingPrice'));
-
-            // print("stok: " . gettype($stockProduct));
-            // print("stok: " . $stockProduct);
-            // print("harga beli: " . gettype($purchasePrice));
-            // print("harga beli: " . $purchasePrice);
-            // print("harga jual: " . gettype($sellingPrice));
-            // print("harga jual: " . $sellingPrice);
 
             $validation = \Config\Services::validation();
 
@@ -147,9 +165,9 @@ class Product extends BaseController
                 if ($fileImageUpload != NULL) {
                     $nameImageUpload = "$codeBarcode-$nameProduct";
                     $fileImage = $this->request->getFile('imageUpload');
-                    $fileImage->move('assets/upload' . $nameImageUpload . '.' . $fileImage->getExtension());
+                    $fileImage->move('assets/upload', $nameImageUpload . '.' . $fileImage->getExtension());
 
-                    $pathImage = '.assets/upload/' . $fileImage->getName();
+                    $pathImage = 'assets/upload/' . $fileImage->getName();
                 } else {
                     $pathImage = '';
                 }
@@ -170,19 +188,89 @@ class Product extends BaseController
                 ];
             }
             echo json_encode($msg);
-            // echo json_encode($msg);
+        }
+    }
 
-            // dd(json_encode($msg));
+    public function editProduct()
+    {
+        if ($this->request->isAJAX()) {
+            $codeBarcode = $this->request->getVar('codeBarcode');
+            $nameProduct = $this->request->getVar('nameProduct');
+            $stockProduct = str_replace(',', '', $this->request->getVar('stockProduct'));
+            $unitProduct = $this->request->getVar('unitProduct');
+            $categoryProduct = $this->request->getVar('categoryProduct');
+            $purchasePrice = str_replace(',', '', $this->request->getVar('purchasePrice'));
+            $sellingPrice = str_replace(',', '', $this->request->getVar('sellingPrice'));
+
+            $validation = \Config\Services::validation();
+
+            $validate = $this->validate([
+                'nameProduct' => [
+                    'label' => 'Nama Produk',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong'
+                    ]
+                ],
+                'imageUpload' => [
+                    'label' => 'Upload Gambar',
+                    'rules' => 'mime_in[imageUpload,image/png,image/jpg,image/jpeg]|ext_in[imageUpload,png,jpg,jpeg]|is_image[imageUpload]',
+                    'errors' => [
+                        'mime_in' => '{field} hanya berformat png, jpg, jpeg',
+                        'ext_in' => '{field} hanya berformat png, jpg, jpeg',
+                        'is_image' => '{field} hanya berformat png, jpg, jpeg'
+                    ]
+                ]
+            ]);
+
+            if (!$validate) {
+                $msg = [
+                    'error' => [
+                        'errorNameProduct' => $validation->getError('nameProduct'),
+                        'errorImageUpload' => $validation->getError('imageUpload')
+                    ]
+                ];
+            } else {
+                $fileImageUpload = $_FILES['imageUpload']['name'];
+
+                $rowDataProduct = $this->products->find($codeBarcode);
+
+                if ($fileImageUpload != NULL) {
+                    unlink($rowDataProduct['gambar']);
+                    $nameImageUpload = "$codeBarcode-$nameProduct";
+                    $fileImage = $this->request->getFile('imageUpload');
+                    $fileImage->move('assets/upload', $nameImageUpload . '.' . $fileImage->getExtension());
+
+                    $pathImage = 'assets/upload/' . $fileImage->getName();
+                } else {
+                    $pathImage = $rowDataProduct['gambar'];
+                }
+
+                $this->products->update($codeBarcode, [
+                    'namaproduk' => $nameProduct,
+                    'produk_satid' => $unitProduct,
+                    'produk_katid' => $categoryProduct,
+                    'stok_tersedia' => $stockProduct,
+                    'harga_beli' => $purchasePrice,
+                    'harga_jual' => $sellingPrice,
+                    'gambar' => $pathImage
+                ]);
+
+                $msg = [
+                    'success' => 'Produk berhasil diperbarui'
+                ];
+            }
+            echo json_encode($msg);
         }
     }
 
     public function deleteProduct()
     {
         if ($this->request->isAJAX()) {
-            $id = $this->request->getVar('idProduct');
+            $code = $this->request->getVar('codeProduct');
 
             $this->products->delete([
-                'kodebarcode' => $id
+                'kodebarcode' => $code
             ]);
 
             $msg = [

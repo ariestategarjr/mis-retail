@@ -143,7 +143,7 @@
         $('#purchasePrice').autoNumeric('init', {
             aSep: ',',
             aDec: '.',
-            nDec: '2',
+            nDec: '0',
         });
 
         $('#sellingPrice').autoNumeric('init', {
@@ -297,7 +297,7 @@
                             html: response.success
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location = '<?= site_url('product/index') ?>';
+                                window.location.reload();
                             }
                         })
                     }
