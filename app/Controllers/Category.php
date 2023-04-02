@@ -62,12 +62,10 @@ class Category extends BaseController
             $id = $this->request->getVar('idCategory');
             $name = $this->request->getVar('nameCategory');
 
-            $data = array(
+            $this->categories->insert([
                 'katid' => $id,
                 'katnama' => $name
-            );
-
-            $this->categories->insert($data);
+            ]);
 
             $msg = [
                 'success' => 'Kategori berhasil ditambahkan.'
@@ -84,11 +82,9 @@ class Category extends BaseController
             $id = $this->request->getVar('idCategory');
             $name = $this->request->getVar('nameCategory');
 
-            $data = array(
+            $this->categories->update($id, [
                 'katnama' => $name
-            );
-
-            $this->categories->update($id, $data);
+            ]);
 
             $msg = [
                 'success' => 'Kategori berhasil diedit.'

@@ -65,12 +65,10 @@ class Unit extends BaseController
             $id = $this->request->getVar('idUnit');
             $name = $this->request->getVar('nameUnit');
 
-            $data = [
+            $this->units->insert([
                 'satid' => $id,
                 'satnama' => $name
-            ];
-
-            $this->units->insert($data);
+            ]);
 
             $msg = [
                 'success' => 'Satuan ditambahkan.'
@@ -87,11 +85,9 @@ class Unit extends BaseController
             $id = $this->request->getVar('idUnit');
             $name = $this->request->getVar('nameUnit');
 
-            $data = [
+            $this->units->update($id, [
                 'satnama' => $name
-            ];
-
-            $this->units->update($id, $data);
+            ]);
 
             $msg = [
                 'success' => 'Satuan diedit.'
@@ -107,11 +103,9 @@ class Unit extends BaseController
         if ($this->request->isAJAX()) {
             $id = $this->request->getVar('idUnit');
 
-            $data = [
+            $this->units->delete([
                 'satid' => $id
-            ];
-
-            $this->units->delete($data);
+            ]);
 
             $msg = [
                 'success' => 'Satuan dihapus.'

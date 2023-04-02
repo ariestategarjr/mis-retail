@@ -34,4 +34,20 @@
         </p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="<?= site_url('customer/index') ?>" class="nav-link">
+        <i class="nav-icon fas fa-user"></i>
+        <p>
+            Pelanggan
+        </p>
+    </a>
+</li>
+<li class="nav-item">
+    <a href="<?= site_url('supplier/index') ?>" class="nav-link">
+        <i class="nav-icon fas fa-user"></i>
+        <p>
+            Penyuplai
+        </p>
+    </a>
+</li>
 <?= $this->endSection(); ?>

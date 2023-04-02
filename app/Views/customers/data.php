@@ -2,14 +2,14 @@
 <?= $this->extend('layout/menu'); ?>
 
 <?= $this->section('title'); ?>
-<h3>Manajemen Data Produk</h3>
+<h3>Manajemen Data Pelanggan</h3>
 <?= $this->endSection(); ?>
 
 
 <?= $this->section('content'); ?>
 <div class="card">
     <div class="card-header">
-        <button type="button" class="btn btn-primary" onclick="window.location='<?= site_url('product/add') ?>'">
+        <button type="button" class="btn btn-primary" onclick="window.location='<?= site_url('customer/add') ?>'">
             <i class="fas fa-plus"></i>Tambah Data
         </button>
     </div>
@@ -18,36 +18,30 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Kode Barcode</th>
-                    <th>Nama Produk</th>
-                    <th>Kategori</th>
-                    <th>Stok</th>
-                    <th>Satuan</th>
-                    <th>Harga Beli</th>
-                    <th>Harga Jual</th>
+                    <th>Kode Pelanggan</th>
+                    <th>Nama Pelanggan</th>
+                    <th>Alamat</th>
+                    <th>Telepon</th>
                     <th>#</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $no = 1; ?>
-                <?php foreach ($products as $row) : ?>
+                <?php foreach ($customers as $row) : ?>
                     <tr>
                         <td><?= $no++; ?></td>
-                        <td><?= $row['kodebarcode']; ?></td>
-                        <td><?= $row['namaproduk']; ?></td>
-                        <td><?= $row['katnama']; ?></td>
-                        <td style="text-align: right;"><?= number_format($row['stok_tersedia'], '0', ',', '.'); ?></td>
-                        <td><?= $row['satnama']; ?></td>
-                        <td style="text-align: right;"><?= number_format($row['harga_beli'], '2', ',', '.'); ?></td>
-                        <td style="text-align: right;"><?= number_format($row['harga_jual'], '2', ',', '.'); ?></td>
+                        <td><?= $row['pel_kode']; ?></td>
+                        <td><?= $row['pel_nama']; ?></td>
+                        <td><?= $row['pel_alamat']; ?></td>
+                        <td><?= $row['pel_telp']; ?></td>
                         <td>
-                            <button type="button" class="btn btn-warning btn-sm" onclick="window.location = '/product/edit/<?= $row['kodebarcode'] ?>'">
-                                <i class="fas fa-pencil-alt"></i>
+                            <button class="btn btn-warning btn-sm" onclick="window.location = '/customer/edit/<?= $row['pel_kode'] ?>'">
+                                <i class="fas fa-edit"></i>
                             </button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="
-                                deleteAlert('<?= $row['kodebarcode'] ?>',
-                                            '<?= $row['namaproduk'] ?>')">
-                                <i class="fas fa-trash-alt"></i>
+                            <button class="btn btn-danger btn-sm" onclick="
+                                deleteAlert('<?= $row['pel_kode'] ?>',
+                                            '<?= $row['pel_nama'] ?>')">
+                                <i class="fas fa-trash"></i>
                             </button>
                         </td>
                     </tr>
@@ -60,7 +54,7 @@
 <div class="modal-container" style="display: none;"></div>
 
 <script>
-    function deleteAlert(code, name) {
+    function deleteAlert(id, name) {
         Swal.fire({
             title: 'Apakah Anda yakin ingin',
             html: `<h4 style="display: inline;">menghapus <strong style="color: #d33;">${name}</strong> ?</h4>`,
@@ -74,9 +68,9 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: "post",
-                    url: "<?= site_url('product/deleteProduct') ?>",
+                    url: "<?= site_url('customer/deleteCustomer') ?>",
                     data: {
-                        'codeProduct': code
+                        'idCustomer': id
                     },
                     dataType: "json",
                     success: function(response) {

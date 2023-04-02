@@ -184,7 +184,7 @@ class Product extends BaseController
                 ]);
 
                 $msg = [
-                    'success' => 'Produk berhasil ditambahkan'
+                    'success' => 'Produk berhasil ditambahkan.'
                 ];
             }
             echo json_encode($msg);
@@ -257,7 +257,7 @@ class Product extends BaseController
                 ]);
 
                 $msg = [
-                    'success' => 'Produk berhasil diperbarui'
+                    'success' => 'Produk berhasil diperbarui.'
                 ];
             }
             echo json_encode($msg);
@@ -274,7 +274,7 @@ class Product extends BaseController
             ]);
 
             $msg = [
-                'success' => 'Produk dihapus.'
+                'success' => 'Produk berhasil dihapus.'
             ];
             echo json_encode($msg);
         } else {

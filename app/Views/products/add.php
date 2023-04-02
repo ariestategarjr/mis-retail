@@ -98,7 +98,7 @@
         <div class="form-group row">
             <label for="" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-4">
-                <button type="submit" class="btn btn-success add-product-button">Simpan</button>
+                <button type="submit" class="btn btn-success save-button">Simpan</button>
             </div>
         </div>
         <?= form_close(); ?>
@@ -140,6 +140,9 @@
     }
 
     $(document).ready(function() {
+        listCategories();
+        listUnits();
+
         $('#purchasePrice').autoNumeric('init', {
             aSep: ',',
             aDec: '.',
@@ -159,9 +162,6 @@
         });
 
         $('#codeBarcode').val(Math.random().toString(8).substring(2, 10));
-
-        listCategories();
-        listUnits();
 
         $('.add-category-button').click(function() {
             $.ajax({
@@ -217,7 +217,7 @@
             });
         });
 
-        $('.add-product-button').click(function(e) {
+        $('.save-button').click(function(e) {
             e.preventDefault();
 
             let form = $('#addFormProduct')[0];
@@ -233,12 +233,12 @@
                 contentType: false,
                 cache: false,
                 beforeSend: function() {
-                    $('.add-product-button').html('<i class="fa fa-spin fa-spinner"></i>');
-                    $('.add-product-button').prop('disabled', true);
+                    $('.save-button').html('<i class="fa fa-spin fa-spinner"></i>');
+                    $('.save-button').prop('disabled', true);
                 },
                 complete: function() {
-                    $('.add-product-button').html('Simpan');
-                    $('.add-product-button').prop('disabled', false);
+                    $('.save-button').html('Simpan');
+                    $('.save-button').prop('disabled', false);
                 },
                 success: function(response) {
                     if (response.error) {

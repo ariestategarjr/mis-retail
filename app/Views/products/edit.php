@@ -96,7 +96,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="imageUpload" class="col-sm-2 col-form-label">Ganti Gambar ?</label>
+            <label for="imageUpload" class="col-sm-2 col-form-label">Ubah Gambar Produk</label>
             <div class="col-sm-4">
                 <input type="file" class="form-control" id="imageUpload" name="imageUpload">
                 <div id="errorImageUpload" class="invalid-feedback" style="display: none;">
@@ -107,7 +107,7 @@
         <div class="form-group row">
             <label for="" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-4">
-                <button type="submit" class="btn btn-success edit-product-button">Simpan</button>
+                <button type="submit" class="btn btn-success save-button">Simpan</button>
             </div>
         </div>
         <?= form_close(); ?>
@@ -137,7 +137,7 @@
             nDec: '0',
         });
 
-        $('.edit-product-button').click(function(e) {
+        $('.save-button').click(function(e) {
             e.preventDefault();
 
             let form = $('#editFormProduct')[0];
@@ -153,12 +153,12 @@
                 contentType: false,
                 cache: false,
                 beforeSend: function() {
-                    $('.edit-product-button').html('<i class="fa fa-spin fa-spinner"></i>');
-                    $('.edit-product-button').prop('disabled', true);
+                    $('.save-button').html('<i class="fa fa-spin fa-spinner"></i>');
+                    $('.save-button').prop('disabled', true);
                 },
                 complete: function() {
-                    $('.edit-product-button').html('Simpan');
-                    $('.edit-product-button').prop('disabled', false);
+                    $('.save-button').html('Simpan');
+                    $('.save-button').prop('disabled', false);
                 },
                 success: function(response) {
                     if (response.error) {
