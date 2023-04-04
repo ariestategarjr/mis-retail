@@ -8,12 +8,12 @@ class Sale extends BaseController
 {
     public function index()
     {
-        return view('sales/data');
+        return view('sales/menu');
     }
 
     public function generateFakturCode()
     {
-        $date = $this->request->getPost('date');
+        $date = $this->request->getPost('tanggal');
         $query = $this->db->query(
             "SELECT MAX(jual_faktur) AS nofaktur FROM penjualan
              WHERE DATE_FORMAT(jual_tgl, '%Y-%m-%d') = '$date'"
@@ -26,11 +26,18 @@ class Sale extends BaseController
 
         $formatFakturCode = 'FK' . date('dmy', strtotime($date)) . sprintf('%04s', $nextOrderNumb);
 
-        $msg = [
-            'fakturcode' => $formatFakturCode
-        ];
+        return $formatFakturCode;
+    }
 
-        echo json_encode($msg);
+    public function getModalProduct()
+    {
+        if ($this->request->isAJAX()) {
+            $msg = [
+                'modal' => view('sales/data_product')
+            ];
+
+            echo json_encode($msg);
+        }
     }
 
     public function displaySaleDetail()
@@ -70,6 +77,10 @@ class Sale extends BaseController
 
     public function input()
     {
-        return view('sales/input');
+        $data = [
+            'nofaktur' => $this->generateFakturCode()
+        ];
+
+        return view('sales/input', $data);
     }
 }

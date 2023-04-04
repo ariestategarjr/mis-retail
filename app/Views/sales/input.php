@@ -19,7 +19,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="nofaktur">Faktur</label>
-                    <input type="text" class="form-control form-control-sm" style="color:red;font-weight:bold;" name="nofaktur" id="nofaktur">
+                    <input type="text" class="form-control form-control-sm" style="color:red;font-weight:bold;" name="nofaktur" id="nofaktur" readonly value="<?= $nofaktur; ?>">
                 </div>
             </div>
             <div class="col-md-3">
@@ -57,19 +57,25 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="kodebarcode">Kode Produk</label>
                     <input type="text" class="form-control form-control-sm" name="kodebarcode" id="kodebarcode" autofocus>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="namaproduk">Nama Produk</label>
+                    <input type="text" class="form-control form-control-sm" name="namaproduk" id="namaproduk" readonly>
+                </div>
+            </div>
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="jml">Jumlah</label>
                     <input type="number" class="form-control form-control-sm" name="jumlah" id="jumlah" value="1">
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="jml">Total Bayar</label>
                     <input type="text" class="form-control form-control-lg" name="totalbayar" id="totalbayar" style="text-align: right; color:blue; font-weight : bold; font-size:30pt;" value="0" readonly>
@@ -84,24 +90,26 @@
     </div>
 </div>
 
+<div class="modal-container" style="display: none;"></div>
+
 <script>
-    function generateFakturCode() {
-        $.ajax({
-            type: "post",
-            url: "<?= site_url('sale/generateFakturCode') ?>",
-            data: {
-                date: $('#tanggal').val()
-            },
-            dataType: "json",
-            success: function(response) {
-                if (response.fakturcode) {
-                    $('#nofaktur').val(response.fakturcode);
+    function checkCodeBarcode() {
+        let code = $('#kodebarcode').val();
+
+        if (code.length == 0) {
+            $.ajax({
+                url: "<?= site_url('sale/getModalProduct') ?>",
+                dataType: "json",
+                success: function(response) {
+                    if (response.modal) {
+                        $('.modal-container').html(response.modal).show();
+                        $('#getModalProduct').modal('show');
+                    }
                 }
-            },
-            error: function(xhr, thrownError) {
-                alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
-            }
-        });
+            });
+        } else {
+            alert('ada');
+        }
     }
 
     function displaySaleDetail() {
@@ -128,8 +136,13 @@
 
     $(document).ready(function() {
         $('body').addClass('sidebar-collapse');
-        generateFakturCode();
         displaySaleDetail();
+        $('#kodebarcode').keydown(function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                checkCodeBarcode();
+            }
+        });
     });
 </script>
 <?= $this->endSection(); ?>
