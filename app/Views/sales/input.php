@@ -66,7 +66,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="namaproduk">Nama Produk</label>
-                    <input type="text" class="form-control form-control-sm" name="namaproduk" id="namaproduk" readonly>
+                    <input type="text" class="form-control form-control-sm" name="namaproduk" id="namaproduk" readonly style="font-size: 16pt; font-weight: bold;">
                 </div>
             </div>
             <div class="col-md-3">

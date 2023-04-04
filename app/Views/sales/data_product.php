@@ -15,7 +15,22 @@
                 </button>
             </div>
             <div class="modal-body">
-
+                <table id="product-table" class="table table-bordered table-striped dataTable dtr-inline collapsed">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Kode Barcode</th>
+                            <th>Nama Produk</th>
+                            <th>Kategori</th>
+                            <th>Stok</th>
+                            <th>Harga Jual</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--  -->
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -29,3 +44,32 @@
 <script src="<?= base_url('assets') ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="<?= base_url('assets') ?>/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="<?= base_url('assets') ?>/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+<script>
+    function selectProduct(code, name) {
+        $('#kodebarcode').val(code);
+        $('#namaproduk').val(name);
+        $('#getModalProduct').on('hidden.bs.modal', function(event) {
+            $('#kodebarcode').focus();
+        })
+        $('#getModalProduct').modal('hide');
+    }
+
+    $(document).ready(function() {
+        let table = $('#product-table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "order": [],
+            "ajax": {
+                "url": "<?php echo site_url('sale/getListDataProduct') ?>",
+                "type": "POST"
+            },
+            "columnDefs": [{
+                "targets": [],
+                "orderable": false,
+                "defaultContent": "-",
+                "targets": "_all"
+            }, ],
+        });
+    });
+</script>

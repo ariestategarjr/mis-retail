@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\ProductsDatatableModel;
+use Config\Services;
 
 class Sale extends BaseController
 {
@@ -29,6 +31,44 @@ class Sale extends BaseController
         return $formatFakturCode;
     }
 
+    public function getListDataProduct()
+    {
+        if ($this->request->isAJAX()) {
+            $request = Services::request();
+            $datatable = new ProductsDatatableModel($request);
+
+            if ($request->getMethod(true) === 'POST') {
+                $lists = $datatable->getDatatables();
+                $data = [];
+                $no = $request->getPost('start');
+
+                foreach ($lists as $list) {
+                    $no++;
+                    $row = [];
+                    $row[] = $no;
+                    $row[] = $list->kodebarcode;
+                    $row[] = $list->namaproduk;
+                    $row[] = $list->katnama;
+                    $row[] = number_format($list->stok_tersedia, 0, ',', '.');
+                    $row[] = number_format($list->harga_jual, 0, ',', '.');
+                    $row[] = "<button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"selectProduct(
+                              '{$list->kodebarcode}',
+                              '{$list->namaproduk}')\">Pilih</button>";
+                    $data[] = $row;
+                }
+
+                $output = [
+                    'draw' => $request->getPost('draw'),
+                    'recordsTotal' => $datatable->countAll(),
+                    'recordsFiltered' => $datatable->countFiltered(),
+                    'data' => $data
+                ];
+
+                echo json_encode($output);
+            }
+        }
+    }
+
     public function getModalProduct()
     {
         if ($this->request->isAJAX()) {
@@ -42,37 +82,39 @@ class Sale extends BaseController
 
     public function displaySaleDetail()
     {
-        $fakturcode = $this->request->getVar('fakturcode');
+        if ($this->request->isAJAX()) {
+            $fakturcode = $this->request->getVar('fakturcode');
 
-        $tempSale = $this->db->table('temp_penjualan');
-        $query = $tempSale
-            ->select(
-                'detjual_id as id,
-                detjual_kodebarcode as kode,
-                namaproduk,
-                detjual_hargajual as hargajual,
-                detjual_jml as jml,
-                detjual_subtotal as subtotal'
-            )->join(
-                'produk',
-                'detjual_kodebarcode=kodebarcode'
-            )->where(
-                'detjual_faktur',
-                $fakturcode
-            )->orderby(
-                'detjual_id',
-                'asc'
-            );
+            $tempSale = $this->db->table('temp_penjualan');
+            $query = $tempSale
+                ->select(
+                    'detjual_id as id,
+                    detjual_kodebarcode as kode,
+                    namaproduk,
+                    detjual_hargajual as hargajual,
+                    detjual_jml as jml,
+                    detjual_subtotal as subtotal'
+                )->join(
+                    'produk',
+                    'detjual_kodebarcode=kodebarcode'
+                )->where(
+                    'detjual_faktur',
+                    $fakturcode
+                )->orderby(
+                    'detjual_id',
+                    'asc'
+                );
 
-        $data = [
-            'dataSaleDetail' => $query->get()
-        ];
+            $data = [
+                'dataSaleDetail' => $query->get()
+            ];
 
-        $msg = [
-            'data' => view('sales/detail', $data)
-        ];
+            $msg = [
+                'data' => view('sales/detail', $data)
+            ];
 
-        echo json_encode($msg);
+            echo json_encode($msg);
+        }
     }
 
     public function input()
