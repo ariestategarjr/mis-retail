@@ -141,6 +141,10 @@
                             }
                         });
                     }
+
+                    if (response.success == 'Berhasil') {
+                        displaySaleDetail();
+                    }
                 },
                 error: function(xhr, thrownError) {
                     alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);

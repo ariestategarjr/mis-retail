@@ -117,8 +117,23 @@ class Sale extends BaseController
                     'data' => 'many'
                 ];
             } else {
+                $tempSale = $this->db->table('temp_penjualan');
+
+                $row = $query->getRowArray();
+
+                $data = [
+                    'detjual_faktur' => $noFaktur,
+                    'detjual_kodebarcode' => $row['kodebarcode'],
+                    'detjual_hargabeli' => $row['harga_beli'],
+                    'detjual_hargajual' => $row['harga_jual'],
+                    'detjual_jml' => $amount,
+                    'detjual_subtotal' => floatval($row['harga_jual']) * $amount
+                ];
+
+                $tempSale->insert($data);
+
                 $msg = [
-                    'data' => 'one'
+                    'success' => 'Berhasil'
                 ];
             }
 
