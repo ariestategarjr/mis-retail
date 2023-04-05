@@ -100,15 +100,23 @@ class Sale extends BaseController
     public function saveTemp()
     {
         if ($this->request->isAJAX()) {
+            $id = $this->request->getPost('id');
             $codeBarcode = $this->request->getPost('codeBarcode');
             $nameProduct = $this->request->getPost('nameProduct');
             $amount = $this->request->getPost('amount');
             $noFaktur = $this->request->getPost('noFaktur');
 
-            $query = $this->db->table('produk')
-                ->like('kodebarcode', $codeBarcode)
-                ->orlike('namaproduk', $codeBarcode)
-                ->get();
+            if (strlen($nameProduct) > 0) {
+                $query = $this->db->table('produk')
+                    ->where('kodebarcode', $codeBarcode)
+                    ->where('namaproduk', $nameProduct)
+                    ->get();
+            } else {
+                $query = $this->db->table('produk')
+                    ->like('kodebarcode', $codeBarcode)
+                    ->orlike('namaproduk', $codeBarcode)
+                    ->get();
+            }
 
             $result = $query->getNumRows();
 
@@ -122,6 +130,7 @@ class Sale extends BaseController
                 $row = $query->getRowArray();
 
                 $data = [
+                    'detjual_id' => $id,
                     'detjual_faktur' => $noFaktur,
                     'detjual_kodebarcode' => $row['kodebarcode'],
                     'detjual_hargabeli' => $row['harga_beli'],

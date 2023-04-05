@@ -111,10 +111,12 @@
                 }
             });
         } else {
+            const uniqueId = 'JL' + Math.random().toString(8).substring(2, 5);
             $.ajax({
                 type: "post",
                 url: "<?= site_url('sale/saveTemp') ?>",
                 data: {
+                    id: uniqueId,
                     codeBarcode: code,
                     nameProduct: $('#namaproduk').val(),
                     amount: $('#jumlah').val(),
