@@ -31,6 +31,23 @@ class Sale extends BaseController
         return $formatFakturCode;
     }
 
+    public function getModalProduct()
+    {
+        if ($this->request->isAJAX()) {
+            $keyword = $this->request->getPost('keyword');
+
+            $data = [
+                'keyword' => $keyword
+            ];
+
+            $msg = [
+                'modal' => view('sales/data_product', $data)
+            ];
+
+            echo json_encode($msg);
+        }
+    }
+
     public function getListDataProduct()
     {
         if ($this->request->isAJAX()) {
@@ -69,12 +86,39 @@ class Sale extends BaseController
         }
     }
 
-    public function getModalProduct()
+    public function input()
+    {
+        $data = [
+            'nofaktur' => $this->generateFakturCode()
+        ];
+
+        return view('sales/input', $data);
+    }
+
+    public function saveTemp()
     {
         if ($this->request->isAJAX()) {
-            $msg = [
-                'modal' => view('sales/data_product')
-            ];
+            $codeBarcode = $this->request->getPost('codeBarcode');
+            $nameProduct = $this->request->getPost('nameProduct');
+            $amount = $this->request->getPost('amount');
+            $noFaktur = $this->request->getPost('noFaktur');
+
+            $query = $this->db->table('produk')
+                ->like('kodebarcode', $codeBarcode)
+                ->orlike('namaproduk', $codeBarcode)
+                ->get();
+
+            $result = $query->getNumRows();
+
+            if ($result > 1) {
+                $msg = [
+                    'data' => 'many'
+                ];
+            } else {
+                $msg = [
+                    'data' => 'one'
+                ];
+            }
 
             echo json_encode($msg);
         }
@@ -115,14 +159,5 @@ class Sale extends BaseController
 
             echo json_encode($msg);
         }
-    }
-
-    public function input()
-    {
-        $data = [
-            'nofaktur' => $this->generateFakturCode()
-        ];
-
-        return view('sales/input', $data);
     }
 }

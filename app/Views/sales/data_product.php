@@ -15,6 +15,7 @@
                 </button>
             </div>
             <div class="modal-body">
+                <input type="hidden" name="keywordCode" id="keywordCode" value="<?= $keyword ?>">
                 <table id="product-table" class="table table-bordered table-striped dataTable dtr-inline collapsed">
                     <thead>
                         <tr>
@@ -62,7 +63,10 @@
             "order": [],
             "ajax": {
                 "url": "<?php echo site_url('sale/getListDataProduct') ?>",
-                "type": "POST"
+                "type": "POST",
+                "data": {
+                    keywordCode: $('#keywordCode').val()
+                }
             },
             "columnDefs": [{
                 "targets": [],

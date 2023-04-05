@@ -66,7 +66,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="namaproduk">Nama Produk</label>
-                    <input type="text" class="form-control form-control-sm" name="namaproduk" id="namaproduk" readonly style="font-size: 16pt; font-weight: bold;">
+                    <input type="text" class="form-control form-control-sm" name="namaproduk" id="namaproduk" readonly style="font-size: 16pt; font-weight: 8bold;">
                 </div>
             </div>
             <div class="col-md-3">
@@ -105,10 +105,47 @@
                         $('.modal-container').html(response.modal).show();
                         $('#getModalProduct').modal('show');
                     }
+                },
+                error: function(xhr, thrownError) {
+                    alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
                 }
             });
         } else {
-            alert('ada');
+            $.ajax({
+                type: "post",
+                url: "<?= site_url('sale/saveTemp') ?>",
+                data: {
+                    codeBarcode: code,
+                    nameProduct: $('#namaproduk').val(),
+                    amount: $('#jumlah').val(),
+                    noFaktur: $('#nofaktur').val()
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.data == 'many') {
+                        $.ajax({
+                            type: "post",
+                            url: "<?= site_url('sale/getModalProduct') ?>",
+                            data: {
+                                keyword: code
+                            },
+                            dataType: "json",
+                            success: function(response) {
+                                if (response.modal) {
+                                    $('.modal-container').html(response.modal).show();
+                                    $('#getModalProduct').modal('show');
+                                }
+                            },
+                            error: function(xhr, thrownError) {
+                                alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                            }
+                        });
+                    }
+                },
+                error: function(xhr, thrownError) {
+                    alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                }
+            });
         }
     }
 
