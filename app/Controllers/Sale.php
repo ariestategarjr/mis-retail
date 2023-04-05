@@ -51,11 +51,13 @@ class Sale extends BaseController
     public function getListDataProduct()
     {
         if ($this->request->isAJAX()) {
+            $keywordCode = $this->request->getPost('keywordCode');
+
             $request = Services::request();
             $datatable = new ProductsDatatableModel($request);
 
             if ($request->getMethod(true) === 'POST') {
-                $lists = $datatable->getDatatables();
+                $lists = $datatable->getDatatables($keywordCode);
                 $data = [];
                 $no = $request->getPost('start');
 
@@ -76,8 +78,8 @@ class Sale extends BaseController
 
                 $output = [
                     'draw' => $request->getPost('draw'),
-                    'recordsTotal' => $datatable->countAll(),
-                    'recordsFiltered' => $datatable->countFiltered(),
+                    'recordsTotal' => $datatable->countAll($keywordCode),
+                    'recordsFiltered' => $datatable->countFiltered($keywordCode),
                     'data' => $data
                 ];
 

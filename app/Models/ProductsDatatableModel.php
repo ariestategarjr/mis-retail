@@ -23,10 +23,17 @@ class ProductsDatatableModel extends Model
         // $this->dt = $this->db->table($this->table);
     }
 
-    private function getDatatablesQuery()
+    private function getDatatablesQuery($keywordCode)
     {
-        $this->dt = $this->db->table($this->table)
-            ->join('kategori', 'katid=produk_katid');
+        if (strlen($keywordCode) == 0) {
+            $this->dt = $this->db->table($this->table)
+                ->join('kategori', 'katid=produk_katid');
+        } else {
+            $this->dt = $this->db->table($this->table)
+                ->join('kategori', 'katid=produk_katid')
+                ->like('kodebarcode', $keywordCode)
+                ->orlike('namaproduk', $keywordCode);
+        }
 
         $i = 0;
         foreach ($this->column_search as $item) {
@@ -51,26 +58,34 @@ class ProductsDatatableModel extends Model
         }
     }
 
-    public function getDatatables()
+    public function getDatatables($keywordCode)
     {
-        $this->getDatatablesQuery();
+        $this->getDatatablesQuery($keywordCode);
         if ($this->request->getPost('length') != -1)
             $this->dt->limit($this->request->getPost('length'), $this->request->getPost('start'));
         $query = $this->dt->get();
         return $query->getResult();
     }
 
-    public function countFiltered()
+    public function countFiltered($keywordCode)
     {
-        $this->getDatatablesQuery();
+        $this->getDatatablesQuery($keywordCode);
         return $this->dt->countAllResults();
     }
 
-    public function countAll()
+    public function countAll($keywordCode)
     {
         // $tbl_storage = $this->db->table($this->table);
-        $tbl_storage = $this->db->table($this->table)
-            ->join('kategori', 'katid=produk_katid');
+        if (strlen($keywordCode) == 0) {
+            $tbl_storage = $this->db->table($this->table)
+                ->join('kategori', 'katid=produk_katid');
+        } else {
+            $tbl_storage = $this->db->table($this->table)
+                ->join('kategori', 'katid=produk_katid')
+                ->like('kodebarcode', $keywordCode)
+                ->orlike('namaproduk', $keywordCode);
+        }
+
 
         return $tbl_storage->countAllResults();
     }
