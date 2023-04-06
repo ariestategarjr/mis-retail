@@ -133,6 +133,10 @@ class Sale extends BaseController
                     $msg = [
                         'error' => 'Maaf, stok sudah habis.'
                     ];
+                } else if (intval($row['stok_tersedia']) < $amount) {
+                    $msg = [
+                        'error' => 'Maaf, stok tidak mencukupi.'
+                    ];
                 } else {
                     $data = [
                         'detjual_id' => $id,
