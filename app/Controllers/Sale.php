@@ -216,4 +216,24 @@ class Sale extends BaseController
             echo json_encode($msg);
         }
     }
+
+    public function deleteItem()
+    {
+        if ($this->request->isAJAX()) {
+            $id = $this->request->getVar('idItem');
+
+            $tempSale = $this->db->table('temp_penjualan');
+
+            $tempSale->delete([
+                'detjual_id' => $id
+            ]);
+
+            $msg = [
+                'success' => 'Item berhasil dihapus.'
+            ];
+            echo json_encode($msg);
+        } else {
+            exit('Maaf, hapus item gagal.');
+        }
+    }
 }
