@@ -146,6 +146,7 @@
 
                     if (response.success == 'Berhasil') {
                         displaySaleDetail();
+                        reset();
                     }
                 },
                 error: function(xhr, thrownError) {
@@ -175,6 +176,13 @@
                 alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
             }
         });
+    }
+
+    function reset() {
+        $('#kodebarcode').val('');
+        $('#namaproduk').val('');
+        $('#jumlah').val('1');
+        $('#kodebarcode').focus();
     }
 
     $(document).ready(function() {
