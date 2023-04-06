@@ -129,21 +129,27 @@ class Sale extends BaseController
 
                 $row = $query->getRowArray();
 
-                $data = [
-                    'detjual_id' => $id,
-                    'detjual_faktur' => $noFaktur,
-                    'detjual_kodebarcode' => $row['kodebarcode'],
-                    'detjual_hargabeli' => $row['harga_beli'],
-                    'detjual_hargajual' => $row['harga_jual'],
-                    'detjual_jml' => $amount,
-                    'detjual_subtotal' => floatval($row['harga_jual']) * $amount
-                ];
+                if (intval($row['stok_tersedia']) == 0) {
+                    $msg = [
+                        'error' => 'Maaf, stok sudah habis.'
+                    ];
+                } else {
+                    $data = [
+                        'detjual_id' => $id,
+                        'detjual_faktur' => $noFaktur,
+                        'detjual_kodebarcode' => $row['kodebarcode'],
+                        'detjual_hargabeli' => $row['harga_beli'],
+                        'detjual_hargajual' => $row['harga_jual'],
+                        'detjual_jml' => $amount,
+                        'detjual_subtotal' => floatval($row['harga_jual']) * $amount
+                    ];
 
-                $tempSale->insert($data);
+                    $tempSale->insert($data);
 
-                $msg = [
-                    'success' => 'Berhasil'
-                ];
+                    $msg = [
+                        'success' => 'berhasil'
+                    ];
+                }
             }
 
             echo json_encode($msg);

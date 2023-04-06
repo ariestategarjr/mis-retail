@@ -144,7 +144,17 @@
                         });
                     }
 
-                    if (response.success == 'Berhasil') {
+                    if (response.success) {
+                        displaySaleDetail();
+                        reset();
+                    }
+
+                    if (response.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            html: response.error,
+                        });
                         displaySaleDetail();
                         reset();
                     }
