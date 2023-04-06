@@ -150,6 +150,26 @@ class Sale extends BaseController
         }
     }
 
+    public function calculateTotalPay()
+    {
+        if ($this->request->isAJAX()) {
+            $fakturcode = $this->request->getPost('fakturcode');
+
+            $query = $this->db->table('temp_penjualan')
+                ->select('SUM(detjual_subtotal) as totalbayar')
+                ->where('detjual_faktur', $fakturcode)
+                ->get();
+
+            $row = $query->getRowArray();
+
+            $msg = [
+                'data' => number_format($row['totalbayar'], 0, ",", ".")
+            ];
+
+            echo json_encode($msg);
+        }
+    }
+
     public function displaySaleDetail()
     {
         if ($this->request->isAJAX()) {

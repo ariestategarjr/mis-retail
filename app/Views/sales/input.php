@@ -178,16 +178,38 @@
         });
     }
 
+    function calculateTotalPay() {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('sale/calculateTotalPay') ?>",
+            data: {
+                fakturcode: $('#nofaktur').val()
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.data) {
+                    $('#totalbayar').val(response.data);
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+            }
+        });
+    }
+
     function reset() {
         $('#kodebarcode').val('');
         $('#namaproduk').val('');
         $('#jumlah').val('1');
         $('#kodebarcode').focus();
+
+        calculateTotalPay()
     }
 
     $(document).ready(function() {
         $('body').addClass('sidebar-collapse');
         displaySaleDetail();
+        calculateTotalPay();
         $('#kodebarcode').keydown(function(e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
