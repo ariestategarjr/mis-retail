@@ -217,6 +217,7 @@ class Sale extends BaseController
         }
     }
 
+
     public function deleteItem()
     {
         if ($this->request->isAJAX()) {
