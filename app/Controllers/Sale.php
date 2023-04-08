@@ -242,6 +242,41 @@ class Sale extends BaseController
         }
     }
 
+    public function calculateTransaction()
+    {
+        if ($this->request->isAJAX()) {
+            $fakturcode = $this->request->getPost('fakturcode');
+            $datefaktur = $this->request->getPost('datefaktur');
+            $customercode = $this->request->getPost('customercode');
+
+            $tblTempSale = $this->db->table('temp_penjualan');
+            $query = $tblTempSale->getWhere(['detjual_faktur' => $fakturcode]);
+
+            $queryTotal = $this->db->table('temp_penjualan')
+                ->select('SUM(detjual_subtotal) as totalbayar')
+                ->where('detjual_faktur', $fakturcode)
+                ->get();
+            $rowTotal = $queryTotal->getRowArray();
+
+            if ($query->getNumRows() > 0) {
+                $data = [
+                    'fakturcode' => $fakturcode,
+                    'customercode' => $customercode,
+                    'totalpayment' => $rowTotal['totalbayar']
+                ];
+
+                $msg = [
+                    'data' => view('sales/data_payment', $data)
+                ];
+            } else {
+                $msg = [
+                    'error' => 'Transaksi belum ada.'
+                ];
+            }
+            echo json_encode($msg);
+        }
+    }
+
     public function deleteTransaction()
     {
         if ($this->request->isAJAX()) {
@@ -255,6 +290,63 @@ class Sale extends BaseController
                     'success' => 'Transaksi berhasil dihapus.'
                 ];
             }
+            echo json_encode($msg);
+        }
+    }
+
+    public function savePayment()
+    {
+        if ($this->request->isAJAX()) {
+            $fakturcode = $this->request->getPost('fakturcode');
+            $customercode = $this->request->getPost('customercode');
+            $totalbruto = $this->request->getPost('totalbruto');
+            $totalnetto = str_replace(",", "", $this->request->getPost('totalnetto'));
+            $disprecent = str_replace(",", "", $this->request->getPost('disprecent'));
+            $discash = str_replace(",", "", $this->request->getPost('discash'));
+            $amountmoney = str_replace(",", "", $this->request->getPost('amountmoney'));
+            $restmoney = str_replace(",", "", $this->request->getPost('restmoney'));
+
+            $tblSale = $this->db->table('penjualan');
+            $tblTempSale = $this->db->table('temp_penjualan');
+            $tblDetailSale = $this->db->table('penjualan_detail');
+
+            // Insert Tabel Penjualan
+            $dataPenjualan = [
+                'jual_faktur' => $fakturcode,
+                'jual_tgl' => date('Y-m-d H:i:s'),
+                'jual_pelkode' => $customercode,
+                'jual_dispersen' => $disprecent,
+                'jual_disuang' => $discash,
+                'jual_totalkotor' => $totalbruto,
+                'jual_totalbersih' => $totalnetto,
+                'jual_jmluang' => $amountmoney,
+                'jual_sisauang' => $restmoney,
+            ];
+            $tblSale->insert($dataPenjualan);
+
+            // Insert Tabel Detail Penjualan
+            $dataTempSale = $tblTempSale->getWhere(['detjual_faktur' => $fakturcode]);
+
+            $dataSaleDetail = [];
+            foreach ($dataTempSale->getResultArray() as $row) {
+                $dataSaleDetail[] = [
+                    'detjual_faktur' => $row['detjual_faktur'],
+                    'detjual_kodebarcode' => $row['detjual_kodebarcode'],
+                    'detjual_hargabeli' => $row['detjual_hargabeli'],
+                    'detjual_hargajual' => $row['detjual_hargajual'],
+                    'detjual_jml' => $row['detjual_jml'],
+                    'detjual_subtotal' => $row['detjual_subtotal'],
+                ];
+            }
+            $tblDetailSale->insertBatch($dataSaleDetail);
+
+            // Hapus Tabel Temp Penjualan
+            $tblTempSale->emptyTable();
+
+            $msg = [
+                'success' => 'berhasil'
+            ];
+
             echo json_encode($msg);
         }
     }

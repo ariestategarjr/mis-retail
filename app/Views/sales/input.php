@@ -91,6 +91,7 @@
 </div>
 
 <div class="modal-container" style="display: none;"></div>
+<div class="modal-container-payment" style="display: none;"></div>
 
 <script>
     function checkCodeBarcode() {
@@ -216,6 +217,45 @@
         calculateTotalPay()
     }
 
+    function saveTransaction() {
+        $('#btnSimpanTransaksi').click(function(e) {
+            e.preventDefault();
+
+            calculateTransaction();
+        });
+    }
+
+    function calculateTransaction() {
+        let fakturcode = $('#nofaktur').val();
+
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('sale/calculateTransaction') ?>",
+            data: {
+                fakturcode: fakturcode,
+                datefaktur: $('#tanggal').val(),
+                customercode: $('#kopel').val()
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.data) {
+                    $('.modal-container-payment').html(response.data).show();
+                    $('#getModalPayment').modal('show');
+                }
+                if (response.error) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Error',
+                        text: response.error,
+                    })
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+            }
+        });
+    }
+
     function deleteTransaction() {
         $('#btnHapusTransaksi').click(function(e) {
             e.preventDefault();
@@ -263,6 +303,7 @@
 
         displaySaleDetail();
         calculateTotalPay();
+        saveTransaction();
         deleteTransaction();
     });
 </script>
