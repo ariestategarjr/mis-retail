@@ -124,8 +124,8 @@ class Sale extends BaseController
                 $msg = [
                     'data' => 'many'
                 ];
-            } else {
-                $tempSale = $this->db->table('temp_penjualan');
+            } else if ($result == 1) {
+                $tblTempSale = $this->db->table('temp_penjualan');
 
                 $row = $query->getRowArray();
 
@@ -148,12 +148,16 @@ class Sale extends BaseController
                         'detjual_subtotal' => floatval($row['harga_jual']) * $amount
                     ];
 
-                    $tempSale->insert($data);
+                    $tblTempSale->insert($data);
 
                     $msg = [
                         'success' => 'berhasil'
                     ];
                 }
+            } else {
+                $msg = [
+                    'error' => 'Data tidak ditemukan.'
+                ];
             }
 
             echo json_encode($msg);
@@ -185,8 +189,8 @@ class Sale extends BaseController
         if ($this->request->isAJAX()) {
             $fakturcode = $this->request->getVar('fakturcode');
 
-            $tempSale = $this->db->table('temp_penjualan');
-            $query = $tempSale
+            $tblTempSale = $this->db->table('temp_penjualan');
+            $query = $tblTempSale
                 ->select(
                     'detjual_id as id,
                     detjual_kodebarcode as kode,
@@ -223,9 +227,9 @@ class Sale extends BaseController
         if ($this->request->isAJAX()) {
             $id = $this->request->getVar('idItem');
 
-            $tempSale = $this->db->table('temp_penjualan');
+            $tblTempSale = $this->db->table('temp_penjualan');
 
-            $tempSale->delete([
+            $tblTempSale->delete([
                 'detjual_id' => $id
             ]);
 
@@ -235,6 +239,23 @@ class Sale extends BaseController
             echo json_encode($msg);
         } else {
             exit('Maaf, hapus item gagal.');
+        }
+    }
+
+    public function deleteTransaction()
+    {
+        if ($this->request->isAJAX()) {
+            $nofaktur = $this->request->getPost('fakturcode');
+
+            $tblTempSale = $this->db->table('temp_penjualan');
+            $query = $tblTempSale->emptyTable();
+
+            if ($query) {
+                $msg = [
+                    'success' => 'Transaksi berhasil dihapus.'
+                ];
+            }
+            echo json_encode($msg);
         }
     }
 }

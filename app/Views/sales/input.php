@@ -216,16 +216,54 @@
         calculateTotalPay()
     }
 
+    function deleteTransaction() {
+        $('#btnHapusTransaksi').click(function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Apakah Anda yakin ingin',
+                html: `<h4 style="display: inline;">menghapus <strong style="color: #d33;">transaksi</strong> ?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Tunda'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "post",
+                        url: "<?= site_url('sale/deleteTransaction') ?>",
+                        data: {
+                            fakturcode: $('#nofaktur').val()
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.success) {
+                                window.location.reload();
+                            }
+                        },
+                        error: function(xhr, thrownError) {
+                            alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                        }
+                    });
+                }
+            })
+        });
+    }
+
     $(document).ready(function() {
         $('body').addClass('sidebar-collapse');
-        displaySaleDetail();
-        calculateTotalPay();
+
         $('#kodebarcode').keydown(function(e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
                 checkCodeBarcode();
             }
         });
+
+        displaySaleDetail();
+        calculateTotalPay();
+        deleteTransaction();
     });
 </script>
 <?= $this->endSection(); ?>
