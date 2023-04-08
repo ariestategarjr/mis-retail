@@ -15,7 +15,8 @@ class Sale extends BaseController
 
     public function generateFakturCode()
     {
-        $date = $this->request->getPost('tanggal');
+        // $date = $this->request->getPost('tanggal');
+        $date = date('Y-m-d');
         $query = $this->db->query(
             "SELECT MAX(jual_faktur) AS nofaktur FROM penjualan
              WHERE DATE_FORMAT(jual_tgl, '%Y-%m-%d') = '$date'"
@@ -330,6 +331,7 @@ class Sale extends BaseController
             $dataSaleDetail = [];
             foreach ($dataTempSale->getResultArray() as $row) {
                 $dataSaleDetail[] = [
+                    'detjual_id' => $row['detjual_id'],
                     'detjual_faktur' => $row['detjual_faktur'],
                     'detjual_kodebarcode' => $row['detjual_kodebarcode'],
                     'detjual_hargabeli' => $row['detjual_hargabeli'],
