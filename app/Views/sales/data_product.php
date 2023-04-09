@@ -52,6 +52,7 @@
         $('#namaproduk').val(name);
         $('#getModalProduct').on('hidden.bs.modal', function(event) {
             $('#kodebarcode').focus();
+            checkCodeBarcode();
         })
         $('#getModalProduct').modal('hide');
     }
