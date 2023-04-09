@@ -37,35 +37,36 @@
 
 <script>
     function deleteItem(id, name) {
-        Swal.fire({
-            title: 'Apakah Anda yakin ingin',
-            html: `<h4 style="display: inline;">menghapus <strong style="color: #d33;">${name}</strong> ?</h4>`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Tunda'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: "post",
-                    url: "<?= site_url('sale/deleteItem') ?>",
-                    data: {
-                        'idItem': id
-                    },
-                    dataType: "json",
-                    success: function(response) {
-                        if (response.success) {
-                            displaySaleDetail();
-                            reset();
-                        }
-                    },
-                    error: function(xhr, thrownError) {
-                        alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
-                    }
-                });
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('sale/deleteItem') ?>",
+            data: {
+                'idItem': id
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.success) {
+                    displaySaleDetail();
+                    reset();
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
             }
-        })
+        });
+        // Swal.fire({
+        //     title: 'Apakah Anda yakin ingin',
+        //     html: `<h4 style="display: inline;">menghapus <strong style="color: #d33;">${name}</strong> ?</h4>`,
+        //     icon: 'warning',
+        //     showCancelButton: true,
+        //     confirmButtonColor: '#3085d6',
+        //     cancelButtonColor: '#d33',
+        //     confirmButtonText: 'Ya, hapus!',
+        //     cancelButtonText: 'Tunda'
+        // }).then((result) => {
+        //     if (result.isConfirmed) {
+
+        //     }
+        // })
     }
 </script>
