@@ -301,6 +301,20 @@
             }
         });
 
+        $('#jumlah').keydown(function(e) {
+            if (e.keyCode == 27) {
+                e.preventDefault();
+                $('#kodebarcode').focus();
+            }
+        });
+
+        $(this).keydown(function(e) {
+            if (e.keyCode == 27) {
+                e.preventDefault();
+                $('#kodebarcode').focus();
+            }
+        });
+
         displaySaleDetail();
         calculateTotalPay();
         saveTransaction();
