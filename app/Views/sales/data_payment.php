@@ -7,7 +7,7 @@
 <script src="<?= base_url('assets/plugins/autoNumeric.js') ?>"></script>
 
 <!-- Modal -->
-<div class="modal fade" id="getModalPayment" tabindex="-1" aria-labelledby="getModalPaymentLabel" aria-hidden="true">
+<div class="modal fade" id="getModalPayment" tabindex="-1" aria-labelledby="getModalPaymentLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
