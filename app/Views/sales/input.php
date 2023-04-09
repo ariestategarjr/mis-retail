@@ -218,19 +218,11 @@
     }
 
     function saveTransaction() {
-        $('#btnSimpanTransaksi').click(function(e) {
-            e.preventDefault();
-
-            calculateTransaction();
-        });
-    }
-
-    function calculateTransaction() {
         let fakturcode = $('#nofaktur').val();
 
         $.ajax({
             type: "post",
-            url: "<?= site_url('sale/calculateTransaction') ?>",
+            url: "<?= site_url('sale/saveTransaction') ?>",
             data: {
                 fakturcode: fakturcode,
                 datefaktur: $('#tanggal').val(),
@@ -257,37 +249,34 @@
     }
 
     function deleteTransaction() {
-        $('#btnHapusTransaksi').click(function(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Apakah Anda yakin ingin',
-                html: `<h4 style="display: inline;">menghapus <strong style="color: #d33;">transaksi</strong> ?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Tunda'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "post",
-                        url: "<?= site_url('sale/deleteTransaction') ?>",
-                        data: {
-                            fakturcode: $('#nofaktur').val()
-                        },
-                        dataType: "json",
-                        success: function(response) {
-                            if (response.success) {
-                                window.location.reload();
-                            }
-                        },
-                        error: function(xhr, thrownError) {
-                            alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+        Swal.fire({
+            title: 'Apakah Anda yakin ingin',
+            html: `<h4 style="display: inline;">menghapus <strong style="color: #d33;">transaksi</strong> ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Tunda'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "post",
+                    url: "<?= site_url('sale/deleteTransaction') ?>",
+                    data: {
+                        fakturcode: $('#nofaktur').val()
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.reload();
                         }
-                    });
-                }
-            })
+                    },
+                    error: function(xhr, thrownError) {
+                        alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                    }
+                });
+            }
         });
     }
 
@@ -313,12 +302,32 @@
                 e.preventDefault();
                 $('#kodebarcode').focus();
             }
+
+            if (e.keyCode == 115) {
+                e.preventDefault();
+                deleteTransaction();
+            }
+
+            if (e.keyCode == 119) {
+                e.preventDefault();
+                saveTransaction();
+            }
+        });
+
+        $('#btnSimpanTransaksi').click(function(e) {
+            e.preventDefault();
+
+            saveTransaction();
+        });
+
+        $('#btnHapusTransaksi').click(function(e) {
+            e.preventDefault();
+
+            deleteTransaction();
         });
 
         displaySaleDetail();
         calculateTotalPay();
-        saveTransaction();
-        deleteTransaction();
     });
 </script>
 <?= $this->endSection(); ?>

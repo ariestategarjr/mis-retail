@@ -222,7 +222,6 @@ class Sale extends BaseController
         }
     }
 
-
     public function deleteItem()
     {
         if ($this->request->isAJAX()) {
@@ -243,7 +242,7 @@ class Sale extends BaseController
         }
     }
 
-    public function calculateTransaction()
+    public function saveTransaction()
     {
         if ($this->request->isAJAX()) {
             $fakturcode = $this->request->getPost('fakturcode');
