@@ -232,6 +232,9 @@
             success: function(response) {
                 if (response.data) {
                     $('.modal-container-payment').html(response.data).show();
+                    $('#getModalPayment').on('shown.bs.modal', function(event) {
+                        $('#amountmoney').focus();
+                    });
                     $('#getModalPayment').modal('show');
                 }
                 if (response.error) {
