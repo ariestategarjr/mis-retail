@@ -59,4 +59,12 @@
         </p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="<?= site_url('purchase/index') ?>" class="nav-link">
+        <i class="nav-icon fas fa-user"></i>
+        <p>
+            Pembelian
+        </p>
+    </a>
+</li>
 <?= $this->endSection(); ?>
