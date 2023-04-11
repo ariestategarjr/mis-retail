@@ -133,11 +133,11 @@
     <!-- AdminLTE for demo purposes -->
     <script src="<?= base_url('assets') ?>/dist/js/demo.js"></script>
 
-    <script>
+    <!-- <script>
         $(document).ready(function() {
             $('#data-table').DataTable();
         });
-    </script>
+    </script> -->
 </body>
 
 </html>

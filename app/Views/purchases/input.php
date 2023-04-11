@@ -30,12 +30,12 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="napel">Pelanggan</label>
+                    <label for="napel">Penyuplai</label>
                     <div class="input-group mb-3">
-                        <input type="text" value="-" class="form-control form-control-sm" name="napel" id="napel" readonly>
-                        <input type="hidden" name="kopel" id="kopel" value="0">
+                        <input type="text" value="-" class="form-control form-control-sm" name="napen" id="napen" readonly>
+                        <input type="hidden" name="kopen" id="kopen" value="0">
                         <div class="input-group-append">
-                            <button class="btn btn-sm btn-primary" type="button">
+                            <button class="btn btn-sm btn-primary" type="button" id="search-supplier">
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
@@ -96,6 +96,24 @@
 <script>
     $(document).ready(function() {
         $('body').addClass('sidebar-collapse');
+
+        $('#search-supplier').click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "<?= site_url('purchase/getModalSupplier') ?>",
+                dataType: "json",
+                success: function(response) {
+                    if (response.data) {
+                        $('.modal-container').html(response.data).show();
+
+                        $('#getModalSupplier').modal('show');
+                    }
+                },
+                error: function(xhr, thrownError) {
+                    alert(`${xhr.state} ${xhr.responseText} ${thrownError}`);
+                }
+            });
+        });
     });
 </script>
 
