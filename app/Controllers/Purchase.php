@@ -62,6 +62,9 @@ class Purchase extends BaseController
                     $row[] = $list->sup_nama;
                     $row[] = $list->sup_alamat;
                     $row[] = $list->sup_telp;
+                    $row[] = "<button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"selectSupplier(
+                        '{$list->sup_kode}',
+                        '{$list->sup_nama}')\">Pilih</button>";
                     $data[] = $row;
                 }
 
