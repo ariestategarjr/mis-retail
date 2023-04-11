@@ -27,7 +27,7 @@ class Sale extends BaseController
         $lastOrderNumb = substr($data, -4);
         $nextOrderNumb = intval($lastOrderNumb) + 1;
 
-        $formatFakturCode = 'FK' . date('dmy', strtotime($date)) . sprintf('%04s', $nextOrderNumb);
+        $formatFakturCode = 'FS' . date('dmy', strtotime($date)) . sprintf('%04s', $nextOrderNumb);
 
         return $formatFakturCode;
     }
