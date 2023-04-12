@@ -94,25 +94,39 @@
 <div class="modal-container-payment" style="display: none;"></div>
 
 <script>
+    function getModalSupplier() {
+        $.ajax({
+            url: "<?= site_url('purchase/getModalSupplier') ?>",
+            dataType: "json",
+            success: function(response) {
+                if (response.data) {
+                    $('.modal-container').html(response.data).show();
+
+                    $('#getModalSupplier').modal('show');
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(`${xhr.state} ${xhr.responseText} ${thrownError}`);
+            }
+        });
+    }
+
+    function checkCodeBarcode() {
+
+    }
+
     $(document).ready(function() {
         $('body').addClass('sidebar-collapse');
 
         $('#search-supplier').click(function(e) {
             e.preventDefault();
-            $.ajax({
-                url: "<?= site_url('purchase/getModalSupplier') ?>",
-                dataType: "json",
-                success: function(response) {
-                    if (response.data) {
-                        $('.modal-container').html(response.data).show();
+            getModalSupplier();
+        });
 
-                        $('#getModalSupplier').modal('show');
-                    }
-                },
-                error: function(xhr, thrownError) {
-                    alert(`${xhr.state} ${xhr.responseText} ${thrownError}`);
-                }
-            });
+        $('#kodebarcode').keydown(function(e) {
+            if (e.keyCode === 13) {
+                alert('ok');
+            }
         });
     });
 </script>
