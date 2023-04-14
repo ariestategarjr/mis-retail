@@ -83,8 +83,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12 dataDetailPenjualan">
-                <!-- berisi Tabel Penjualan -->
+            <div class="col-md-12 dataDetailPembelian">
+                <!-- berisi Tabel Pembelian -->
             </div>
         </div>
     </div>
@@ -131,6 +131,28 @@
         }
     }
 
+    function displayPurchaseDetail() {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('purchase/displayPurchaseDetail') ?>",
+            data: {
+                fakturcode: $('#nofaktur').val()
+            },
+            dataType: "json",
+            beforeSend: function() {
+                $('.dataDetailPembelian').html('<i class="fa fa-spin fa-spinner"></i>');
+            },
+            success: function(response) {
+                if (response.data) {
+                    $('.dataDetailPembelian').html(response.data);
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+            }
+        });
+    }
+
     $(document).ready(function() {
         $('body').addClass('sidebar-collapse');
 
@@ -145,6 +167,8 @@
                 checkCodeBarcode();
             }
         });
+
+        displayPurchaseDetail();
     });
 </script>
 

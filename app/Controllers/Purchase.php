@@ -145,4 +145,41 @@ class Purchase extends BaseController
 
         return view('purchases/input', $data);
     }
+
+    public function displayPurchaseDetail()
+    {
+        if ($this->request->isAJAX()) {
+            $fakturcode = $this->request->getVar('fakturcode');
+
+            $tblTempPurchase = $this->db->table('temp_pembelian');
+            $query = $tblTempPurchase
+                ->select(
+                    'detbeli_id as id,
+                    detbeli_kodebarcode as kode,
+                    namaproduk,
+                    detbeli_hargajual as hargajual,
+                    detbeli_jml as jml,
+                    detbeli_subtotal as subtotal'
+                )->join(
+                    'produk',
+                    'detbeli_kodebarcode=kodebarcode'
+                )->where(
+                    'detbeli_faktur',
+                    $fakturcode
+                )->orderby(
+                    'detbeli_id',
+                    'asc'
+                );
+
+            $data = [
+                'dataPurchaseDetail' => $query->get()
+            ];
+
+            $msg = [
+                'data' => view('purchases/detail', $data)
+            ];
+
+            echo json_encode($msg);
+        }
+    }
 }
