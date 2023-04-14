@@ -80,6 +80,63 @@ class Purchase extends BaseController
         }
     }
 
+    public function getModalProduct()
+    {
+        if ($this->request->isAJAX()) {
+            $keyword = $this->request->getPost('keyword');
+
+            $data = [
+                'keyword' => $keyword
+            ];
+
+            $msg = [
+                'modal' => view('sales/data_product', $data)
+            ];
+
+            echo json_encode($msg);
+        }
+    }
+
+    public function getListDataProduct()
+    {
+        if ($this->request->isAJAX()) {
+            $keywordCode = $this->request->getPost('keywordCode');
+
+            $request = Services::request();
+            $datatable = new ProductsDatatableModel($request);
+
+            if ($request->getMethod(true) === 'POST') {
+                $lists = $datatable->getDatatables($keywordCode);
+                $data = [];
+                $no = $request->getPost('start');
+
+                foreach ($lists as $list) {
+                    $no++;
+                    $row = [];
+                    $row[] = $no;
+                    $row[] = $list->kodebarcode;
+                    $row[] = $list->namaproduk;
+                    $row[] = $list->katnama;
+                    $row[] = number_format($list->stok_tersedia, 0, ',', '.');
+                    $row[] = number_format($list->harga_jual, 0, ',', '.');
+                    $row[] = "<button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"selectProduct(
+                              '{$list->kodebarcode}',
+                              '{$list->namaproduk}')\">Pilih</button>";
+                    $data[] = $row;
+                }
+
+                $output = [
+                    'draw' => $request->getPost('draw'),
+                    'recordsTotal' => $datatable->countAll($keywordCode),
+                    'recordsFiltered' => $datatable->countFiltered($keywordCode),
+                    'data' => $data
+                ];
+
+                echo json_encode($output);
+            }
+        }
+    }
+
     public function input()
     {
         $data = [

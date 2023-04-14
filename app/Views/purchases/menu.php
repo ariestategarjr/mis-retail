@@ -14,12 +14,12 @@
             <div class="inner">
                 <h3>Input</h3>
 
-                <p>Kasir</p>
+                <p>Pembelian</p>
             </div>
             <div class="icon">
                 <i class="fas fa-cash-register"></i>
             </div>
-            <a href="<?= site_url('purchase/input') ?>" class="small-box-footer">Input Kasir<i class="fas fa-arrow-circle-right"></i></a>
+            <a href="<?= site_url('purchase/input') ?>" class="small-box-footer">Input Pembelian<i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
