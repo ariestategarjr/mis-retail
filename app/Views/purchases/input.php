@@ -111,26 +111,6 @@
         });
     }
 
-    function checkCodeBarcode() {
-        let code = $('#kodebarcode').val();
-
-        if (code.length == 0) {
-            $.ajax({
-                url: "<?= site_url('purchase/getModalProduct') ?>",
-                dataType: "json",
-                success: function(response) {
-                    if (response.modal) {
-                        $('.modal-container').html(response.modal).show();
-                        $('#getModalProduct').modal('show');
-                    }
-                },
-                error: function(xhr, thrownError) {
-                    alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
-                }
-            });
-        }
-    }
-
     function displayPurchaseDetail() {
         $.ajax({
             type: "post",
@@ -159,13 +139,6 @@
         $('#search-supplier').click(function(e) {
             e.preventDefault();
             getModalSupplier();
-        });
-
-
-        $('#kodebarcode').keydown(function(e) {
-            if (e.keyCode === 13) {
-                checkCodeBarcode();
-            }
         });
 
         displayPurchaseDetail();
