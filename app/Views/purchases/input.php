@@ -2,7 +2,7 @@
 <?= $this->extend('layout/menu'); ?>
 
 <?= $this->section('title'); ?>
-<h3>Input Kasir</h3>
+<h3>Input Pembelian</h3>
 <?= $this->endSection(); ?>
 
 
@@ -94,6 +94,79 @@
 <div class="modal-container-payment" style="display: none;"></div>
 
 <script>
+    function checkCodeBarcode() {
+        let code = $('#kodebarcode').val();
+
+        if (code.length == 0) {
+            $.ajax({
+                url: "<?= site_url('purchase/getModalProduct') ?>",
+                dataType: "json",
+                success: function(response) {
+                    if (response.modal) {
+                        $('.modal-container').html(response.modal).show();
+                        $('#getModalProduct').modal('show');
+                    }
+                },
+                error: function(xhr, thrownError) {
+                    alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                }
+            });
+        } else {
+            const uniqueId = 'BL' + Math.random().toString(8).substring(2, 5);
+            $.ajax({
+                type: "post",
+                url: "<?= site_url('purchase/saveTemp') ?>",
+                data: {
+                    id: uniqueId,
+                    codeBarcode: code,
+                    nameProduct: $('#namaproduk').val(),
+                    amount: $('#jumlah').val(),
+                    noFaktur: $('#nofaktur').val()
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.data == 'many') {
+                        $.ajax({
+                            type: "post",
+                            url: "<?= site_url('purchase/getModalProduct') ?>",
+                            data: {
+                                keyword: code
+                            },
+                            dataType: "json",
+                            success: function(response) {
+                                if (response.modal) {
+                                    $('.modal-container').html(response.modal).show();
+                                    $('#getModalProduct').modal('show');
+                                }
+                            },
+                            error: function(xhr, thrownError) {
+                                alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                            }
+                        });
+                    }
+
+                    if (response.success) {
+                        displayPurchaseDetail();
+                        reset();
+                    }
+
+                    if (response.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            html: response.error,
+                        });
+                        displayPurchaseDetail();
+                        reset();
+                    }
+                },
+                error: function(xhr, thrownError) {
+                    alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                }
+            });
+        }
+    }
+
     function getModalSupplier() {
         $.ajax({
             url: "<?= site_url('purchase/getModalSupplier') ?>",
@@ -133,12 +206,28 @@
         });
     }
 
+    function reset() {
+        $('#kodebarcode').val('');
+        $('#namaproduk').val('');
+        $('#jumlah').val('1');
+        $('#kodebarcode').focus();
+
+        calculateTotalPay()
+    }
+
     $(document).ready(function() {
         $('body').addClass('sidebar-collapse');
 
         $('#search-supplier').click(function(e) {
             e.preventDefault();
             getModalSupplier();
+        });
+
+        $('#kodebarcode').keydown(function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                checkCodeBarcode();
+            }
         });
 
         displayPurchaseDetail();

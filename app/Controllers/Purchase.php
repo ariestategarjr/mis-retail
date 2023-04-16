@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\SuppliersDatatableModel;
+use App\Models\ProductsDatatableModel;
 use Config\Services;
 
 class Purchase extends BaseController
@@ -80,6 +81,63 @@ class Purchase extends BaseController
         }
     }
 
+    public function getModalProduct()
+    {
+        if ($this->request->isAJAX()) {
+            $keyword = $this->request->getPost('keyword');
+
+            $data = [
+                'keyword' => $keyword
+            ];
+
+            $msg = [
+                'modal' => view('purchases/data_product', $data)
+            ];
+
+            echo json_encode($msg);
+        }
+    }
+
+    public function getListDataProduct()
+    {
+        if ($this->request->isAJAX()) {
+            $keywordCode = $this->request->getPost('keywordCode');
+
+            $request = Services::request();
+            $datatable = new ProductsDatatableModel($request);
+
+            if ($request->getMethod(true) === 'POST') {
+                $lists = $datatable->getDatatables($keywordCode);
+                $data = [];
+                $no = $request->getPost('start');
+
+                foreach ($lists as $list) {
+                    $no++;
+                    $row = [];
+                    $row[] = $no;
+                    $row[] = $list->kodebarcode;
+                    $row[] = $list->namaproduk;
+                    $row[] = $list->katnama;
+                    $row[] = number_format($list->stok_tersedia, 0, ',', '.');
+                    $row[] = number_format($list->harga_jual, 0, ',', '.');
+                    $row[] = "<button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"selectProduct(
+                              '{$list->kodebarcode}',
+                              '{$list->namaproduk}')\">Pilih</button>";
+                    $data[] = $row;
+                }
+
+                $output = [
+                    'draw' => $request->getPost('draw'),
+                    'recordsTotal' => $datatable->countAll($keywordCode),
+                    'recordsFiltered' => $datatable->countFiltered($keywordCode),
+                    'data' => $data
+                ];
+
+                echo json_encode($output);
+            }
+        }
+    }
+
     public function input()
     {
         $data = [
@@ -87,6 +145,76 @@ class Purchase extends BaseController
         ];
 
         return view('purchases/input', $data);
+    }
+
+    public function saveTemp()
+    {
+        if ($this->request->isAJAX()) {
+            $id = $this->request->getPost('id');
+            $codeBarcode = $this->request->getPost('codeBarcode');
+            $nameProduct = $this->request->getPost('nameProduct');
+            $amount = $this->request->getPost('amount');
+            $noFaktur = $this->request->getPost('noFaktur');
+
+            // jika produk ada di tabel produk
+            if (strlen($nameProduct) > 0) {
+                $query = $this->db->table('produk')
+                    ->where('kodebarcode', $codeBarcode)
+                    ->where('namaproduk', $nameProduct)
+                    ->get();
+            }
+            // jika produk tidak ada di tabel produk
+            else {
+                $query = $this->db->table('produk')
+                    ->like('kodebarcode', $codeBarcode)
+                    ->orlike('namaproduk', $codeBarcode)
+                    ->get();
+            }
+
+            $result = $query->getNumRows();
+
+            if ($result > 1) {
+                $msg = [
+                    'data' => 'many'
+                ];
+            } else if ($result == 1) {
+                $tblTempSale = $this->db->table('temp_pembelian');
+
+                $row = $query->getRowArray();
+
+                if (intval($row['stok_tersedia']) == 0) {
+                    $msg = [
+                        'error' => 'Maaf, stok sudah habis.'
+                    ];
+                } else if (intval($row['stok_tersedia']) < $amount) {
+                    $msg = [
+                        'error' => 'Maaf, stok tidak mencukupi.'
+                    ];
+                } else {
+                    $data = [
+                        'detbeli_id' => $id,
+                        'detbeli_faktur' => $noFaktur,
+                        'detbeli_kodebarcode' => $row['kodebarcode'],
+                        'detbeli_hargabeli' => $row['harga_beli'],
+                        'detbeli_hargajual' => $row['harga_jual'],
+                        'detbeli_jml' => $amount,
+                        'detbeli_subtotal' => floatval($row['harga_jual']) * $amount
+                    ];
+
+                    $tblTempSale->insert($data);
+
+                    $msg = [
+                        'success' => 'berhasil'
+                    ];
+                }
+            } else {
+                $msg = [
+                    'error' => 'Data tidak ditemukan.'
+                ];
+            }
+
+            echo json_encode($msg);
+        }
     }
 
     public function displayPurchaseDetail()
