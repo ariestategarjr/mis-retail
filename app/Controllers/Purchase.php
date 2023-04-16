@@ -253,4 +253,24 @@ class Purchase extends BaseController
             echo json_encode($msg);
         }
     }
+
+    public function deleteItem()
+    {
+        if ($this->request->isAJAX()) {
+            $id = $this->request->getVar('idItem');
+
+            $tblTempSale = $this->db->table('temp_pembelian');
+
+            $tblTempSale->delete([
+                'detbeli_id' => $id
+            ]);
+
+            $msg = [
+                'success' => 'Item berhasil dihapus.'
+            ];
+            echo json_encode($msg);
+        } else {
+            exit('Maaf, hapus item gagal.');
+        }
+    }
 }
