@@ -273,4 +273,39 @@ class Purchase extends BaseController
             exit('Maaf, hapus item gagal.');
         }
     }
+
+    public function saveTransaction()
+    {
+        if ($this->request->isAJAX()) {
+            $fakturcode = $this->request->getPost('fakturcode');
+            $datefaktur = $this->request->getPost('datefaktur');
+            $suppliercode = $this->request->getPost('suppliercode');
+
+            $tblTempPurchase = $this->db->table('temp_pembelian');
+            $query = $tblTempPurchase->getWhere(['detbeli_faktur' => $fakturcode]);
+
+            $queryTotal = $this->db->table('temp_pembelian')
+                ->select('SUM(detbeli_subtotal) as totalbayar')
+                ->where('detbeli_faktur', $fakturcode)
+                ->get();
+            $rowTotal = $queryTotal->getRowArray();
+
+            if ($query->getNumRows() > 0) {
+                $data = [
+                    'fakturcode' => $fakturcode,
+                    'suppliercode' => $suppliercode,
+                    'totalpayment' => $rowTotal['totalbayar']
+                ];
+
+                $msg = [
+                    'data' => view('purchases/data_payment', $data)
+                ];
+            } else {
+                $msg = [
+                    'error' => 'Transaksi belum ada.'
+                ];
+            }
+            echo json_encode($msg);
+        }
+    }
 }

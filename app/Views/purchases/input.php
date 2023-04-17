@@ -215,6 +215,40 @@
         calculateTotalPay()
     }
 
+    function saveTransaction() {
+        let fakturcode = $('#nofaktur').val();
+
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('purchase/saveTransaction') ?>",
+            data: {
+                fakturcode: fakturcode,
+                datefaktur: $('#tanggal').val(),
+                suppliercode: $('#kopen').val()
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.data) {
+                    $('.modal-container-payment').html(response.data).show();
+                    $('#getModalPayment').on('shown.bs.modal', function(event) {
+                        $('#amountmoney').focus();
+                    });
+                    $('#getModalPayment').modal('show');
+                }
+                if (response.error) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Error',
+                        text: response.error,
+                    })
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+            }
+        });
+    }
+
     $(document).ready(function() {
         $('body').addClass('sidebar-collapse');
 
@@ -228,6 +262,12 @@
                 e.preventDefault();
                 checkCodeBarcode();
             }
+        });
+
+        $('#btnSimpanTransaksi').click(function(e) {
+            e.preventDefault();
+
+            saveTransaction();
         });
 
         displayPurchaseDetail();
