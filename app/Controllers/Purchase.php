@@ -19,8 +19,8 @@ class Purchase extends BaseController
         // $date = $this->request->getPost('tanggal');
         $date = date('Y-m-d');
         $query = $this->db->query(
-            "SELECT MAX(jual_faktur) AS nofaktur FROM penjualan
-             WHERE DATE_FORMAT(jual_tgl, '%Y-%m-%d') = '$date'"
+            "SELECT MAX(beli_faktur) AS nofaktur FROM pembelian
+             WHERE DATE_FORMAT(beli_tgl, '%Y-%m-%d') = '$date'"
         );
         $result = $query->getRowArray();
         $data = $result['nofaktur'];
@@ -178,7 +178,7 @@ class Purchase extends BaseController
                     'data' => 'many'
                 ];
             } else if ($result == 1) {
-                $tblTempSale = $this->db->table('temp_pembelian');
+                $tblTempPurchase = $this->db->table('temp_pembelian');
 
                 $row = $query->getRowArray();
 
@@ -201,7 +201,7 @@ class Purchase extends BaseController
                         'detbeli_subtotal' => floatval($row['harga_jual']) * $amount
                     ];
 
-                    $tblTempSale->insert($data);
+                    $tblTempPurchase->insert($data);
 
                     $msg = [
                         'success' => 'berhasil'
@@ -212,6 +212,26 @@ class Purchase extends BaseController
                     'error' => 'Data tidak ditemukan.'
                 ];
             }
+
+            echo json_encode($msg);
+        }
+    }
+
+    public function calculateTotalPay()
+    {
+        if ($this->request->isAJAX()) {
+            $fakturcode = $this->request->getPost('fakturcode');
+
+            $query = $this->db->table('temp_pembelian')
+                ->select('SUM(detbeli_subtotal) as totalbayar')
+                ->where('detbeli_faktur', $fakturcode)
+                ->get();
+
+            $row = $query->getRowArray();
+
+            $msg = [
+                'data' => number_format($row['totalbayar'], 0, ",", ".")
+            ];
 
             echo json_encode($msg);
         }
@@ -259,9 +279,9 @@ class Purchase extends BaseController
         if ($this->request->isAJAX()) {
             $id = $this->request->getVar('idItem');
 
-            $tblTempSale = $this->db->table('temp_pembelian');
+            $tblTempPurchase = $this->db->table('temp_pembelian');
 
-            $tblTempSale->delete([
+            $tblTempPurchase->delete([
                 'detbeli_id' => $id
             ]);
 
@@ -305,6 +325,81 @@ class Purchase extends BaseController
                     'error' => 'Transaksi belum ada.'
                 ];
             }
+            echo json_encode($msg);
+        }
+    }
+
+    public function deleteTransaction()
+    {
+        if ($this->request->isAJAX()) {
+            $nofaktur = $this->request->getPost('fakturcode');
+
+            $tblTempSale = $this->db->table('temp_pembelian');
+            $query = $tblTempSale->emptyTable();
+
+            if ($query) {
+                $msg = [
+                    'success' => 'Transaksi berhasil dihapus.'
+                ];
+            }
+            echo json_encode($msg);
+        }
+    }
+
+    public function savePayment()
+    {
+        if ($this->request->isAJAX()) {
+            $fakturcode = $this->request->getPost('fakturcode');
+            $suppliercode = $this->request->getPost('suppliercode');
+            $totalbruto = $this->request->getPost('totalbruto');
+            $totalnetto = str_replace(",", "", $this->request->getPost('totalnetto'));
+            $disprecent = str_replace(",", "", $this->request->getPost('disprecent'));
+            $discash = str_replace(",", "", $this->request->getPost('discash'));
+            $amountmoney = str_replace(",", "", $this->request->getPost('amountmoney'));
+            $restmoney = str_replace(",", "", $this->request->getPost('restmoney'));
+
+            $tblPurchase = $this->db->table('pembelian');
+            $tblTempPurchase = $this->db->table('temp_pembelian');
+            $tblDetailPurchase = $this->db->table('pembelian_detail');
+
+            // Insert Tabel Pembelian
+            $dataPembelian = [
+                'beli_faktur' => $fakturcode,
+                'beli_tgl' => date('Y-m-d H:i:s'),
+                'beli_supkode' => $suppliercode,
+                'beli_dispersen' => $disprecent,
+                'beli_disuang' => $discash,
+                'beli_totalkotor' => $totalbruto,
+                'beli_totalbersih' => $totalnetto,
+                'beli_jmluang' => $amountmoney,
+                'beli_sisauang' => $restmoney,
+            ];
+            $tblPurchase->insert($dataPembelian);
+
+            // Insert Tabel Detail Pembelian
+            $dataTempPurchase = $tblTempPurchase->getWhere(['detbeli_faktur' => $fakturcode]);
+
+            $dataPurchaseDetail = [];
+            foreach ($dataTempPurchase->getResultArray() as $row) {
+                $dataPurchaseDetail[] = [
+                    'detbeli_id' => $row['detbeli_id'],
+                    'detbeli_faktur' => $row['detbeli_faktur'],
+                    'detbeli_kodebarcode' => $row['detbeli_kodebarcode'],
+                    'detbeli_hargabeli' => $row['detbeli_hargabeli'],
+                    'detbeli_hargabeli' => $row['detbeli_hargabeli'],
+                    'detbeli_jml' => $row['detbeli_jml'],
+                    'detbeli_subtotal' => $row['detbeli_subtotal'],
+                ];
+            }
+            $tblDetailPurchase->insertBatch($dataPurchaseDetail);
+
+            // Hapus Tabel Temp Penjualan
+            $tblTempPurchase->emptyTable();
+
+            $msg = [
+                'success' => 'berhasil'
+            ];
+
             echo json_encode($msg);
         }
     }

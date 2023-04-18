@@ -16,10 +16,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?= form_open('sale/savePayment', ['id' => 'addFormPayment']) ?>
+            <?= form_open('purchase/savePayment', ['id' => 'addFormPayment']) ?>
             <div class="modal-body">
                 <input type="hidden" name="fakturcode" value="<?= $fakturcode ?>">
-                <input type="hidden" name="customercode" value="<?= $suppliercode ?>">
+                <input type="hidden" name="suppliercode" value="<?= $suppliercode ?>">
                 <input type="hidden" name="totalbruto" id="totalbruto" value="<?= $totalpayment ?>">
 
                 <div class="row">
