@@ -19,10 +19,10 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="nofaktur">Faktur</label>
-                    <input type="text" class="form-control form-control-sm" style="color:red;font-weight:bold;" name="nofaktur" id="nofaktur" readonly value="<?= $kodebarcode ?>">
+                    <input type="text" class="form-control form-control-sm" style="color:red;font-weight:bold;" name="nofaktur" id="nofaktur" readonly value="<?= $faktur ?>">
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label for="tanggal">Tanggal</label>
                     <input type="date" class="form-control form-control-sm" name="tanggal" id="tanggal" readonly value="<?= date('Y-m-d'); ?>">
@@ -42,7 +42,18 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="tanggal">Jenis Bayar</label>
+                    <!-- <input type="date" class="form-control form-control-sm" name="tanggal" id="tanggal"> -->
+                    <select name="jenisbayar" id="jenisbayar" class="form-control form-control-sm">
+                        <?php foreach ($jenisbayar as $value) : ?>
+                            <option value="<?= $value ?>"><?= $value ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
                 <div class="form-group">
                     <label for="tanggal">Aksi</label>
                     <div class="input-group">

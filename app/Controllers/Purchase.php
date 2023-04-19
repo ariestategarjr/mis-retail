@@ -140,8 +140,13 @@ class Purchase extends BaseController
 
     public function input()
     {
+        $type = $this->db->query("SHOW COLUMNS FROM pembelian WHERE Field = 'beli_jenisbayar'")->getRowArray()['Type'];
+        preg_match("/^enum\(\'(.*)\'\)$/", $type, $matches);
+        $enum = explode("','", $matches[1]);
+
         $data = [
-            'kodebarcode' => $this->generateFakturCode()
+            'faktur' => $this->generateFakturCode(),
+            'jenisbayar' => $enum
         ];
 
         return view('purchases/input', $data);
