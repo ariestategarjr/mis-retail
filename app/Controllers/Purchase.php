@@ -188,12 +188,42 @@ class Purchase extends BaseController
                 $row = $query->getRowArray();
 
                 if (intval($row['stok_tersedia']) == 0) {
+                    // $msg = [
+                    //     'error' => 'Maaf, stok sudah habis.'
+                    // ];
+                    $data = [
+                        'detbeli_id' => $id,
+                        'detbeli_faktur' => $noFaktur,
+                        'detbeli_kodebarcode' => $row['kodebarcode'],
+                        'detbeli_hargabeli' => $row['harga_beli'],
+                        'detbeli_hargajual' => $row['harga_jual'],
+                        'detbeli_jml' => $amount,
+                        'detbeli_subtotal' => floatval($row['harga_jual']) * $amount
+                    ];
+
+                    $tblTempPurchase->insert($data);
+
                     $msg = [
-                        'error' => 'Maaf, stok sudah habis.'
+                        'success' => 'berhasil'
                     ];
                 } else if (intval($row['stok_tersedia']) < $amount) {
+                    // $msg = [
+                    //     'error' => 'Maaf, stok tidak mencukupi.'
+                    // ];
+                    $data = [
+                        'detbeli_id' => $id,
+                        'detbeli_faktur' => $noFaktur,
+                        'detbeli_kodebarcode' => $row['kodebarcode'],
+                        'detbeli_hargabeli' => $row['harga_beli'],
+                        'detbeli_hargajual' => $row['harga_jual'],
+                        'detbeli_jml' => $amount,
+                        'detbeli_subtotal' => floatval($row['harga_jual']) * $amount
+                    ];
+
+                    $tblTempPurchase->insert($data);
+
                     $msg = [
-                        'error' => 'Maaf, stok tidak mencukupi.'
+                        'success' => 'berhasil'
                     ];
                 } else {
                     $data = [
