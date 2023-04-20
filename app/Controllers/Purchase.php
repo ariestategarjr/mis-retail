@@ -438,4 +438,9 @@ class Purchase extends BaseController
             echo json_encode($msg);
         }
     }
+
+    public function data()
+    {
+        return view('purchases/data');
+    }
 }
