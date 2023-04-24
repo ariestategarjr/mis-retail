@@ -34,7 +34,7 @@
             <div class="icon">
                 <i class="fas fa-chart-bar"></i>
             </div>
-            <a href="<?= site_url('purchase/data') ?>" class="small-box-footer">Data Pembelian<i class="fas fa-arrow-circle-right"></i></a>
+            <a href="<?= site_url('purchase/report') ?>" class="small-box-footer">Data Pembelian<i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->

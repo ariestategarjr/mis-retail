@@ -2,7 +2,7 @@
 
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Area Chart</h3>
+        <h3 class="card-title">Statistik Penjualan per Bulan</h3>
     </div>
     <div class="card-body">
         <div class="chart">
@@ -19,6 +19,19 @@
     </div>
     <!-- /.card-body -->
 </div>
+
+<?php
+$tanggal = "";
+$totalharga = "";
+
+foreach ($dates as $row) :
+    $tgl = $row->tgl;
+    $tanggal .= "'$tgl'" . ",";
+
+    $total = $row->total;
+    $totalharga .= "'$total'" . ",";
+endforeach;
+?>
 
 <!-- jQuery -->
 <script src="<?= base_url('assets') ?>/plugins/jquery/jquery.min.js"></script>
@@ -47,30 +60,18 @@
         var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
 
         var areaChartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: [<?= $tanggal ?>],
             datasets: [{
-                    label: 'Digital Goods',
-                    backgroundColor: 'rgba(60,141,188,0.9)',
-                    borderColor: 'rgba(60,141,188,0.8)',
-                    pointRadius: false,
-                    pointColor: '#3b8bba',
-                    pointStrokeColor: 'rgba(60,141,188,1)',
-                    pointHighlightFill: '#fff',
-                    pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data: [28, 48, 40, 19, 86, 27, 90]
-                },
-                {
-                    label: 'Electronics',
-                    backgroundColor: 'rgba(210, 214, 222, 1)',
-                    borderColor: 'rgba(210, 214, 222, 1)',
-                    pointRadius: false,
-                    pointColor: 'rgba(210, 214, 222, 1)',
-                    pointStrokeColor: '#c1c7d1',
-                    pointHighlightFill: '#fff',
-                    pointHighlightStroke: 'rgba(220,220,220,1)',
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                },
-            ]
+                label: 'Total Harga',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: [<?= $totalharga ?>]
+            }]
         }
 
         var areaChartOptions = {
@@ -96,6 +97,7 @@
         // This will get the first returned node in the jQuery collection.
         new Chart(areaChartCanvas, {
             type: 'line',
+            responsive: true,
             data: areaChartData,
             options: areaChartOptions
         })

@@ -439,8 +439,8 @@ class Purchase extends BaseController
         }
     }
 
-    public function data()
+    public function report()
     {
-        return view('purchases/data');
+        return view('purchases/report');
     }
 }

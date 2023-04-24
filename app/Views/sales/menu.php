@@ -34,7 +34,7 @@
             <div class="icon">
                 <i class="fas fa-chart-bar"></i>
             </div>
-            <a href="<?= site_url('sale/data') ?>" class="small-box-footer">Data Penjualan<i class="fas fa-arrow-circle-right"></i></a>
+            <a href="<?= site_url('sale/report') ?>" class="small-box-footer">Data Penjualan<i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
