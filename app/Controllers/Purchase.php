@@ -119,7 +119,7 @@ class Purchase extends BaseController
                     $row[] = $list->namaproduk;
                     $row[] = $list->katnama;
                     $row[] = number_format($list->stok_tersedia, 0, ',', '.');
-                    $row[] = number_format($list->harga_jual, 0, ',', '.');
+                    $row[] = number_format($list->harga_beli, 0, ',', '.');
                     $row[] = "<button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"selectProduct(
                               '{$list->kodebarcode}',
                               '{$list->namaproduk}')\">Pilih</button>";
@@ -196,7 +196,7 @@ class Purchase extends BaseController
                         'detbeli_faktur' => $noFaktur,
                         'detbeli_kodebarcode' => $row['kodebarcode'],
                         'detbeli_hargabeli' => $row['harga_beli'],
-                        'detbeli_hargajual' => $row['harga_jual'],
+                        'detbeli_hargabeli' => $row['harga_jual'],
                         'detbeli_jml' => $amount,
                         'detbeli_subtotal' => floatval($row['harga_jual']) * $amount
                     ];
@@ -442,5 +442,24 @@ class Purchase extends BaseController
     public function report()
     {
         return view('purchases/report');
+    }
+
+    public function getChart()
+    {
+        $date = $this->request->getPost('date');
+
+        $db = \Config\Database::connect();
+
+        $query = $db->query("SELECT beli_tgl AS tgl, beli_totalbersih AS total FROM `pembelian` WHERE DATE_FORMAT(beli_tgl, '%Y-%m-%d') = '2023-04-24' ORDER BY beli_tgl ASC");
+
+        $data = [
+            'dates' => $query->getResult()
+        ];
+
+        $msg = [
+            'data' => view('purchases/data_chart', $data)
+        ];
+
+        echo json_encode($msg);
     }
 }

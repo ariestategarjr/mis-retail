@@ -363,7 +363,7 @@ class Sale extends BaseController
 
         $db = \Config\Database::connect();
 
-        $query = $db->query("SELECT jual_tgl AS tgl, jual_totalbersih AS total FROM `penjualan` WHERE DATE_FORMAT(jual_tgl, '%Y-%m') = '2023-04' ORDER BY jual_tgl ASC");
+        $query = $db->query("SELECT jual_tgl AS tgl, jual_totalbersih AS total FROM `penjualan` WHERE DATE_FORMAT(jual_tgl, '%Y-%m-%d') = '2023-04-24' ORDER BY jual_tgl ASC");
 
         $data = [
             'dates' => $query->getResult()

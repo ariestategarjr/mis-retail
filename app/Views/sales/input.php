@@ -2,7 +2,7 @@
 <?= $this->extend('layout/menu'); ?>
 
 <?= $this->section('title'); ?>
-<h3>Input Kasir</h3>
+<h3>Input Penjualan</h3>
 <?= $this->endSection(); ?>
 
 
