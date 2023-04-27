@@ -5,6 +5,11 @@
 <h3>Manajemen Data Penyuplai</h3>
 <?= $this->endSection(); ?>
 
+<!-- DataTables -->
+<link rel="stylesheet" href="<?= base_url('assets') ?>/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="<?= base_url('assets') ?>/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="<?= base_url('assets') ?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
 
 <?= $this->section('content'); ?>
 <div class="card">
@@ -14,7 +19,7 @@
         </button>
     </div>
     <div class="card-body">
-        <table class="table table-sm table-striped" id="data-table">
+        <table class="table table-sm table-striped" id="supplier-table">
             <thead>
                 <tr>
                     <th>No</th>
@@ -52,6 +57,14 @@
 </div>
 
 <div class="modal-container" style="display: none;"></div>
+
+
+<!-- DataTables  & Plugins -->
+<script src="<?= base_url('assets') ?>/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?= base_url('assets') ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="<?= base_url('assets') ?>/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?= base_url('assets') ?>/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
 
 <script>
     function deleteAlert(id, name) {
@@ -93,6 +106,10 @@
             }
         })
     }
+
+    $(document).ready(function() {
+        $('#supplier-table').DataTable();
+    });
 </script>
 
 <?= $this->endSection(); ?>
