@@ -35,7 +35,7 @@
                         <input type="text" value="-" class="form-control form-control-sm" name="napel" id="napel" readonly>
                         <input type="hidden" name="kopel" id="kopel" value="0">
                         <div class="input-group-append">
-                            <button class="btn btn-sm btn-primary" type="button">
+                            <button class="btn btn-sm btn-primary" type="button" id="search-customer">
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
@@ -72,7 +72,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="jml">Jumlah</label>
-                    <input type="number" class="form-control form-control-sm" name="jumlah" id="jumlah" value="1">
+                    <input type="number" class="form-control form-control-sm" name="jumlah" id="jumlah" value="1" readonly>
                 </div>
             </div>
             <div class="col-md-3">
@@ -161,10 +161,28 @@
                     }
                 },
                 error: function(xhr, thrownError) {
-                    alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                    // alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                    alert("Jumlah barang belum diisi.");
                 }
             });
         }
+    }
+
+    function getModalCustomer() {
+        $.ajax({
+            url: "<?= site_url('sale/getModalCustomer') ?>",
+            datatype: "json",
+            success: function(response) {
+                if (JSON.parse(response).data) {
+                    $('.modal-container').html(JSON.parse(response).data).show();
+
+                    $('#getModalCustomer').modal('show');
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(`${xhr.state} ${xhr.responseText} ${thrownError}`);
+            }
+        });
     }
 
     function displaySaleDetail() {
@@ -222,7 +240,7 @@
 
         $.ajax({
             type: "post",
-            url: "<?= site_url('sale/saveTransaction') ?>",
+            url: "<?= site_url('sale/processTransaction') ?>",
             data: {
                 fakturcode: fakturcode,
                 datefaktur: $('#tanggal').val(),
@@ -259,8 +277,8 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Tunda'
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -291,6 +309,11 @@
                 e.preventDefault();
                 checkCodeBarcode();
             }
+        });
+
+        $('#search-customer').click(function(e) {
+            e.preventDefault();
+            getModalCustomer();
         });
 
         $('#jumlah').keydown(function(e) {

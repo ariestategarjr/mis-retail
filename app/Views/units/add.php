@@ -16,16 +16,22 @@
             <div class="modal-body">
                 <input type="hidden" id="reload" value="<?= $reload ?>">
                 <div class="form-group">
-                    <label for="idUnit">Id Unit</label>
-                    <input type="text" class="form-control form-control-sm" id="idUnit" name="idUnit" required>
+                    <label for="idUnit">Kode Satuan</label>
+                    <input type="text" class="form-control form-control-sm" id="idUnit" name="idUnit" required readonly>
+                    <div id="errorIdUnit" class="invalid-feedback" style="display: none;">
+                        <!-- Please provide a valid data. -->
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="nameUnit">Nama Unit</label>
+                    <label for="nameUnit">Nama Satuan</label>
                     <input type="text" class="form-control form-control-sm" id="nameUnit" name="nameUnit">
+                    <div id="errorNameUnit" class="invalid-feedback" style="display: none;">
+                        <!-- Please provide a valid data. -->
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary save-button">Simpan</button>
             </div>
             <?= form_close(); ?>
@@ -63,6 +69,44 @@
                     } else {
                         $('#addModalUnit').modal('hide');
                         listUnits();
+                    }
+                } else if (response.error) {
+                    let dataError = response.error;
+
+                    if (dataError.errorIdUnit) {
+                        // $('#errorIdUnit').html(dataError.errorIdUnit).show();
+                        // $('#idUnit').addClass('is-invalid');
+                        Swal.fire(
+                            'Error!',
+                            dataError.errorIdUnit,
+                            'error'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        $('#errorIdUnit').fadeOut();
+                        $('#idUnit').removeClass('is-invalid');
+                        $('#idUnit').addClass('is-valid');
+                    }
+
+                    if (dataError.errorNameUnit) {
+                        // $('#errorNameUnit').html(dataError.errorNameUnit).show();
+                        // $('#nameUnit').addClass('is-invalid');
+                        Swal.fire(
+                            'Error!',
+                            dataError.errorNameUnit,
+                            'error'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        $('#errorNameUnit').fadeOut();
+                        $('#nameUnit').removeClass('is-invalid');
+                        $('#nameUnit').addClass('is-valid');
                     }
                 }
             },

@@ -18,6 +18,11 @@ class Product extends BaseController
 
     public function index()
     {
+        if (session()->get('username') == '') {
+            session()->setFlashdata('gagal', 'Anda belum login');
+            return redirect()->to(base_url('login'));
+        }
+
         $data = [
             'products' => $this->products
                 ->orderby('namaproduk', 'asc')
@@ -98,13 +103,13 @@ class Product extends BaseController
     public function addProduct()
     {
         if ($this->request->isAJAX()) {
-            $codeBarcode = $this->request->getVar('codeBarcode');
-            $nameProduct = $this->request->getVar('nameProduct');
-            $stockProduct = str_replace(',', '', $this->request->getVar('stockProduct'));
-            $unitProduct = $this->request->getVar('unitProduct');
-            $categoryProduct = $this->request->getVar('categoryProduct');
-            $purchasePrice = str_replace(',', '', $this->request->getVar('purchasePrice'));
-            $sellingPrice = str_replace(',', '', $this->request->getVar('sellingPrice'));
+            $codeBarcode = esc($this->request->getVar('codeBarcode'));
+            $nameProduct = esc($this->request->getVar('nameProduct'));
+            $stockProduct = esc(str_replace(',', '', $this->request->getVar('stockProduct')));
+            $unitProduct = esc($this->request->getVar('unitProduct'));
+            $categoryProduct = esc($this->request->getVar('categoryProduct'));
+            $purchasePrice = esc(str_replace(',', '', $this->request->getVar('purchasePrice')));
+            $sellingPrice = esc(str_replace(',', '', $this->request->getVar('sellingPrice')));
 
             $validation = \Config\Services::validation();
 
@@ -119,6 +124,14 @@ class Product extends BaseController
                 ],
                 'nameProduct' => [
                     'label' => 'Nama Produk',
+                    'rules' => 'required|is_unique[produk.namaproduk]',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                        'is_unique' => '{field} sudah ada'
+                    ]
+                ],
+                'stockProduct' => [
+                    'label' => 'Stok',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong'
@@ -133,6 +146,20 @@ class Product extends BaseController
                 ],
                 'categoryProduct' => [
                     'label' => 'Kategori',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong'
+                    ]
+                ],
+                'purchasePrice' => [
+                    'label' => 'Harga Beli',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong'
+                    ]
+                ],
+                'sellingPrice' => [
+                    'label' => 'Harga Jual',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong'
@@ -154,8 +181,11 @@ class Product extends BaseController
                     'error' => [
                         'errorCodeBarcode' => $validation->getError('codeBarcode'),
                         'errorNameProduct' => $validation->getError('nameProduct'),
+                        'errorStockProduct' => $validation->getError('stockProduct'),
                         'errorUnitProduct' => $validation->getError('unitProduct'),
                         'errorCategoryProduct' => $validation->getError('categoryProduct'),
+                        'errorPurchasePrice' => $validation->getError('purchasePrice'),
+                        'errorSellingPrice' => $validation->getError('sellingPrice'),
                         'errorImageUpload' => $validation->getError('imageUpload')
                     ]
                 ];
@@ -194,19 +224,82 @@ class Product extends BaseController
     public function editProduct()
     {
         if ($this->request->isAJAX()) {
-            $codeBarcode = $this->request->getVar('codeBarcode');
-            $nameProduct = $this->request->getVar('nameProduct');
-            $stockProduct = str_replace(',', '', $this->request->getVar('stockProduct'));
-            $unitProduct = $this->request->getVar('unitProduct');
-            $categoryProduct = $this->request->getVar('categoryProduct');
-            $purchasePrice = str_replace(',', '', $this->request->getVar('purchasePrice'));
-            $sellingPrice = str_replace(',', '', $this->request->getVar('sellingPrice'));
+            $codeBarcode = esc($this->request->getVar('codeBarcode'));
+            $nameProduct = esc($this->request->getVar('nameProduct'));
+            $stockProduct = esc(str_replace(',', '', $this->request->getVar('stockProduct')));
+            $unitProduct = esc($this->request->getVar('unitProduct'));
+            $categoryProduct = esc($this->request->getVar('categoryProduct'));
+            $purchasePrice = esc(str_replace(',', '', $this->request->getVar('purchasePrice')));
+            $sellingPrice = esc(str_replace(',', '', $this->request->getVar('sellingPrice')));
 
             $validation = \Config\Services::validation();
 
+            // $validate = $this->validate([
+            //     'nameProduct' => [
+            //         'label' => 'Nama Produk',
+            //         'rules' => 'required',
+            //         'errors' => [
+            //             'required' => '{field} tidak boleh kosong'
+            //         ]
+            //     ],
+            //     'imageUpload' => [
+            //         'label' => 'Upload Gambar',
+            //         'rules' => 'mime_in[imageUpload,image/png,image/jpg,image/jpeg]|ext_in[imageUpload,png,jpg,jpeg]|is_image[imageUpload]',
+            //         'errors' => [
+            //             'mime_in' => '{field} hanya berformat png, jpg, jpeg',
+            //             'ext_in' => '{field} hanya berformat png, jpg, jpeg',
+            //             'is_image' => '{field} hanya berformat png, jpg, jpeg'
+            //         ]
+            //     ]
+            // ]);
+
             $validate = $this->validate([
+                'codeBarcode' => [
+                    'label' => 'Kode Barcode',
+                    'rules' => 'required|is_unique[produk.kodebarcode]',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                        'is_unique' => '{field} sudah ada, coba yang lain'
+                    ]
+                ],
                 'nameProduct' => [
                     'label' => 'Nama Produk',
+                    'rules' => 'required|is_unique[produk.namaproduk]',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                        'is_unique' => '{field} sudah ada'
+                    ]
+                ],
+                'stockProduct' => [
+                    'label' => 'Stok',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong'
+                    ]
+                ],
+                'unitProduct' => [
+                    'label' => 'Satuan',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong'
+                    ]
+                ],
+                'categoryProduct' => [
+                    'label' => 'Kategori',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong'
+                    ]
+                ],
+                'purchasePrice' => [
+                    'label' => 'Harga Beli',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong'
+                    ]
+                ],
+                'sellingPrice' => [
+                    'label' => 'Harga Jual',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong'
@@ -225,8 +318,18 @@ class Product extends BaseController
 
             if (!$validate) {
                 $msg = [
+                    // 'error' => [
+                    //     'errorNameProduct' => $validation->getError('nameProduct'),
+                    //     'errorImageUpload' => $validation->getError('imageUpload')
+                    // ]
                     'error' => [
+                        // 'errorCodeBarcode' => $validation->getError('codeBarcode'),
                         'errorNameProduct' => $validation->getError('nameProduct'),
+                        'errorStockProduct' => $validation->getError('stockProduct'),
+                        'errorUnitProduct' => $validation->getError('unitProduct'),
+                        'errorCategoryProduct' => $validation->getError('categoryProduct'),
+                        'errorPurchasePrice' => $validation->getError('purchasePrice'),
+                        'errorSellingPrice' => $validation->getError('sellingPrice'),
                         'errorImageUpload' => $validation->getError('imageUpload')
                     ]
                 ];
@@ -267,7 +370,7 @@ class Product extends BaseController
     public function deleteProduct()
     {
         if ($this->request->isAJAX()) {
-            $code = $this->request->getVar('codeProduct');
+            $code = esc($this->request->getVar('codeProduct'));
 
             $this->products->delete([
                 'kodebarcode' => $code

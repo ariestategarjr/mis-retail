@@ -20,7 +20,7 @@
                 <td><?= $row['kode']; ?></td>
                 <td><?= $row['namaproduk']; ?></td>
                 <td><?= $row['jml']; ?></td>
-                <td style="text-align: right;"><?= number_format($row['hargajual'], 0, ",", "."); ?></td>
+                <td style="text-align: right;"><?= number_format($row['hargabeli'], 0, ",", "."); ?></td>
                 <td style="text-align: right;"><?= number_format($row['subtotal'], 0, ",", "."); ?></td>
                 <td>
                     <button type="button" class="btn btn-danger" onclick="
@@ -44,8 +44,8 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Tunda'
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({

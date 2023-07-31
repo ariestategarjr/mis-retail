@@ -11,7 +11,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="getModalPaymentLabel">Data Payment</h5>
+                <h5 class="modal-title" id="getModalPaymentLabel">Pembayaran</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary save-button">Simpan</button>
             </div>
             <?= form_close(); ?>
@@ -186,10 +186,11 @@
                                 showCancelButton: true,
                                 confirmButtonColor: '#3085d6',
                                 cancelButtonColor: '#d33',
-                                confirmButtonText: 'Yes, cetak!',
-                                cancelButtonText: 'Tunda'
+                                confirmButtonText: 'Ya',
+                                cancelButtonText: 'Tidak'
                             }).then((result) => {
                                 if (result.isConfirmed) {
+                                    // window.print();
                                     alert('cetak struk');
                                     window.location.reload();
                                 } else {

@@ -25,17 +25,19 @@
                             <th>Kategori</th>
                             <th>Stok</th>
                             <th>Harga Jual</th>
+                            <th>Jumlah</th>
                             <th>#</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!--  -->
                     </tbody>
+
                 </table>
             </div>
-            <div class="modal-footer">
+            <!-- <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -48,8 +50,15 @@
 
 <script>
     function selectProduct(code, name) {
+        let numberItems = parseInt($(`#numberItems${code}`).val());
+
+        console.log(numberItems + " " + typeof numberItems);
+        let jumlah = $('#jumlah').val(numberItems);
+        console.log(jumlah);
+
         $('#kodebarcode').val(code);
         $('#namaproduk').val(name);
+        // $('#jumlah').val(numberItems);
         $('#getModalProduct').on('hidden.bs.modal', function(event) {
             $('#kodebarcode').focus();
             checkCodeBarcode();
@@ -72,7 +81,7 @@
             "columnDefs": [{
                 "targets": [],
                 "orderable": false,
-                "defaultContent": "-",
+                "defaultContent ": " - ",
                 "targets": "_all"
             }, ],
         });

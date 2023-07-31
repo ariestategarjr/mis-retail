@@ -4,12 +4,25 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ProductsDatatableModel;
+use App\Models\CustomersDatatableModel;
+use App\Models\SalesModel;
 use Config\Services;
+use PhpParser\Node\Expr\Isset_;
 
 class Sale extends BaseController
 {
+    public function __construct()
+    {
+        $this->sales = new SalesModel();
+    }
+
     public function index()
     {
+        if (session()->get('username') == '') {
+            session()->setFlashdata('gagal', 'Anda belum login');
+            return redirect()->to(base_url('login'));
+        }
+
         return view('sales/menu');
     }
 
@@ -30,6 +43,54 @@ class Sale extends BaseController
         $formatFakturCode = 'FS' . date('dmy', strtotime($date)) . sprintf('%04s', $nextOrderNumb);
 
         return $formatFakturCode;
+    }
+
+    public function getModalCustomer()
+    {
+        if ($this->request->isAJAX()) {
+            $msg = [
+                'data' => view('sales/data_customer')
+            ];
+
+            echo json_encode($msg);
+        }
+    }
+
+    public function getListDataCustomer()
+    {
+        if ($this->request->isAJAX()) {
+            $request = Services::request();
+            $datatable = new CustomersDatatableModel($request);
+
+            if ($request->getMethod(true) === 'POST') {
+                $lists = $datatable->getDatatables();
+                $data = [];
+                $no = $request->getPost('start');
+
+                foreach ($lists as $list) {
+                    $no++;
+                    $row = [];
+                    $row[] = $no;
+                    $row[] = $list->pel_kode;
+                    $row[] = $list->pel_nama;
+                    $row[] = $list->pel_alamat;
+                    $row[] = $list->pel_telp;
+                    $row[] = "<button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"selectCustomer(
+                        '{$list->pel_kode}',
+                        '{$list->pel_nama}')\">Pilih</button>";
+                    $data[] = $row;
+                }
+
+                $output = [
+                    'draw' => $request->getPost('draw'),
+                    'recordsTotal' => $datatable->countAll(),
+                    'recordsFiltered' => $datatable->countFiltered(),
+                    'data' => $data
+                ];
+
+                echo json_encode($output);
+            }
+        }
     }
 
     public function getModalProduct()
@@ -71,6 +132,7 @@ class Sale extends BaseController
                     $row[] = $list->katnama;
                     $row[] = number_format($list->stok_tersedia, 0, ',', '.');
                     $row[] = number_format($list->harga_jual, 0, ',', '.');
+                    $row[] = "<input type=\"number\" id=\"numberItems{$list->kodebarcode}\" value=\"1\">";
                     $row[] = "<button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"selectProduct(
                               '{$list->kodebarcode}',
                               '{$list->namaproduk}')\">Pilih</button>";
@@ -101,11 +163,11 @@ class Sale extends BaseController
     public function saveTemp()
     {
         if ($this->request->isAJAX()) {
-            $id = $this->request->getPost('id');
-            $codeBarcode = $this->request->getPost('codeBarcode');
-            $nameProduct = $this->request->getPost('nameProduct');
-            $amount = $this->request->getPost('amount');
-            $noFaktur = $this->request->getPost('noFaktur');
+            $id = esc($this->request->getPost('id'));
+            $codeBarcode = esc($this->request->getPost('codeBarcode'));
+            $nameProduct = esc($this->request->getPost('nameProduct'));
+            $amount = esc($this->request->getPost('amount'));
+            $noFaktur = esc($this->request->getPost('noFaktur'));
 
             if (strlen($nameProduct) > 0) {
                 $query = $this->db->table('produk')
@@ -168,7 +230,7 @@ class Sale extends BaseController
     public function calculateTotalPay()
     {
         if ($this->request->isAJAX()) {
-            $fakturcode = $this->request->getPost('fakturcode');
+            $fakturcode = esc($this->request->getPost('fakturcode'));
 
             $query = $this->db->table('temp_penjualan')
                 ->select('SUM(detjual_subtotal) as totalbayar')
@@ -188,7 +250,7 @@ class Sale extends BaseController
     public function displaySaleDetail()
     {
         if ($this->request->isAJAX()) {
-            $fakturcode = $this->request->getVar('fakturcode');
+            $fakturcode = esc($this->request->getVar('fakturcode'));
 
             $tblTempSale = $this->db->table('temp_penjualan');
             $query = $tblTempSale
@@ -225,7 +287,7 @@ class Sale extends BaseController
     public function deleteItem()
     {
         if ($this->request->isAJAX()) {
-            $id = $this->request->getVar('idItem');
+            $id = esc($this->request->getVar('idItem'));
 
             $tblTempSale = $this->db->table('temp_penjualan');
 
@@ -242,12 +304,13 @@ class Sale extends BaseController
         }
     }
 
-    public function saveTransaction()
+    // Tombol Simpan Transaksi
+    public function processTransaction()
     {
         if ($this->request->isAJAX()) {
-            $fakturcode = $this->request->getPost('fakturcode');
-            $datefaktur = $this->request->getPost('datefaktur');
-            $customercode = $this->request->getPost('customercode');
+            $fakturcode = esc($this->request->getPost('fakturcode'));
+            $datefaktur = esc($this->request->getPost('datefaktur'));
+            $customercode = esc($this->request->getPost('customercode'));
 
             $tblTempSale = $this->db->table('temp_penjualan');
             $query = $tblTempSale->getWhere(['detjual_faktur' => $fakturcode]);
@@ -277,10 +340,11 @@ class Sale extends BaseController
         }
     }
 
+    // Tombol Hapus Transaksi
     public function deleteTransaction()
     {
         if ($this->request->isAJAX()) {
-            $nofaktur = $this->request->getPost('fakturcode');
+            $nofaktur = esc($this->request->getPost('fakturcode'));
 
             $tblTempSale = $this->db->table('temp_penjualan');
             $query = $tblTempSale->emptyTable();
@@ -297,14 +361,14 @@ class Sale extends BaseController
     public function savePayment()
     {
         if ($this->request->isAJAX()) {
-            $fakturcode = $this->request->getPost('fakturcode');
-            $customercode = $this->request->getPost('customercode');
-            $totalbruto = $this->request->getPost('totalbruto');
-            $totalnetto = str_replace(",", "", $this->request->getPost('totalnetto'));
-            $disprecent = str_replace(",", "", $this->request->getPost('disprecent'));
-            $discash = str_replace(",", "", $this->request->getPost('discash'));
-            $amountmoney = str_replace(",", "", $this->request->getPost('amountmoney'));
-            $restmoney = str_replace(",", "", $this->request->getPost('restmoney'));
+            $fakturcode = esc($this->request->getPost('fakturcode'));
+            $customercode = esc($this->request->getPost('customercode'));
+            $totalbruto = esc($this->request->getPost('totalbruto'));
+            $totalnetto = esc(str_replace(",", "", $this->request->getPost('totalnetto')));
+            $disprecent = esc(str_replace(",", "", $this->request->getPost('disprecent')));
+            $discash = esc(str_replace(",", "", $this->request->getPost('discash')));
+            $amountmoney = esc(str_replace(",", "", $this->request->getPost('amountmoney')));
+            $restmoney = esc(str_replace(",", "", $this->request->getPost('restmoney')));
 
             $tblSale = $this->db->table('penjualan');
             $tblTempSale = $this->db->table('temp_penjualan');
@@ -354,25 +418,123 @@ class Sale extends BaseController
 
     public function report()
     {
-        return view('sales/report');
-    }
+        $periode_dari = esc($this->request->getVar('periode_dari'));
+        $periode_ke = esc($this->request->getVar('periode_ke'));
 
-    public function getChart()
-    {
-        $date = $this->request->getPost('date');
-
-        $db = \Config\Database::connect();
-
-        $query = $db->query("SELECT jual_tgl AS tgl, jual_totalbersih AS total FROM `penjualan` WHERE DATE_FORMAT(jual_tgl, '%Y-%m-%d') = '2023-04-24' ORDER BY jual_tgl ASC");
+        // Cek isi periode awal dan periode akhir 
+        if (isset($periode_dari) && isset($periode_ke)) {
+            // Filter * berdasarkan periode awal dan periode akhir 
+            $periode_filter = $this->sales
+                ->join('penjualan', 'penjualan.jual_faktur=penjualan_detail.detjual_faktur')
+                ->join('produk', 'produk.kodebarcode=penjualan_detail.detjual_kodebarcode')
+                ->where("jual_tgl BETWEEN '" . $periode_dari . "' AND '" . $periode_ke . "'");
+            // Total detjual_subtotal berdasarkan jual_tgl awal dan jual_tgl akhir
+            $resultTotal = $this->sales
+                ->query("SELECT SUM(detjual_subtotal) AS total_jumlah
+                         FROM penjualan_detail
+                         JOIN penjualan ON penjualan_detail.detjual_faktur = penjualan.jual_faktur
+                         WHERE penjualan.jual_tgl >= '" . $periode_dari . "' AND penjualan.jual_tgl <= '" . $periode_ke . "'");
+        } else {
+            $periode_filter = $this->sales
+                ->join('penjualan', 'penjualan.jual_faktur=penjualan_detail.detjual_faktur')
+                ->join('produk', 'produk.kodebarcode=penjualan_detail.detjual_kodebarcode');
+            $resultTotal = $this->sales
+                ->query("SELECT SUM(detjual_subtotal) AS total_jumlah
+                         FROM penjualan_detail
+                         JOIN penjualan ON penjualan_detail.detjual_faktur = penjualan.jual_faktur");
+        }
 
         $data = [
-            'dates' => $query->getResult()
+            'sales' => $periode_filter->get()->getResultArray(),
+            'salesTotal' => $resultTotal->getRowArray(),
         ];
 
-        $msg = [
-            'data' => view('sales/data_chart', $data)
-        ];
-
-        echo json_encode($msg);
+        return view('sales/report', $data);
     }
+
+    public function deleteFilter()
+    {
+        $periode_dari = esc($this->request->getPost('periodedari'));
+        $periode_ke = esc($this->request->getPost('periodeke'));
+
+        if (!isset($periode_dari) && !isset($periode_ke)) {
+            die('error');
+        }
+
+        $result = $this->sales->deleteDataByDateRange($periode_dari, $periode_ke);
+    }
+
+    public function printStruck()
+    {
+        return view('sales/print');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // $db = \Config\Database::connect(); // Menghubungkan ke database
+
+    // Get the MySQLi connection object
+    // $mysqliConnection = $db->connID;
+
+    // Convert the MySQLi connection to a string representation
+    // $connectionString = (string) $mysqliConnection;
+
+    // $this->sale->select('pjd.*, pj.*');
+    // $this->sale->from('penjualan_det AS pjd');
+    // $this->sale->join('nama_tabel2 AS pj', 'pjd.id = pj.id');
+    // $this->sale->where("pjd.tanggal_awal >= '$startDate' AND pjd.tanggal_akhir <= '$endDate'");
+    // $this->sale->where("pj.tanggal_awal >= '$startDate' AND pj.tanggal_akhir <= '$endDate'");
+    // $this->sale->delete('penjualan_det AS pjd');
+
+    // echo "<pre>";
+    // var_dump($result1);
+    // echo "</pre>";
+    // exit;
+
+    // $result1 = $db->table('penjualan_detail')
+    //     ->join('penjualan', 'penjualan_detail.detjual_faktur = penjualan.jual_faktur')
+    //     ->where('jual_tgl >', $periode_dari)
+    //     ->where('jual_tgl <', $periode_ke)
+    //     ->delete();
+
+    // $result2 = $db->table('penjualan')
+    //     ->where('jual_tgl', [$periode_dari, $periode_ke])
+    //     ->delete();
+
+    // if ($result1 && $result2) {
+    //     $msg = [
+    //         'success' => 'Data berhasil dihapus'
+    //     ];
+    // }
+    // echo json_encode($msg);
+
+    // 'sales' => $this->sales
+    //     ->join('penjualan', 'penjualan.jual_faktur=penjualan_detail.detjual_faktur')
+    //     ->join('produk', 'produk.kodebarcode=penjualan_detail.detjual_kodebarcode')
+    //     ->get()->getResultArray(),
+    // 'sales' => (isset($periode_dari) && isset($periode_ke)) ? $this->sales->findAll() : $this->sales
+    //     ->where('jual_tgl >=', $periode_ke)
+    //     ->where('jual_tgl <=', $periode_ke)
+    //     ->get()->getResult(),
+    // 'sales' => $this->sales->findAll(),
+    // 'sales' => $this->sales->join('penjualan_detail', 'penjualan_detail.')
+    // 'sales_totalkotor' => $this->sales
+    //     ->selectsum('jual_totalkotor', 'sum_jual_totalkotor')
+    //     ->get()->getRow()
+    //     ->sum_jual_totalkotor,
+    // 'sales_totalbersih' => $this->sales
+    //     ->selectsum('jual_totalbersih', 'sum_jual_totalbersih')
+    //     ->get()->getRow()
+    //     ->sum_jual_totalbersih,
 }

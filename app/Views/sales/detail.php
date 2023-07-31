@@ -44,8 +44,8 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Tunda'
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({

@@ -25,7 +25,10 @@
         <div class="form-group row">
             <label for="codeBarcode" class="col-sm-2 col-form-label">Kode Barcode</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="codeBarcode" name="codeBarcode" value="<?= $codeBarcode ?>">
+                <input type="text" class="form-control" id="codeBarcode" name="codeBarcode" value="<?= $codeBarcode ?>" readonly>
+                <div id="errorCodeBarcode" class="invalid-feedback" style="display: none;">
+                    <!-- Please provide a valid data. -->
+                </div>
             </div>
         </div>
         <div class="form-group row">
@@ -41,6 +44,9 @@
             <label for="stockProduct" class="col-sm-2 col-form-label">Stok</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="stockProduct" name="stockProduct" value="<?= $stockProduct ?>">
+                <div id="errorStockProduct" class="invalid-feedback" style="display: none;">
+                    <!-- Please provide a valid data. -->
+                </div>
             </div>
         </div>
         <div class="form-group row">
@@ -58,6 +64,9 @@
                     endforeach;
                     ?>
                 </select>
+                <div id="errorUnitProduct" class="invalid-feedback" style="display: none;">
+                    <!-- Please provide a valid data. -->
+                </div>
             </div>
         </div>
         <div class="form-group row">
@@ -75,32 +84,42 @@
                     endforeach;
                     ?>
                 </select>
+                <div id="errorCategoryProduct" class="invalid-feedback" style="display: none;">
+                    <!-- Please provide a valid data. -->
+                </div>
             </div>
         </div>
         <div class="form-group row">
             <label for="purchasePrice" class="col-sm-2 col-form-label">Harga Beli (Rp.)</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="purchasePrice" name="purchasePrice" value="<?= $purchasePrice ?>" style="text-align: right;">
+                <div id="errorPurchasePrice" class="invalid-feedback" style="display: none;">
+                    <!-- Please provide a valid data. -->
+                </div>
             </div>
         </div>
         <div class="form-group row">
             <label for="sellingPrice" class="col-sm-2 col-form-label">Harga Jual (Rp.)</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="sellingPrice" name="sellingPrice" value="<?= $sellingPrice ?>" style="text-align: right;">
+                <div id="errorSellingPrice" class="invalid-feedback" style="display: none;">
+                    <!-- Please provide a valid data. -->
+                </div>
             </div>
         </div>
-        <div class="form-group row">
+        <!-- Upload Gambar -->
+        <div class="form-group row" hidden>
             <label for="imageUpload" class="col-sm-2 col-form-label">Gambar Produk</label>
             <div class="col-sm-4">
-                <img src="<?= base_url($imageUpload) ?>" style="width: 100%;" alt="thumbnail">
+                <img src="<?= base_url($imageUpload) ?>" style="width: 100%;" alt="gambar-produk">
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row" hidden>
             <label for="imageUpload" class="col-sm-2 col-form-label">Ubah Gambar Produk</label>
             <div class="col-sm-4">
                 <input type="file" class="form-control" id="imageUpload" name="imageUpload">
                 <div id="errorImageUpload" class="invalid-feedback" style="display: none;">
-                    <!-- Please provide a valid city. -->
+
                 </div>
             </div>
         </div>
@@ -163,6 +182,16 @@
                 success: function(response) {
                     if (response.error) {
                         let dataError = response.error;
+                        // console.log(dataError);
+
+                        if (dataError.errorCodeBarcode) {
+                            $('#errorCodeBarcode').html(dataError.errorCodeBarcode).show();
+                            $('#codeBarcode').addClass('is-invalid');
+                        } else {
+                            $('#errorCodeBarcode').fadeOut();
+                            $('#codeBarcode').removeClass('is-invalid');
+                            $('#codeBarcode').addClass('is-valid');
+                        }
 
                         if (dataError.errorNameProduct) {
                             $('#errorNameProduct').html(dataError.errorNameProduct).show();
@@ -171,6 +200,51 @@
                             $('#errorNameProduct').fadeOut();
                             $('#nameProduct').removeClass('is-invalid');
                             $('#nameProduct').addClass('is-valid');
+                        }
+
+                        if (dataError.errorStockProduct) {
+                            $('#errorStockProduct').html(dataError.errorStockProduct).show();
+                            $('#stockProduct').addClass('is-invalid');
+                        } else {
+                            $('#errorStockProduct').fadeOut();
+                            $('#stockProduct').removeClass('is-invalid');
+                            $('#stockProduct').addClass('is-valid');
+                        }
+
+                        if (dataError.errorUnitProduct) {
+                            $('#errorUnitProduct').html(dataError.errorUnitProduct).show();
+                            $('#unitProduct').addClass('is-invalid');
+                        } else {
+                            $('#errorUnitProduct').fadeOut();
+                            $('#unitProduct').removeClass('is-invalid');
+                            $('#unitProduct').addClass('is-valid');
+                        }
+
+                        if (dataError.errorCategoryProduct) {
+                            $('#errorCategoryProduct').html(dataError.errorCategoryProduct).show();
+                            $('#categoryProduct').addClass('is-invalid');
+                        } else {
+                            $('#errorCategoryProduct').fadeOut();
+                            $('#categoryProduct').removeClass('is-invalid');
+                            $('#categoryProduct').addClass('is-valid');
+                        }
+
+                        if (dataError.errorPurchasePrice) {
+                            $('#errorPurchasePrice').html(dataError.errorPurchasePrice).show();
+                            $('#purchasePrice').addClass('is-invalid');
+                        } else {
+                            $('#errorPurchasePrice').fadeOut();
+                            $('#purchasePrice').removeClass('is-invalid');
+                            $('#purchasePrice').addClass('is-valid');
+                        }
+
+                        if (dataError.errorSellingPrice) {
+                            $('#errorSellingPrice').html(dataError.errorSellingPrice).show();
+                            $('#sellingPrice').addClass('is-invalid');
+                        } else {
+                            $('#errorSellingPrice').fadeOut();
+                            $('#sellingPrice').removeClass('is-invalid');
+                            $('#sellingPrice').addClass('is-valid');
                         }
 
                         if (dataError.errorImageUpload) {
@@ -189,7 +263,7 @@
                             html: response.success
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.reload();
+                                window.location = "/product/index";
                             }
                         })
                     }

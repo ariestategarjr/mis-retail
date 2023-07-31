@@ -14,6 +14,11 @@ class Supplier extends BaseController
 
     public function index()
     {
+        if (session()->get('username') == '') {
+            session()->setFlashdata('gagal', 'Anda belum login');
+            return redirect()->to(base_url('login'));
+        }
+
         $data = [
             'suppliers' => $this->suppliers->orderby('sup_nama', 'asc')->findAll()
         ];
@@ -48,10 +53,10 @@ class Supplier extends BaseController
     public function addSupplier()
     {
         if ($this->request->isAJAX()) {
-            $idSupplier = $this->request->getVar('idSupplier');
-            $nameSupplier = $this->request->getVar('nameSupplier');
-            $addressSupplier = $this->request->getVar('addressSupplier');
-            $telpSupplier = $this->request->getVar('telpSupplier');
+            $idSupplier = esc($this->request->getVar('idSupplier'));
+            $nameSupplier = esc($this->request->getVar('nameSupplier'));
+            $addressSupplier = esc($this->request->getVar('addressSupplier'));
+            $telpSupplier = esc($this->request->getVar('telpSupplier'));
 
             $validation = \Config\Services::validation();
 
@@ -80,9 +85,10 @@ class Supplier extends BaseController
                 ],
                 'telpSupplier' => [
                     'label' => 'Telepon',
-                    'rules' => 'required',
+                    'rules' => 'required|regex_match[/^(?:\+62|0)[2-9]\d{7,11}$/]',
                     'errors' => [
-                        'required' => '{field} tidak boleh kosong'
+                        'required' => '{field} tidak boleh kosong',
+                        'regex_match' => 'Format Nomor {field} tidak valid'
                     ]
                 ]
             ]);
@@ -115,10 +121,10 @@ class Supplier extends BaseController
     public function editSupplier()
     {
         if ($this->request->isAJAX()) {
-            $idSupplier = $this->request->getVar('idSupplier');
-            $nameSupplier = $this->request->getVar('nameSupplier');
-            $addressSupplier = $this->request->getVar('addressSupplier');
-            $telpSupplier = $this->request->getVar('telpSupplier');
+            $idSupplier = esc($this->request->getVar('idSupplier'));
+            $nameSupplier = esc($this->request->getVar('nameSupplier'));
+            $addressSupplier = esc($this->request->getVar('addressSupplier'));
+            $telpSupplier = esc($this->request->getVar('telpSupplier'));
 
             $validation = \Config\Services::validation();
 
@@ -139,9 +145,10 @@ class Supplier extends BaseController
                 ],
                 'telpSupplier' => [
                     'label' => 'Telepon',
-                    'rules' => 'required',
+                    'rules' => 'required|regex_match[/^(?:\+62|0)[2-9]\d{7,11}$/]',
                     'errors' => [
-                        'required' => '{field} tidak boleh kosong'
+                        'required' => '{field} tidak boleh kosong',
+                        'regex_match' => 'Format Nomor {field} tidak valid'
                     ]
                 ]
             ]);
@@ -172,7 +179,7 @@ class Supplier extends BaseController
     public function deleteSupplier()
     {
         if ($this->request->isAJAX()) {
-            $id = $this->request->getVar('idSupplier');
+            $id = esc($this->request->getVar('idSupplier'));
 
             $this->suppliers->delete([
                 'sup_kode' => $id

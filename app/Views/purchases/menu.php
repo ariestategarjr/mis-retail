@@ -12,31 +12,30 @@
         <!-- small box -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h3>Input</h3>
+                <h3>Hitung</h3>
 
                 <p>Pembelian</p>
             </div>
             <div class="icon">
                 <i class="fas fa-cash-register"></i>
             </div>
-            <a href="<?= site_url('purchase/input') ?>" class="small-box-footer">Input Pembelian<i class="fas fa-arrow-circle-right"></i></a>
+            <a href="<?= site_url('purchase/input') ?>" class="small-box-footer">Hitung Pembelian<i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
     <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box bg-warning">
+        <div class="small-box bg-success">
             <div class="inner">
-                <h3>Data</h3>
+                <h3>Laporan</h3>
 
                 <p>Pembelian</p>
             </div>
             <div class="icon">
                 <i class="fas fa-chart-bar"></i>
             </div>
-            <a href="<?= site_url('purchase/report') ?>" class="small-box-footer">Data Pembelian<i class="fas fa-arrow-circle-right"></i></a>
+            <a href="<?= site_url('purchase/report') ?>" class="small-box-footer">Laporan Pembelian<i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
-    <!-- ./col -->
 </div>
 <?= $this->endSection(); ?>

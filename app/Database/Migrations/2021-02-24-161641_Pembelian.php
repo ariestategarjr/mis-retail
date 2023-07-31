@@ -45,6 +45,16 @@ class Pembelian extends Migration
 				'constraint' => '11,2',
 				'default' => 0.00
 			],
+			'beli_jmluang' => [
+				'type' => 'DOUBLE',
+				'constraint' => '11,2',
+				'default' => 0.00
+			],
+			'beli_sisauang' => [
+				'type' => 'DOUBLE',
+				'constraint' => '11,2',
+				'default' => 0.00
+			]
 		]);
 
 		$this->forge->addPrimaryKey('beli_faktur');

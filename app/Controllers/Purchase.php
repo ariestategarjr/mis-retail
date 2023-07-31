@@ -5,12 +5,23 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\SuppliersDatatableModel;
 use App\Models\ProductsDatatableModel;
+use App\Models\PurchasesModel;
 use Config\Services;
 
 class Purchase extends BaseController
 {
+    public function __construct()
+    {
+        $this->purchases = new PurchasesModel();
+    }
+
     public function index()
     {
+        if (session()->get('username') == '') {
+            session()->setFlashdata('gagal', 'Anda belum login');
+            return redirect()->to(base_url('login'));
+        }
+
         return view('purchases/menu');
     }
 
@@ -120,6 +131,7 @@ class Purchase extends BaseController
                     $row[] = $list->katnama;
                     $row[] = number_format($list->stok_tersedia, 0, ',', '.');
                     $row[] = number_format($list->harga_beli, 0, ',', '.');
+                    $row[] = "<input type=\"number\" id=\"numberItems{$list->kodebarcode}\" value=\"1\">";
                     $row[] = "<button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"selectProduct(
                               '{$list->kodebarcode}',
                               '{$list->namaproduk}')\">Pilih</button>";
@@ -155,11 +167,11 @@ class Purchase extends BaseController
     public function saveTemp()
     {
         if ($this->request->isAJAX()) {
-            $id = $this->request->getPost('id');
-            $codeBarcode = $this->request->getPost('codeBarcode');
-            $nameProduct = $this->request->getPost('nameProduct');
-            $amount = $this->request->getPost('amount');
-            $noFaktur = $this->request->getPost('noFaktur');
+            $id = esc($this->request->getPost('id'));
+            $codeBarcode = esc($this->request->getPost('codeBarcode'));
+            $nameProduct = esc($this->request->getPost('nameProduct'));
+            $amount = esc($this->request->getPost('amount'));
+            $noFaktur = esc($this->request->getPost('noFaktur'));
 
             // jika produk ada di tabel produk
             if (strlen($nameProduct) > 0) {
@@ -196,9 +208,9 @@ class Purchase extends BaseController
                         'detbeli_faktur' => $noFaktur,
                         'detbeli_kodebarcode' => $row['kodebarcode'],
                         'detbeli_hargabeli' => $row['harga_beli'],
-                        'detbeli_hargabeli' => $row['harga_jual'],
+                        'detbeli_hargajual' => $row['harga_jual'],
                         'detbeli_jml' => $amount,
-                        'detbeli_subtotal' => floatval($row['harga_jual']) * $amount
+                        'detbeli_subtotal' => floatval($row['harga_beli']) * $amount
                     ];
 
                     $tblTempPurchase->insert($data);
@@ -217,7 +229,7 @@ class Purchase extends BaseController
                         'detbeli_hargabeli' => $row['harga_beli'],
                         'detbeli_hargajual' => $row['harga_jual'],
                         'detbeli_jml' => $amount,
-                        'detbeli_subtotal' => floatval($row['harga_jual']) * $amount
+                        'detbeli_subtotal' => floatval($row['harga_beli']) * $amount
                     ];
 
                     $tblTempPurchase->insert($data);
@@ -233,7 +245,7 @@ class Purchase extends BaseController
                         'detbeli_hargabeli' => $row['harga_beli'],
                         'detbeli_hargajual' => $row['harga_jual'],
                         'detbeli_jml' => $amount,
-                        'detbeli_subtotal' => floatval($row['harga_jual']) * $amount
+                        'detbeli_subtotal' => floatval($row['harga_beli']) * $amount
                     ];
 
                     $tblTempPurchase->insert($data);
@@ -255,7 +267,7 @@ class Purchase extends BaseController
     public function calculateTotalPay()
     {
         if ($this->request->isAJAX()) {
-            $fakturcode = $this->request->getPost('fakturcode');
+            $fakturcode = esc($this->request->getPost('fakturcode'));
 
             $query = $this->db->table('temp_pembelian')
                 ->select('SUM(detbeli_subtotal) as totalbayar')
@@ -275,7 +287,7 @@ class Purchase extends BaseController
     public function displayPurchaseDetail()
     {
         if ($this->request->isAJAX()) {
-            $fakturcode = $this->request->getVar('fakturcode');
+            $fakturcode = esc($this->request->getVar('fakturcode'));
 
             $tblTempPurchase = $this->db->table('temp_pembelian');
             $query = $tblTempPurchase
@@ -283,7 +295,7 @@ class Purchase extends BaseController
                     'detbeli_id as id,
                     detbeli_kodebarcode as kode,
                     namaproduk,
-                    detbeli_hargajual as hargajual,
+                    detbeli_hargabeli as hargabeli,
                     detbeli_jml as jml,
                     detbeli_subtotal as subtotal'
                 )->join(
@@ -312,7 +324,7 @@ class Purchase extends BaseController
     public function deleteItem()
     {
         if ($this->request->isAJAX()) {
-            $id = $this->request->getVar('idItem');
+            $id = esc($this->request->getVar('idItem'));
 
             $tblTempPurchase = $this->db->table('temp_pembelian');
 
@@ -332,9 +344,9 @@ class Purchase extends BaseController
     public function saveTransaction()
     {
         if ($this->request->isAJAX()) {
-            $fakturcode = $this->request->getPost('fakturcode');
-            $datefaktur = $this->request->getPost('datefaktur');
-            $suppliercode = $this->request->getPost('suppliercode');
+            $fakturcode = esc($this->request->getPost('fakturcode'));
+            $datefaktur = esc($this->request->getPost('datefaktur'));
+            $suppliercode = esc($this->request->getPost('suppliercode'));
 
             $tblTempPurchase = $this->db->table('temp_pembelian');
             $query = $tblTempPurchase->getWhere(['detbeli_faktur' => $fakturcode]);
@@ -367,7 +379,7 @@ class Purchase extends BaseController
     public function deleteTransaction()
     {
         if ($this->request->isAJAX()) {
-            $nofaktur = $this->request->getPost('fakturcode');
+            $nofaktur = esc($this->request->getPost('fakturcode'));
 
             $tblTempSale = $this->db->table('temp_pembelian');
             $query = $tblTempSale->emptyTable();
@@ -384,14 +396,14 @@ class Purchase extends BaseController
     public function savePayment()
     {
         if ($this->request->isAJAX()) {
-            $fakturcode = $this->request->getPost('fakturcode');
-            $suppliercode = $this->request->getPost('suppliercode');
-            $totalbruto = $this->request->getPost('totalbruto');
-            $totalnetto = str_replace(",", "", $this->request->getPost('totalnetto'));
-            $disprecent = str_replace(",", "", $this->request->getPost('disprecent'));
-            $discash = str_replace(",", "", $this->request->getPost('discash'));
-            $amountmoney = str_replace(",", "", $this->request->getPost('amountmoney'));
-            $restmoney = str_replace(",", "", $this->request->getPost('restmoney'));
+            $fakturcode = esc($this->request->getPost('fakturcode'));
+            $suppliercode = esc($this->request->getPost('suppliercode'));
+            $totalbruto = esc($this->request->getPost('totalbruto'));
+            $totalnetto = esc(str_replace(",", "", $this->request->getPost('totalnetto')));
+            $disprecent = esc(str_replace(",", "", $this->request->getPost('disprecent')));
+            $discash = esc(str_replace(",", "", $this->request->getPost('discash')));
+            $amountmoney = esc(str_replace(",", "", $this->request->getPost('amountmoney')));
+            $restmoney = esc(str_replace(",", "", $this->request->getPost('restmoney')));
 
             $tblPurchase = $this->db->table('pembelian');
             $tblTempPurchase = $this->db->table('temp_pembelian');
@@ -441,25 +453,44 @@ class Purchase extends BaseController
 
     public function report()
     {
-        return view('purchases/report');
-    }
+        $periode_dari = esc($this->request->getVar('periode_dari'));
+        $periode_ke = esc($this->request->getVar('periode_ke'));
 
-    public function getChart()
-    {
-        $date = $this->request->getPost('date');
+        // Cek isi periode awal dan periode akhir 
+        if (isset($periode_dari) && isset($periode_ke)) {
+            // Filter * berdasarkan periode awal dan periode akhir 
+            $periode_filter = $this->purchases
+                ->join('pembelian', 'pembelian.beli_faktur=pembelian_detail.detbeli_faktur')
+                ->join('produk', 'produk.kodebarcode=pembelian_detail.detbeli_kodebarcode')
+                ->where("beli_tgl BETWEEN '" . $periode_dari . "' AND '" . $periode_ke . "'");
+            // Total detbeli_subtotal berdasarkan beli_tgl awal dan beli_tgl akhir
+            $resultTotal = $this->purchases
+                ->query("SELECT SUM(detbeli_subtotal) AS total_jumlah
+                             FROM pembelian_detail
+                             JOIN pembelian ON pembelian_detail.detbeli_faktur = pembelian.beli_faktur
+                             WHERE pembelian.beli_tgl >= '" . $periode_dari . "' AND pembelian.beli_tgl <= '" . $periode_ke . "'");
+        } else {
+            $periode_filter = $this->purchases
+                ->join('pembelian', 'pembelian.beli_faktur=pembelian_detail.detbeli_faktur')
+                ->join('produk', 'produk.kodebarcode=pembelian_detail.detbeli_kodebarcode');
+            $resultTotal = $this->purchases
+                ->query("SELECT SUM(detbeli_subtotal) AS total_jumlah
+                             FROM pembelian_detail
+                             JOIN pembelian ON pembelian_detail.detbeli_faktur = pembelian.beli_faktur");
+        }
 
-        $db = \Config\Database::connect();
 
-        $query = $db->query("SELECT beli_tgl AS tgl, beli_totalbersih AS total FROM `pembelian` WHERE DATE_FORMAT(beli_tgl, '%Y-%m-%d') = '2023-04-24' ORDER BY beli_tgl ASC");
 
         $data = [
-            'dates' => $query->getResult()
+            'purchases' => $periode_filter->get()->getResultArray(),
+            'purchasesTotal' => $resultTotal->getRowArray(),
         ];
 
-        $msg = [
-            'data' => view('purchases/data_chart', $data)
-        ];
+        // echo "<pre>";
+        // print_r($resultTotal->getRowArray());
+        // echo "</pre>";
+        // exit;
 
-        echo json_encode($msg);
+        return view('purchases/report', $data);
     }
 }

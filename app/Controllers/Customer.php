@@ -14,6 +14,11 @@ class Customer extends BaseController
 
     public function index()
     {
+        if (session()->get('username') == '') {
+            session()->setFlashdata('gagal', 'Anda belum login');
+            return redirect()->to(base_url('login'));
+        }
+
         $data = [
             'customers' => $this->customers->orderby('pel_nama', 'asc')->findAll()
         ];
@@ -48,10 +53,10 @@ class Customer extends BaseController
     public function addCustomer()
     {
         if ($this->request->isAJAX()) {
-            $idCustomer = $this->request->getVar('idCustomer');
-            $nameCustomer = $this->request->getVar('nameCustomer');
-            $addressCustomer = $this->request->getVar('addressCustomer');
-            $telpCustomer = $this->request->getVar('telpCustomer');
+            $idCustomer = esc($this->request->getVar('idCustomer'));
+            $nameCustomer = esc($this->request->getVar('nameCustomer'));
+            $addressCustomer = esc($this->request->getVar('addressCustomer'));
+            $telpCustomer = esc($this->request->getVar('telpCustomer'));
 
             $validation = \Config\Services::validation();
 
@@ -80,9 +85,10 @@ class Customer extends BaseController
                 ],
                 'telpCustomer' => [
                     'label' => 'Telepon',
-                    'rules' => 'required',
+                    'rules' => 'required|regex_match[/^(?:\+62|0)[2-9]\d{7,11}$/]',
                     'errors' => [
-                        'required' => '{field} tidak boleh kosong'
+                        'required' => '{field} tidak boleh kosong',
+                        'regex_match' => 'Format Nomor {field} tidak valid'
                     ]
                 ]
             ]);
@@ -115,10 +121,10 @@ class Customer extends BaseController
     public function editCustomer()
     {
         if ($this->request->isAJAX()) {
-            $idCustomer = $this->request->getVar('idCustomer');
-            $nameCustomer = $this->request->getVar('nameCustomer');
-            $addressCustomer = $this->request->getVar('addressCustomer');
-            $telpCustomer = $this->request->getVar('telpCustomer');
+            $idCustomer = esc($this->request->getVar('idCustomer'));
+            $nameCustomer = esc($this->request->getVar('nameCustomer'));
+            $addressCustomer = esc($this->request->getVar('addressCustomer'));
+            $telpCustomer = esc($this->request->getVar('telpCustomer'));
 
             $validation = \Config\Services::validation();
 
@@ -139,9 +145,10 @@ class Customer extends BaseController
                 ],
                 'telpCustomer' => [
                     'label' => 'Telepon',
-                    'rules' => 'required',
+                    'rules' => 'required|regex_match[/^(?:\+62|0)[2-9]\d{7,11}$/]',
                     'errors' => [
-                        'required' => '{field} tidak boleh kosong'
+                        'required' => '{field} tidak boleh kosong',
+                        'regex_match' => 'Format Nomor {field} tidak valid'
                     ]
                 ]
             ]);
@@ -172,7 +179,7 @@ class Customer extends BaseController
     public function deleteCustomer()
     {
         if ($this->request->isAJAX()) {
-            $id = $this->request->getVar('idCustomer');
+            $id = esc($this->request->getVar('idCustomer'));
 
             $this->customers->delete([
                 'pel_kode' => $id

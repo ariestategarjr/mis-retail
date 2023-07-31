@@ -15,16 +15,16 @@
             <?= form_open($action, $attributes) ?>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="idUnit">Id Unit</label>
-                    <input type="text" class="form-control form-control-sm" id="idUnit" name="idUnit" value="<?= $idUnit ?>">
+                    <label for="idUnit">Kode Satuan</label>
+                    <input type="text" class="form-control form-control-sm" id="idUnit" name="idUnit" value="<?= $idUnit ?>" required readonly>
                 </div>
                 <div class="form-group">
-                    <label for="nameUnit">Nama Unit</label>
+                    <label for="nameUnit">Nama Satuan</label>
                     <input type="text" class="form-control form-control-sm" id="nameUnit" name="nameUnit" value="<?= $nameUnit ?>">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary save-button">Simpan</button>
             </div>
             <?= form_close(); ?>
@@ -56,6 +56,44 @@
                             window.location.reload();
                         }
                     });
+                } else if (response.error) {
+                    let dataError = response.error;
+
+                    if (dataError.errorIdUnit) {
+                        // $('#errorIdUnit').html(dataError.errorIdUnit).show();
+                        // $('#idUnit').addClass('is-invalid');
+                        Swal.fire(
+                            'Error!',
+                            dataError.errorIdUnit,
+                            'error'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        $('#errorIdUnit').fadeOut();
+                        $('#idUnit').removeClass('is-invalid');
+                        $('#idUnit').addClass('is-valid');
+                    }
+
+                    if (dataError.errorNameUnit) {
+                        // $('#errorNameUnit').html(dataError.errorNameUnit).show();
+                        // $('#nameUnit').addClass('is-invalid');
+                        Swal.fire(
+                            'Error!',
+                            dataError.errorNameUnit,
+                            'error'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    } else {
+                        $('#errorNameUnit').fadeOut();
+                        $('#nameUnit').removeClass('is-invalid');
+                        $('#nameUnit').addClass('is-valid');
+                    }
                 }
             },
             error: function(xhr, thrownError) {

@@ -23,7 +23,7 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Kode Penyuplai</th>
+                    <th>Id Penyuplai</th>
                     <th>Nama Penyuplai</th>
                     <th>Alamat</th>
                     <th>Telepon</th>
@@ -75,8 +75,8 @@
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Tunda'
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
@@ -100,7 +100,8 @@
                         }
                     },
                     error: function(xhr, thrownError) {
-                        alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                        // alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                        alert('Data tidak dapat dihapus! Data sedang digunakan.');
                     }
                 });
             }

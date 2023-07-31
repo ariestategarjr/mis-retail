@@ -24,7 +24,8 @@
                             <th>Nama Produk</th>
                             <th>Kategori</th>
                             <th>Stok</th>
-                            <th>Harga Jual</th>
+                            <th>Harga Beli</th>
+                            <th>Jumlah</th>
                             <th>#</th>
                         </tr>
                     </thead>
@@ -48,8 +49,11 @@
 
 <script>
     function selectProduct(code, name) {
+        let numberItems = parseInt($(`#numberItems${code}`).val());
+
         $('#kodebarcode').val(code);
         $('#namaproduk').val(name);
+        $('#jumlah').val(numberItems);
         $('#getModalProduct').on('hidden.bs.modal', function(event) {
             $('#kodebarcode').focus();
             checkCodeBarcode();

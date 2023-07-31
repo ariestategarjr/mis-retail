@@ -6,6 +6,11 @@ class Home extends BaseController
 {
     public function index()
     {
-        return view('welcome_message');
+        if (session()->get('username') == '') {
+            session()->setFlashdata('gagal', 'Anda belum login');
+            return redirect()->to(base_url('login'));
+        }
+
+        return view('home');
     }
 }

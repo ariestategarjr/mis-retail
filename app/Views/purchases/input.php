@@ -83,7 +83,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="jml">Jumlah</label>
-                    <input type="number" class="form-control form-control-sm" name="jumlah" id="jumlah" value="1">
+                    <input type="number" class="form-control form-control-sm" name="jumlah" id="jumlah" value="1" readonly>
                 </div>
             </div>
             <div class="col-md-3">
@@ -217,6 +217,25 @@
         });
     }
 
+    function calculateTotalPay() {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('purchase/calculateTotalPay') ?>",
+            data: {
+                fakturcode: $('#nofaktur').val()
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.data) {
+                    $('#totalbayar').val(response.data);
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+            }
+        });
+    }
+
     function reset() {
         $('#kodebarcode').val('');
         $('#namaproduk').val('');
@@ -260,13 +279,40 @@
         });
     }
 
+    function deleteTransaction() {
+        Swal.fire({
+            title: 'Apakah Anda yakin ingin',
+            html: `<h4 style="display: inline;">menghapus <strong style="color: #d33;">transaksi</strong> ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "post",
+                    url: "<?= site_url('purchase/deleteTransaction') ?>",
+                    data: {
+                        fakturcode: $('#nofaktur').val()
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.reload();
+                        }
+                    },
+                    error: function(xhr, thrownError) {
+                        alert(`${xhr.status} ${xhr.responseText} ${thrownError}`);
+                    }
+                });
+            }
+        });
+    }
+
     $(document).ready(function() {
         $('body').addClass('sidebar-collapse');
-
-        $('#search-supplier').click(function(e) {
-            e.preventDefault();
-            getModalSupplier();
-        });
 
         $('#kodebarcode').keydown(function(e) {
             if (e.keyCode == 13) {
@@ -275,13 +321,25 @@
             }
         });
 
+        $('#search-supplier').click(function(e) {
+            e.preventDefault();
+            getModalSupplier();
+        });
+
         $('#btnSimpanTransaksi').click(function(e) {
             e.preventDefault();
 
             saveTransaction();
         });
 
+        $('#btnHapusTransaksi').click(function(e) {
+            e.preventDefault();
+
+            deleteTransaction();
+        });
+
         displayPurchaseDetail();
+        calculateTotalPay();
     });
 </script>
 

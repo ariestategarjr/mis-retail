@@ -25,7 +25,7 @@
         <div class="form-group row">
             <label for="idCustomer" class="col-sm-2 col-form-label">Id Pelanggan</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="idCustomer" name="idCustomer" value="<?= $idCustomer ?>">
+                <input type="text" class="form-control" id="idCustomer" name="idCustomer" value="<?= $idCustomer ?>" readonly>
             </div>
         </div>
         <div class="form-group row">
@@ -49,7 +49,7 @@
         <div class="form-group row">
             <label for="telpCustomer" class="col-sm-2 col-form-label">Telepon</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="telpCustomer" name="telpCustomer" value="<?= $telpCustomer ?>">
+                <input type="tel" class="form-control" id="telpCustomer" name="telpCustomer" value="<?= $telpCustomer ?>">
                 <div id="errorTelpCustomer" class="invalid-feedback" style="display: none;">
                     <!-- Please provide a valid city. -->
                 </div>
@@ -131,7 +131,7 @@
                             html: response.success
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.reload();
+                                window.location = "/customer/index";
                             }
                         })
                     }

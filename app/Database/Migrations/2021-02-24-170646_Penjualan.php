@@ -39,6 +39,16 @@ class Penjualan extends Migration
 				'type' => 'DOUBLE',
 				'constraint' => '11,2',
 				'default' => 0.00
+			],
+			'jual_jmluang' => [
+				'type' => 'DOUBLE',
+				'constraint' => '11,2',
+				'default' => 0.00
+			],
+			'jual_sisauang' => [
+				'type' => 'DOUBLE',
+				'constraint' => '11,2',
+				'default' => 0.00
 			]
 		]);
 

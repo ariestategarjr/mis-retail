@@ -2,7 +2,7 @@
 <?= $this->extend('layout/menu'); ?>
 
 <?= $this->section('title'); ?>
-<h3>Form Tambah Pelanggan</h3>
+<h3>Form Tambah Penyuplai</h3>
 <?= $this->endSection(); ?>
 
 
@@ -52,7 +52,7 @@
         <div class="form-group row">
             <label for="telpSupplier" class="col-sm-2 col-form-label">Telepon</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="telpSupplier" name="telpSupplier">
+                <input type="tel" class="form-control" id="telpSupplier" name="telpSupplier">
                 <div id="errorTelpSupplier" class="invalid-feedback" style="display: none;">
                     <!-- Please provide a valid city. -->
                 </div>
@@ -142,7 +142,7 @@
                             html: response.success
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.reload();
+                                window.location = "/supplier/index";
                             }
                         })
                     }
