@@ -52,9 +52,9 @@
     function selectProduct(code, name) {
         let numberItems = parseInt($(`#numberItems${code}`).val());
 
-        console.log(numberItems + " " + typeof numberItems);
+        // console.log(numberItems + " " + typeof numberItems);
         let jumlah = $('#jumlah').val(numberItems);
-        console.log(jumlah);
+        // console.log(jumlah);
 
         $('#kodebarcode').val(code);
         $('#namaproduk').val(name);

@@ -18,7 +18,7 @@
             </div>
             <?= form_open('sale/savePayment', ['id' => 'addFormPayment']) ?>
             <div class="modal-body">
-                <input type="hidden" name="fakturcode" value="<?= $fakturcode ?>">
+                <input type="hidden" id="fakturcode" name="fakturcode" value="<?= $fakturcode ?>">
                 <input type="hidden" name="customercode" value="<?= $customercode ?>">
                 <input type="hidden" name="totalbruto" id="totalbruto" value="<?= $totalpayment ?>">
 
@@ -189,9 +189,109 @@
                                 confirmButtonText: 'Ya',
                                 cancelButtonText: 'Tidak'
                             }).then((result) => {
+                                $fakturcode = $('#fakturcode').val();
+                                // console.log($fakturcode)
+
                                 if (result.isConfirmed) {
+                                    // alert('print');
+                                    // $.ajax({
+                                    //     type: "post",
+                                    //     url: "<?= site_url('sale/getInvoice') ?>",
+                                    //     data: $(this).serialize(),
+                                    //     dataType: "json",
+                                    //     success: function(response) {
+                                    //         if (response.data) {
+                                    //             console.log(response.data);
+                                    //         }
+                                    //     }
+                                    // });
+
                                     // window.print();
-                                    alert('cetak struk');
+                                    // console.log(document.getElementById('cobatabel'));
+                                    // window.location.reload();
+                                    // let buttonDeleteHide = document.querySelector('.btn-danger-hide').addClass('hidden');
+                                    // console.log(buttonDeleteHide);
+
+                                    let totalNetto = document.querySelector('#totalnetto');
+                                    let printTotal = document.querySelector('.print-total');
+                                    printTotal.innerHTML = totalNetto.value;
+
+                                    let amountMoney = document.querySelector('#amountmoney');
+                                    let printBayar = document.querySelector('.print-bayar');
+                                    printBayar.innerHTML = amountMoney.value;
+
+                                    let restMoney = document.querySelector('#restmoney');
+                                    let printKembali = document.querySelector('.print-kembali');
+                                    printKembali.innerHTML = restMoney.value;
+
+                                    let date = document.querySelector('#tanggal');
+                                    let printTanggal = document.querySelector('.print-tanggal');
+                                    printTanggal.innerHTML = '================== ' + date.value + ' ==================';
+
+                                    let timeRaw = new Date();
+                                    let printWaktu = document.querySelector('.print-jam');
+                                    printWaktu.innerHTML = '================== ' + timeRaw.toLocaleTimeString() + ' ==================';
+
+                                    let elementPrinted = document.getElementById('print-area').innerHTML;
+
+                                    window.frames["print_frame"].document.title = document.title;
+                                    window.frames["print_frame"].document.body.innerHTML =
+                                        `
+                                        <style type="text/css">
+                                            .tg-center {
+                                                margin-left: auto;
+                                                margin-right: auto;
+                                            }
+                                            .tg {
+                                                border-collapse: collapse;
+                                                border-spacing: 0;
+                                            }
+
+                                            .tg td {
+                                                border-color: white;
+                                                border-style: solid;
+                                                border-width: 1px;
+                                                font-family: Arial, sans-serif;
+                                                font-size: 14px;
+                                                overflow: hidden;
+                                                padding: 0px 0px;
+                                                word-break: normal;
+                                            }
+
+                                            .tg th {
+                                                border-color: white;
+                                                border-style: solid;
+                                                border-width: 1px;
+                                                font-family: Arial, sans-serif;
+                                                font-size: 20px;
+                                                font-weight: normal;
+                                                overflow: hidden;
+                                                padding: 5px 5px;
+                                                word-break: normal;
+                                            }
+
+                                            .tg .tg-baqh {
+                                                text-align: center;
+                                                vertical-align: top
+                                            }
+
+                                            .tg .tg-wp8o {
+                                                border-color: white;
+                                                text-align: center;
+                                                vertical-align: top;
+                                                padding: 5px 5px;
+                                            }
+
+                                            .tg .tg-0lax {
+                                                text-align: left;
+                                                vertical-align: top;
+                                            }
+                                        </style>
+                                        ${elementPrinted}
+                                        `;
+                                    window.frames["print_frame"].window.focus();
+                                    window.frames["print_frame"].window.print();
+
                                     window.location.reload();
                                 } else {
                                     window.location.reload();

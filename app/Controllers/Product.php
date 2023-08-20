@@ -254,20 +254,20 @@ class Product extends BaseController
             // ]);
 
             $validate = $this->validate([
-                'codeBarcode' => [
-                    'label' => 'Kode Barcode',
-                    'rules' => 'required|is_unique[produk.kodebarcode]',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong',
-                        'is_unique' => '{field} sudah ada, coba yang lain'
-                    ]
-                ],
+                // 'codeBarcode' => [
+                //     'label' => 'Kode Barcode',
+                //     'rules' => 'required|is_unique[produk.kodebarcode]',
+                //     'errors' => [
+                //         'required' => '{field} tidak boleh kosong',
+                //         'is_unique' => '{field} sudah ada, coba yang lain'
+                //     ]
+                // ],
                 'nameProduct' => [
                     'label' => 'Nama Produk',
-                    'rules' => 'required|is_unique[produk.namaproduk]',
+                    'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
-                        'is_unique' => '{field} sudah ada'
+
                     ]
                 ],
                 'stockProduct' => [

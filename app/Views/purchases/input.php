@@ -70,7 +70,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="kodebarcode">Kode Produk</label>
+                    <label for="kodebarcode">Kode Produk / Nama Produk</label>
                     <input type="text" class="form-control form-control-sm" name="kodebarcode" id="kodebarcode" autofocus>
                 </div>
             </div>

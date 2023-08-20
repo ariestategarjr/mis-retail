@@ -183,6 +183,10 @@ class Sale extends BaseController
 
             $result = $query->getNumRows();
 
+            // echo "<pre>";
+            // die($result);
+            // echo "</pre>";
+
             if ($result > 1) {
                 $msg = [
                     'data' => 'many'
@@ -253,7 +257,9 @@ class Sale extends BaseController
             $fakturcode = esc($this->request->getVar('fakturcode'));
 
             $tblTempSale = $this->db->table('temp_penjualan');
-            $query = $tblTempSale
+            $tblSale = $this->db->table('penjualan');
+
+            $queryDetjual = $tblTempSale
                 ->select(
                     'detjual_id as id,
                     detjual_kodebarcode as kode,
@@ -272,8 +278,44 @@ class Sale extends BaseController
                     'asc'
                 );
 
+            // echo "<pre>";
+            // var_dump($fakturcode);
+            // echo "</pre>";
+            // $query = $this->db->query(
+            //     "SELECT * FROM penjualan "
+            // );
+
+            $queryJual = $tblSale
+                ->select(
+                    'jual_tgl',
+                    'jual_pelkode',
+                    'jual_dispersen',
+                    'jual_disuang',
+                    'jual_totalkotor',
+                    'jual_totalbersih',
+                    'jual_jmluang',
+                    'jual_sisauang'
+                )->where(
+                    'jual_faktur',
+                    $fakturcode
+                );
+
+            // $query = $this->db->table('penjualan')->select(
+            //     'jual_tgl',
+
+
+            //     'jual_jmluang',
+            //     'jual_sisauang'
+            // )
+            //     ->get()->getResult();
+
+            // echo "<pre>";
+            // print_r($queryDetjual->get()->getResult());
+            // echo "</pre>";
+
             $data = [
-                'dataSaleDetail' => $query->get()
+                'dataSaleDetail' => $queryDetjual->get(),
+                // 'dataSale' => $queryJual->get(),
             ];
 
             $msg = [
@@ -409,12 +451,54 @@ class Sale extends BaseController
             $tblTempSale->emptyTable();
 
             $msg = [
-                'success' => 'berhasil'
+                'success' => 'berhasil',
             ];
 
             echo json_encode($msg);
         }
     }
+
+    // public function getInvoice()
+    // {
+    //     $fakturcode = esc($this->request->getVar('fakturcode'));
+
+    //     // $tblTempSale = $this->db->table('temp_penjualan');
+    //     // $tblSale = $this->db->table('penjualan');
+
+    //     // $queryDetjual = $tblTempSale
+    //     //     ->select(
+    //     //         'detjual_id as id,
+    //     //         detjual_kodebarcode as kode,
+    //     //         namaproduk,
+    //     //         detjual_hargajual as hargajual,
+    //     //         detjual_jml as jml,
+    //     //         detjual_subtotal as subtotal'
+    //     //     )->join(
+    //     //         'produk',
+    //     //         'detjual_kodebarcode=kodebarcode'
+    //     //     )->where(
+    //     //         'detjual_faktur',
+    //     //         $fakturcode
+    //     //     )->orderby(
+    //     //         'detjual_id',
+    //     //         'asc'
+    //     //     )->get()->getResultArray();
+
+    //     $data = [
+    //         'dataSaleDetail' => $fakturcode,
+    //     ];
+
+    //     $msg = [
+    //         'data' => view('sales/data_payment', $data)
+
+    //     ];
+
+    //     echo json_encode($msg);
+
+    //     // $saleInvoice = $this->sales
+    //     //     ->join('penjualan', 'penjualan.jual_faktur=penjualan_detail.detjual_faktur')
+    //     //     ->where("detjual_faktur='" . $fakturcode);
+    // }
 
     public function report()
     {
@@ -464,10 +548,7 @@ class Sale extends BaseController
         $result = $this->sales->deleteDataByDateRange($periode_dari, $periode_ke);
     }
 
-    public function printStruck()
-    {
-        return view('sales/print');
-    }
+
 
 
 

@@ -59,7 +59,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="kodebarcode">Kode Produk</label>
+                    <label for="kodebarcode">Kode Produk / Nama Produk</label>
                     <input type="text" class="form-control form-control-sm" name="kodebarcode" id="kodebarcode" autofocus>
                 </div>
             </div>
@@ -92,6 +92,9 @@
 
 <div class="modal-container" style="display: none;"></div>
 <div class="modal-container-payment" style="display: none;"></div>
+
+<!-- <iframe id="printing-frame" name="print_frame" src="about:blank" style="display: none;"></iframe> -->
+
 
 <script>
     function checkCodeBarcode() {
